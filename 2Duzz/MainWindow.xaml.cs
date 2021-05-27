@@ -21,11 +21,11 @@ namespace _2Duzz
     /// </summary>
     public partial class MainWindow : Window
     {
+        public static string[] Args;
         public MainViewModel GetMainViewModel { get => (MainViewModel)this.DataContext; }
         public MainWindow()
         {
             InitializeComponent();
-
         }
 
     }

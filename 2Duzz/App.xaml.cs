@@ -13,5 +13,9 @@ namespace _2Duzz
     /// </summary>
     public partial class App : Application
     {
+        private void Application_Startup(object sender, StartupEventArgs e)
+        {
+            _2Duzz.MainWindow.Args = e.Args;
+        }
     }
 }
