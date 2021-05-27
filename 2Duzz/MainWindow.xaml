@@ -37,7 +37,7 @@
                 <MenuItem Header="_Open..." Command="{Binding HeaderOpenClickCommand}" InputGestureText="{Binding ElementName=KeyBinding_OpenClickCommand, Converter={StaticResource kgsCon}}"/>
                 <Separator/>
                 <MenuItem Header="_Save" Command="{Binding HeaderSaveClickCommand}" InputGestureText="{Binding ElementName=KeyBinding_SaveClickCommand, Converter={StaticResource kgsCon}}"/>
-                <MenuItem Header="_Save as..." Command="{Binding HeaderSaveAsClickCommand}" InputGestureText="{Binding ElementName=KeyBinding_SaveAsClickCommand, Converter={StaticResource kgsCon}}"/>
+                <MenuItem Header="Save _as..." Command="{Binding HeaderSaveAsClickCommand}" InputGestureText="{Binding ElementName=KeyBinding_SaveAsClickCommand, Converter={StaticResource kgsCon}}"/>
                 <Separator/>
                 <MenuItem Header="Close" Command="{Binding HeaderCloseClickCommand}"/>
             </MenuItem>
