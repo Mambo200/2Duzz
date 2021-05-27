@@ -1,4 +1,5 @@
-﻿using System;
+﻿using _2Duzz.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,12 @@ namespace _2Duzz
     /// </summary>
     public partial class MainWindow : Window
     {
+        public MainViewModel GetMainViewModel { get => (MainViewModel)this.DataContext; }
         public MainWindow()
         {
             InitializeComponent();
+
         }
+
     }
 }
