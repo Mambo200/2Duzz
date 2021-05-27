@@ -14,7 +14,7 @@
         <TaskbarItemInfo/>
     </Window.TaskbarItemInfo>
     <Window.Resources>
-        <converters:KeyGestureToStringConverter x:Key="kgsCon"/>
+        <converters:KeyBindingToStringConverter x:Key="kgsCon"/>
     </Window.Resources>
 
     <Window.InputBindings>

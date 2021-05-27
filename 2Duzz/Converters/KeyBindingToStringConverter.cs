@@ -9,7 +9,7 @@ using System.Windows.Input;
 
 namespace _2Duzz.Converters
 {
-    public class KeyGestureToStringConverter : IValueConverter
+    public class KeyBindingToStringConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
