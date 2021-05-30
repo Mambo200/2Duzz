@@ -26,7 +26,31 @@ namespace _2Duzz
         public MainWindow()
         {
             InitializeComponent();
+
+            ScollViewer_Images.main = this;
         }
 
+        public void ChangeStatusBar(object _content)
+        {
+            Label_Statusbar.Content = _content;
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ScrollViewer_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if(e.MiddleButton == MouseButtonState.Pressed)
+            {
+                MessageBox.Show("Boom");
+            }
+        }
+
+        private void ScrollViewer_MouseMove(object sender, MouseEventArgs e)
+        {
+            ScollViewer_Images.ScrollToVerticalOffset(ScollViewer_Images.VerticalOffset + 1);
+        }
     }
 }

@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:_2Duzz"
         xmlns:mvvm="clr-namespace:_2Duzz.ViewModels" xmlns:converters="clr-namespace:_2Duzz.Converters"
+        xmlns:Tools="clr-namespace:_2Duzz.Tools"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded">
     <Window.DataContext>
         <mvvm:MainViewModel/>
     </Window.DataContext>
@@ -28,7 +29,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="20"/>
+            <RowDefinition Height="25"/>
         </Grid.RowDefinitions>
 
         <Menu Grid.Row="0">
@@ -42,5 +43,19 @@
                 <MenuItem Header="Close" Command="{Binding HeaderCloseClickCommand}"/>
             </MenuItem>
         </Menu>
+
+        <Grid Grid.Row="1">
+            <ContentControl>
+                <Tools:WheelControlScollViewer x:Name="ScollViewer_Images" HorizontalScrollBarVisibility="Visible" DeadZone="10" MoveMultiplicator="0.02">
+                    <WrapPanel>
+                        <Image Source="E:\Tobias\Bilder\ebf5__150_player_emotes_by_kupogames-dbn7dy7\emo0015.jpg"/>
+                        <Image Source="E:\Tobias\Bilder\ebf5__150_player_emotes_by_kupogames-dbn7dy7\emo0015.jpg"/>
+                        <Image Source="E:\Tobias\Bilder\ebf5__150_player_emotes_by_kupogames-dbn7dy7\emo0015.jpg"/>
+                    </WrapPanel>
+                </Tools:WheelControlScollViewer>
+            </ContentControl>
+        </Grid>
+
+        <Label x:Name="Label_Statusbar" Grid.Row="2"/>
     </Grid>
 </Window>
