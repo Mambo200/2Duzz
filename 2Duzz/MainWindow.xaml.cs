@@ -39,18 +39,5 @@ namespace _2Duzz
         {
 
         }
-
-        private void ScrollViewer_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if(e.MiddleButton == MouseButtonState.Pressed)
-            {
-                MessageBox.Show("Boom");
-            }
-        }
-
-        private void ScrollViewer_MouseMove(object sender, MouseEventArgs e)
-        {
-            ScollViewer_Images.ScrollToVerticalOffset(ScollViewer_Images.VerticalOffset + 1);
-        }
     }
 }

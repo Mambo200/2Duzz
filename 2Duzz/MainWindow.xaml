@@ -46,7 +46,7 @@
 
         <Grid Grid.Row="1">
             <ContentControl>
-                <Tools:WheelControlScollViewer x:Name="ScollViewer_Images" HorizontalScrollBarVisibility="Visible" DeadZone="10" MoveMultiplicator="0.02">
+                <Tools:WheelControlScollViewer x:Name="ScollViewer_Images" HorizontalScrollBarVisibility="Visible" DeadZone="100" MoveMultiplicator="0.02">
                     <WrapPanel>
                         <Image Source="E:\Tobias\Bilder\ebf5__150_player_emotes_by_kupogames-dbn7dy7\emo0015.jpg"/>
                         <Image Source="E:\Tobias\Bilder\ebf5__150_player_emotes_by_kupogames-dbn7dy7\emo0015.jpg"/>

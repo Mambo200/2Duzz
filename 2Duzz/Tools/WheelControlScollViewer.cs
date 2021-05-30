@@ -29,7 +29,7 @@ namespace _2Duzz.Tools
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
             base.OnMouseDown(e);
-            if(e.MiddleButton == MouseButtonState.Pressed
+            if (e.MiddleButton == MouseButtonState.Pressed
                 && !MiddleButtonPressed)
             {
                 OnMiddleMouseDown(e);
@@ -39,14 +39,14 @@ namespace _2Duzz.Tools
         protected override void OnMouseUp(MouseButtonEventArgs e)
         {
             base.OnMouseUp(e);
-            if(e.MiddleButton == MouseButtonState.Released
+            if (e.MiddleButton == MouseButtonState.Released
                 && MiddleButtonPressed)
             {
                 OnMiddleMouseUp(e);
             }
         }
 
-        protected virtual void OnMiddleMouseDown(MouseButtonEventArgs e) 
+        protected virtual void OnMiddleMouseDown(MouseButtonEventArgs e)
         {
             MiddleButtonPressed = true;
             OnClickedPosition = e.GetPosition(this);
@@ -69,20 +69,44 @@ namespace _2Duzz.Tools
             // Check Position
             Point currentPosition = e.GetPosition(this);
 
-            // Get difference. Substract Deadzone
-            // TODO: This now only works in positive direction. Shoulkd also work with negative
-            double offsetX = (OnClickedPosition.X - currentPosition.X) - DeadZone;
-            double offsetY = (OnClickedPosition.Y - currentPosition.Y) - DeadZone;
+            // Get difference.
+            double offsetX = (OnClickedPosition.X - currentPosition.X);
+            double offsetY = (OnClickedPosition.Y - currentPosition.Y);
 
-            // Cap at 0
-            offsetX = Math.Max(0, offsetX);
-            offsetY = Math.Max(0, offsetY);
+            // Apply Deadzone
+            // Check if deadzone is between positive and negative offset value. If so do not move --> offset = 0
+            if (Math.Abs(offsetX) >= DeadZone
+                && Math.Abs(offsetX) * -1 <= DeadZone)
+            {
+                // deadzone is not between positive and negative offset value. Check sign of offset and ether add or substract deadzone from offset.
+                if (offsetX > 0)
+                    offsetX -= DeadZone;
+                else
+                    offsetX += DeadZone;
+            }
+            else
+                // Deadzone is between positive and negative offset value. Set offset to 0 so ScrollViewer do not move
+                offsetX = 0;
+
+            // Check if deadzone is between positive and negative offset value. If so do not move --> offset = 0
+            if (Math.Abs(offsetY) >= DeadZone
+                && Math.Abs(offsetY) * -1 <= DeadZone)
+            {
+                // deadzone is not between positive and negative offset value. Check sign of offset and ether add or substract deadzone from offset.
+                if (offsetY > 0)
+                    offsetY -= DeadZone;
+                else
+                    offsetY += DeadZone;
+            }
+            else
+                // deadzone is not between positive and negative offset value. Check sign of offset and ether add or substract deadzone from offset.
+                offsetY = 0;
 
             // Move Scrollbar
             ScrollToVerticalOffset(VerticalOffset + (offsetY * MoveMultiplicator));
             ScrollToHorizontalOffset(HorizontalOffset + (offsetX * MoveMultiplicator));
 
-            main.ChangeStatusBar(offsetX);
+            main.ChangeStatusBar($"{OnClickedPosition.X - currentPosition.X},{OnClickedPosition.Y - currentPosition.Y}");
         }
     }
 }
