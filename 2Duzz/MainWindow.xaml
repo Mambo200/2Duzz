@@ -46,11 +46,12 @@
 
         <Grid Grid.Row="1">
             <ContentControl>
-                <Tools:WheelControlScollViewer x:Name="ScollViewer_Images" HorizontalScrollBarVisibility="Visible" DeadZone="100" MoveMultiplicator="0.02">
-                    <WrapPanel>
-                        <Image Source="E:\Tobias\Bilder\ebf5__150_player_emotes_by_kupogames-dbn7dy7\emo0015.jpg"/>
-                        <Image Source="E:\Tobias\Bilder\ebf5__150_player_emotes_by_kupogames-dbn7dy7\emo0015.jpg"/>
-                        <Image Source="E:\Tobias\Bilder\ebf5__150_player_emotes_by_kupogames-dbn7dy7\emo0015.jpg"/>
+                <Tools:WheelControlScollViewer x:Name="ScollViewer_Images" HorizontalScrollBarVisibility="Hidden" DeadZone="30" MoveMultiplicator="0.01" VerticalScrollBarVisibility="Hidden">
+                    <WrapPanel Width="1200">
+                        <Image Source="E:\Tobias\Bilder\ebf5__150_player_emotes_by_kupogames-dbn7dy7\emo0015.jpg" Width="600" Height="600"/>
+                        <Image Source="E:\Tobias\Bilder\ebf5__150_player_emotes_by_kupogames-dbn7dy7\emo0015.jpg" Width="600" Height="600"/>
+                        <Image Source="E:\Tobias\Bilder\ebf5__150_player_emotes_by_kupogames-dbn7dy7\emo0015.jpg" Width="600" Height="600"/>
+                        <Image Source="E:\Tobias\Bilder\ebf5__150_player_emotes_by_kupogames-dbn7dy7\emo0015.jpg" Width="600" Height="600"/>
                     </WrapPanel>
                 </Tools:WheelControlScollViewer>
             </ContentControl>

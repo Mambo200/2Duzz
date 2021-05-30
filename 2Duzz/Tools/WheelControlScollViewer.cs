@@ -50,14 +50,13 @@ namespace _2Duzz.Tools
         {
             MiddleButtonPressed = true;
             OnClickedPosition = e.GetPosition(this);
-            //TODO: Change Cursor
+            Mouse.OverrideCursor = Cursors.ScrollAll;
         }
 
         protected virtual void OnMiddleMouseUp(MouseButtonEventArgs e)
         {
             MiddleButtonPressed = false;
-
-            //TODO: Change Cursor
+            Mouse.OverrideCursor = null;
         }
 
         protected override void OnMouseMove(MouseEventArgs e)
@@ -75,8 +74,7 @@ namespace _2Duzz.Tools
 
             // Apply Deadzone
             // Check if deadzone is between positive and negative offset value. If so do not move --> offset = 0
-            if (Math.Abs(offsetX) >= DeadZone
-                && Math.Abs(offsetX) * -1 <= DeadZone)
+            if (IsBetween(offsetX, DeadZone))
             {
                 // deadzone is not between positive and negative offset value. Check sign of offset and ether add or substract deadzone from offset.
                 if (offsetX > 0)
@@ -89,8 +87,7 @@ namespace _2Duzz.Tools
                 offsetX = 0;
 
             // Check if deadzone is between positive and negative offset value. If so do not move --> offset = 0
-            if (Math.Abs(offsetY) >= DeadZone
-                && Math.Abs(offsetY) * -1 <= DeadZone)
+            if(IsBetween(offsetY, DeadZone))
             {
                 // deadzone is not between positive and negative offset value. Check sign of offset and ether add or substract deadzone from offset.
                 if (offsetY > 0)
@@ -103,10 +100,112 @@ namespace _2Duzz.Tools
                 offsetY = 0;
 
             // Move Scrollbar
-            ScrollToVerticalOffset(VerticalOffset + (offsetY * MoveMultiplicator));
-            ScrollToHorizontalOffset(HorizontalOffset + (offsetX * MoveMultiplicator));
+            ScrollToVerticalOffset(VerticalOffset - (offsetY * MoveMultiplicator));
+            ScrollToHorizontalOffset(HorizontalOffset - (offsetX * MoveMultiplicator));
 
-            main.ChangeStatusBar($"{OnClickedPosition.X - currentPosition.X},{OnClickedPosition.Y - currentPosition.Y}");
+            SetCursorFromOffset(offsetX, offsetY);
+            //main.ChangeStatusBar($"{OnClickedPosition.X - currentPosition.X},{OnClickedPosition.Y - currentPosition.Y}");
+            main.ChangeStatusBar($"{offsetX},{offsetY}");
+        }
+
+        /// <summary>
+        /// Set Cursor from Offset
+        /// </summary>
+        /// <param name="_x">Offset x</param>
+        /// <param name="_y">Offset y</param>
+        private void SetCursorFromOffset(double _x, double _y)
+        {
+            // center
+            if (_x == 0 && _y == 0)
+                Mouse.OverrideCursor = Cursors.ScrollAll;
+
+            // DIAGONAL
+            // top left (x+,y+)
+            else if (_y > 0 && _x > 0
+                && IsBetween(_y, GetCursorChangeValue(_x)) && IsBetween(_x, GetCursorChangeValue(_y)))
+            {
+                Mouse.OverrideCursor = Cursors.ScrollNW;
+            }
+            // top right (x-,y+)
+            else if (_y > 0 && _x < 0
+               && IsBetween(_y, GetCursorChangeValue(_x)) && IsBetween(_x, GetCursorChangeValue(_y)))
+            {
+                Mouse.OverrideCursor = Cursors.ScrollNE;
+            }
+            // down left (x+,y-)
+            else if (_y < 0 && _x > 0
+               && IsBetween(_y, GetCursorChangeValue(_x)) && IsBetween(_x, GetCursorChangeValue(_y)))
+            {
+                Mouse.OverrideCursor = Cursors.ScrollSW;
+            }
+            // down right (x-,y-)
+            else if (_y < 0 && _x < 0
+               && IsBetween(_y, GetCursorChangeValue(_x)) && IsBetween(_x, GetCursorChangeValue(_y)))
+            {
+                Mouse.OverrideCursor = Cursors.ScrollSE;
+            }
+
+            // NOT DIAGONAL
+            // left (x+)
+            else if (_x > 0 && IsBetween(GetCursorChangeValue(_x), _y))
+            {
+                Mouse.OverrideCursor = Cursors.ScrollW;
+            }
+            // right (x-)
+            else if (_x < 0 && IsBetween(GetCursorChangeValue(_x), _y))
+            {
+                Mouse.OverrideCursor = Cursors.ScrollE;
+            }
+            // top (y+)
+            else if (_y > 0 && IsBetween(GetCursorChangeValue(_y), _x))
+            {
+                Mouse.OverrideCursor = Cursors.ScrollN;
+            }
+            // down (y-)
+            else if (_y < 0 && IsBetween(GetCursorChangeValue(_y), _x))
+            {
+                Mouse.OverrideCursor = Cursors.ScrollS;
+            }
+        }
+
+        private double GetCursorChangeValue(double _other)
+        {
+            return _other/4;
+            //return 0.1;
+        }
+
+        /// <summary>
+        /// Check if number is between two numbers
+        /// </summary>
+        /// <param name="_x">Range 1</param>
+        /// <param name="_y">Range 2</param>
+        /// <param name="_value">Value to check in Range</param>
+        /// <returns></returns>
+        private bool IsBetween(double _x, double _y, double _value)
+        {
+            if(_x > _y)
+            {
+                return _value > _y && _value < _x;
+            }
+            else
+            {
+                return _value > _x && _value < _y;
+            }
+        }
+
+        /// <summary>
+        /// check if number is between two numbers which only differ by sign
+        /// </summary>
+        /// <param name="_x">positive/negative rane</param>
+        /// <param name="_value">Value to check in Range</param>
+        /// <returns></returns>
+        private bool IsBetween(double _x, double _value)
+        {
+            // we make an absolute of value _x because we do not know if value _x is positive or negative.
+            double positiveX = Math.Abs(_x);
+            double negativeX = positiveX * -1;
+
+            return _value > negativeX && _value < positiveX;
         }
     }
 }
