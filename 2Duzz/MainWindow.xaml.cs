@@ -39,5 +39,17 @@ namespace _2Duzz
         {
 
         }
+
+        private void ImageClick(object sender, MouseButtonEventArgs e)
+        {
+            Point currentPosition = e.GetPosition(this);
+            HitTestResult result = VisualTreeHelper.HitTest(this, currentPosition);
+            object o = result.VisualHit.GetValue(Image.TagProperty);
+            if (o != null)
+            {
+                ChangeStatusBar($"{ DateTime.Now} | {o}");
+            }
+
+        }
     }
 }
