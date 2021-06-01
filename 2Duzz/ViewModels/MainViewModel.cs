@@ -22,6 +22,19 @@ namespace _2Duzz.ViewModels
             HeaderCloseClickCommand = new RelayCommand((e) => ExecuteHeaderCloseClick("MV Constructor Close"));
         }
 
+        #region Statusbar
+        private object m_StatusBarContent;
+        public object StatusBarContent
+        {
+            get => m_StatusBarContent;
+            set
+            {
+                SetProperty(ref m_StatusBarContent, value);
+                //NotifyOfPropertyChange(nameof([PROPERTY]));
+            }
+        }
+        #endregion
+
 
         #region Header New Click
         /// <summary>
@@ -132,7 +145,7 @@ namespace _2Duzz.ViewModels
             set
             {
                 SetProperty(ref m_WPScaleX, value);
-                //NotifyOfPropertyChange();
+                //NotifyOfPropertyChange(nameof([PROPERTY]));
             }
         }
 
@@ -143,7 +156,7 @@ namespace _2Duzz.ViewModels
             set
             {
                 SetProperty(ref m_WPScaleY, value);
-                //NotifyOfPropertyChange();
+                //NotifyOfPropertyChange(nameof([PROPERTY]));
             }
         }
         #endregion

@@ -32,12 +32,12 @@ namespace _2Duzz
 
         public void ChangeStatusBar(object _content)
         {
-            Label_Statusbar.Content = _content;
+            GetMainViewModel.StatusBarContent = _content;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            
+            GetMainViewModel.WPScaleX = 3;
         }
 
         private void ImageClick(object sender, MouseButtonEventArgs e)
