@@ -37,7 +37,7 @@ namespace _2Duzz
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            GetMainViewModel.WPScaleX = 3;
+
         }
 
         private void ImageClick(object sender, MouseButtonEventArgs e)
@@ -50,6 +50,15 @@ namespace _2Duzz
                 ChangeStatusBar($"{ DateTime.Now} | {o}");
             }
 
+        }
+
+        private void Zoom_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (Keyboard.IsKeyDown(Key.LeftCtrl))
+            {
+                GetMainViewModel.WPScaleX = Math.Max(0.1, GetMainViewModel.WPScaleX + e.Delta * 0.001);
+                GetMainViewModel.WPScaleY = GetMainViewModel.WPScaleX;
+            }
         }
     }
 }

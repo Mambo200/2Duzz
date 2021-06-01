@@ -20,6 +20,9 @@ namespace _2Duzz.ViewModels
             HeaderSaveClickCommand = new RelayCommand((e) => ExecuteHeaderSaveClick("MV Constructor Save"));
             HeaderSaveAsClickCommand = new RelayCommand((e) => ExecuteHeaderSaveAsClick("MV Constructor SaveAs"));
             HeaderCloseClickCommand = new RelayCommand((e) => ExecuteHeaderCloseClick("MV Constructor Close"));
+
+            WPScaleX = 1;
+            WPScaleY = 1;
         }
 
         #region Statusbar
@@ -36,6 +39,7 @@ namespace _2Duzz.ViewModels
         #endregion
 
 
+        #region KeyBinding
         #region Header New Click
         /// <summary>
         /// Header New Click command
@@ -134,6 +138,10 @@ namespace _2Duzz.ViewModels
         {
             MessageBox.Show(_parameter.ToString());
         }
+        #endregion
+        #endregion
+
+        #region MouseBinding
         #endregion
 
 
