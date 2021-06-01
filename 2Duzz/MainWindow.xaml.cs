@@ -27,7 +27,7 @@ namespace _2Duzz
         {
             InitializeComponent();
 
-            ScollViewer_Images.main = this;
+            ScollViewer_Images.MainW = this;
         }
 
         public void ChangeStatusBar(object _content)
@@ -37,7 +37,7 @@ namespace _2Duzz
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-
+            
         }
 
         private void ImageClick(object sender, MouseButtonEventArgs e)
