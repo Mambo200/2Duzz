@@ -104,8 +104,6 @@ namespace _2Duzz.Tools
             ScrollToHorizontalOffset(HorizontalOffset - (offsetX * MoveMultiplicator));
 
             SetCursorFromOffset(offsetX, offsetY);
-            //main.ChangeStatusBar($"{OnClickedPosition.X - currentPosition.X},{OnClickedPosition.Y - currentPosition.Y}");
-            main.ChangeStatusBar($"{offsetX},{offsetY}");
         }
 
         /// <summary>
