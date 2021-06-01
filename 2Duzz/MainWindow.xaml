@@ -47,9 +47,9 @@
         <Grid Grid.Row="1">
             <ContentControl>
                 <Tools:WheelControlScollViewer x:Name="ScollViewer_Images" HorizontalScrollBarVisibility="Hidden" DeadZone="30" MoveMultiplicator="0.01" VerticalScrollBarVisibility="Hidden">
-                    <WrapPanel Width="1200" MouseLeftButtonDown="ImageClick">
+                    <WrapPanel Width="1200" MouseLeftButtonDown="ImageClick" MouseWheel="Zoom_MouseWheel">
                         <WrapPanel.LayoutTransform>
-                            <ScaleTransform ScaleX="{Binding WPScaleX}" ScaleY="{Binding WPScaleX}"/>
+                            <ScaleTransform ScaleX="{Binding WPScaleX}" ScaleY="{Binding WPScaleY}"/>
                         </WrapPanel.LayoutTransform>
                         <Image Tag="0" Source="Ressources/A.png" Width="600" Height="600"/>
                         <Image Tag="1" Source="E:\Tobias\Bilder\ebf5__150_player_emotes_by_kupogames-dbn7dy7\emo0016.jpg" Width="600" Height="600"/>
@@ -60,6 +60,6 @@
             </ContentControl>
         </Grid>
 
-        <Label Grid.Row="2" Content="{Binding StatusBarContent}"/>
+        <Label Grid.Row="2" Content="{Binding StatusBarContent}" Background="#FFC8FFC8"/>
     </Grid>
 </Window>
