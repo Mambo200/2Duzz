@@ -8,7 +8,7 @@ using System.Windows.Input;
 
 namespace _2Duzz.ViewModels
 {
-    public class MainViewModel
+    public class MainViewModel : BaseViewModel
     {
         /// <summary>
         /// Constructor of MV. This is called AFTER <see cref="MainWindow.MainWindow"/> so we can't set command there.
@@ -123,5 +123,29 @@ namespace _2Duzz.ViewModels
         }
         #endregion
 
+
+        #region Wrappanel Scale
+        private double m_WPScaleX;
+        public double WPScaleX
+        {
+            get => m_WPScaleX;
+            set
+            {
+                SetProperty(ref m_WPScaleX, value);
+                //NotifyOfPropertyChange();
+            }
+        }
+
+        private double m_WPScaleY;
+        public double WPScaleY
+        {
+            get => m_WPScaleY;
+            set
+            {
+                SetProperty(ref m_WPScaleY, value);
+                //NotifyOfPropertyChange();
+            }
+        }
+        #endregion
     }
 }
