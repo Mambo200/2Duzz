@@ -102,5 +102,8 @@
   <ItemGroup>
     <Resource Include="Ressources\A.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Ressources\TestImages\Debuf Mode.PNG" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
