@@ -52,9 +52,9 @@
                             <ScaleTransform ScaleX="{Binding WPScaleX}" ScaleY="{Binding WPScaleY}"/>
                         </WrapPanel.LayoutTransform>
                         <Image Tag="0" Source="Ressources/A.png" Width="600" Height="600"/>
-                        <Image Tag="1" Source="Ressources/TestImages/Debuf Mode.PNG" Width="600" Height="600" Stretch="Fill"/>
-                        <Image Tag="2" Source="Ressources/TestImages/Debuf Mode.PNG" Width="600" Height="600" Stretch="Fill"/>
-                        <Image Tag="3" Source="Ressources/TestImages/Debuf Mode.PNG" Width="600" Height="600" Stretch="Fill"/>
+                        <Image Tag="1" Source="Ressources/TestImages/Outline.png" Width="600" Height="600" Stretch="Fill"/>
+                        <Image Tag="2" Source="Ressources/TestImages/Outline.png" Width="600" Height="600" Stretch="Fill"/>
+                        <Image Tag="3" Source="Ressources/TestImages/Outline.png" Width="600" Height="600" Stretch="Fill"/>
                     </WrapPanel>
                 </Tools:WheelControlScollViewer>
             </ContentControl>

@@ -66,6 +66,7 @@ namespace _2Duzz
             e.Handled = true;
             GetMainViewModel.WPScaleX = Math.Max(0.1, GetMainViewModel.WPScaleX + e.Delta * 0.001);
             GetMainViewModel.WPScaleY = GetMainViewModel.WPScaleX;
+            
         }
     }
 }
