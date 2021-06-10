@@ -52,13 +52,21 @@ namespace _2Duzz
 
         }
 
-        private void Zoom_MouseWheel(object sender, MouseWheelEventArgs e)
+        private void Zoom_MouseWheelWithCtrl(object sender, MouseWheelEventArgs e)
         {
             if (Keyboard.IsKeyDown(Key.LeftCtrl))
             {
                 GetMainViewModel.WPScaleX = Math.Max(0.1, GetMainViewModel.WPScaleX + e.Delta * 0.001);
                 GetMainViewModel.WPScaleY = GetMainViewModel.WPScaleX;
             }
+        }
+
+        private void Zoom_MouseWheelWithoutCtrl(object sender, MouseWheelEventArgs e)
+        {
+            e.Handled = true;
+            GetMainViewModel.WPScaleX = Math.Max(0.1, GetMainViewModel.WPScaleX + e.Delta * 0.001);
+            GetMainViewModel.WPScaleY = GetMainViewModel.WPScaleX;
+            
         }
     }
 }
