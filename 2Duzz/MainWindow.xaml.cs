@@ -56,8 +56,7 @@ namespace _2Duzz
         {
             if (Keyboard.IsKeyDown(Key.LeftCtrl))
             {
-                GetMainViewModel.WPScaleX = Math.Max(0.1, GetMainViewModel.WPScaleX + e.Delta * 0.001);
-                GetMainViewModel.WPScaleY = GetMainViewModel.WPScaleX;
+                GetMainViewModel.WPScale = Math.Max(0.1, GetMainViewModel.WPScale + e.Delta * 0.001);
             }
         }
 

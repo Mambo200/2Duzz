@@ -49,7 +49,7 @@
                 <Tools:WheelControlScollViewer x:Name="ScollViewer_Images" HorizontalScrollBarVisibility="Hidden" DeadZone="30" MoveMultiplicator="0.01" VerticalScrollBarVisibility="Hidden" PreviewMouseWheel="Zoom_MouseWheelWithoutCtrl">
                     <WrapPanel Width="1200" MouseLeftButtonDown="ImageClick">
                         <WrapPanel.LayoutTransform>
-                            <ScaleTransform ScaleX="{Binding WPScaleX}" ScaleY="{Binding WPScaleY}"/>
+                            <ScaleTransform ScaleX="{Binding WPScale}" ScaleY="{Binding WPScale}"/>
                         </WrapPanel.LayoutTransform>
                         <Image Tag="0" Source="Ressources/A.png" Width="600" Height="600"/>
                         <Image Tag="1" Source="Ressources/TestImages/Outline.png" Width="600" Height="600" Stretch="Fill"/>
@@ -59,7 +59,6 @@
                 </Tools:WheelControlScollViewer>
             </ContentControl>
         </Grid>
-
         <Label Grid.Row="2" Content="{Binding StatusBarContent}" Background="#FFC8FFC8"/>
     </Grid>
 </Window>

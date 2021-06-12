@@ -21,8 +21,7 @@ namespace _2Duzz.ViewModels
             HeaderSaveAsClickCommand = new RelayCommand((e) => ExecuteHeaderSaveAsClick("MV Constructor SaveAs"));
             HeaderCloseClickCommand = new RelayCommand((e) => ExecuteHeaderCloseClick("MV Constructor Close"));
 
-            WPScaleX = 1;
-            WPScaleY = 1;
+            WPScale = 1;
         }
 
         #region Statusbar
@@ -146,24 +145,13 @@ namespace _2Duzz.ViewModels
 
 
         #region Wrappanel Scale
-        private double m_WPScaleX;
-        public double WPScaleX
+        private double m_WPScale;
+        public double WPScale
         {
-            get => m_WPScaleX;
+            get => m_WPScale;
             set
             {
-                SetProperty(ref m_WPScaleX, value);
-                //NotifyOfPropertyChange(nameof([PROPERTY]));
-            }
-        }
-
-        private double m_WPScaleY;
-        public double WPScaleY
-        {
-            get => m_WPScaleY;
-            set
-            {
-                SetProperty(ref m_WPScaleY, value);
+                SetProperty(ref m_WPScale, value);
                 //NotifyOfPropertyChange(nameof([PROPERTY]));
             }
         }
