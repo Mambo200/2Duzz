@@ -63,9 +63,7 @@ namespace _2Duzz
         private void Zoom_MouseWheelWithoutCtrl(object sender, MouseWheelEventArgs e)
         {
             e.Handled = true;
-            GetMainViewModel.WPScaleX = Math.Max(0.1, GetMainViewModel.WPScaleX + e.Delta * 0.001);
-            GetMainViewModel.WPScaleY = GetMainViewModel.WPScaleX;
-            
+            GetMainViewModel.WPScale = Math.Max(0.1, GetMainViewModel.WPScale + e.Delta * 0.001);            
         }
     }
 }
