@@ -16,6 +16,7 @@
     </Window.TaskbarItemInfo>
     <Window.Resources>
         <converters:KeyBindingToStringConverter x:Key="kgsCon"/>
+        <converters:DoubleToPercentageStringConverter x:Key="dpsCon"/>
     </Window.Resources>
 
     <Window.InputBindings>
@@ -47,18 +48,25 @@
         <Grid Grid.Row="1">
             <ContentControl>
                 <Tools:WheelControlScollViewer x:Name="ScollViewer_Images" HorizontalScrollBarVisibility="Hidden" DeadZone="30" MoveMultiplicator="0.01" VerticalScrollBarVisibility="Hidden" PreviewMouseWheel="Zoom_MouseWheelWithoutCtrl">
-                    <WrapPanel Width="1200" MouseLeftButtonDown="ImageClick">
+                    <WrapPanel x:Name="WrapPanel_Images" Width="{Binding WPWidth}" MouseLeftButtonDown="ImageClick">
                         <WrapPanel.LayoutTransform>
                             <ScaleTransform ScaleX="{Binding WPScale}" ScaleY="{Binding WPScale}"/>
                         </WrapPanel.LayoutTransform>
-                        <Image Tag="0" Source="Ressources/A.png" Width="600" Height="600"/>
-                        <Image Tag="1" Source="Ressources/TestImages/Outline.png" Width="600" Height="600" Stretch="Fill"/>
-                        <Image Tag="2" Source="Ressources/TestImages/Outline.png" Width="600" Height="600" Stretch="Fill"/>
-                        <Image Tag="3" Source="Ressources/TestImages/Outline.png" Width="600" Height="600" Stretch="Fill"/>
+                        <Image Tag="0" Source="Ressources/TestImages/Outline.png" Width="{Binding ImageSizeX}" Height="{Binding ImageSizeY}" Stretch="Fill"/>
+                        <Image Tag="1" Source="Ressources/TestImages/Outline.png" Width="{Binding ImageSizeX}" Height="{Binding ImageSizeY}" Stretch="Fill"/>
+                        <Image Tag="2" Source="Ressources/TestImages/Outline.png" Width="{Binding ImageSizeX}" Height="{Binding ImageSizeY}" Stretch="Fill"/>
+                        <Image Tag="3" Source="Ressources/TestImages/Outline.png" Width="{Binding ImageSizeX}" Height="{Binding ImageSizeY}" Stretch="Fill"/>
                     </WrapPanel>
                 </Tools:WheelControlScollViewer>
             </ContentControl>
         </Grid>
-        <Label Grid.Row="2" Content="{Binding StatusBarContent}" Background="#FFC8FFC8"/>
+        <Grid Grid.Row="2" Background="#FFC8FFC8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="75"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Content="{Binding StatusBarContent}"/>
+            <Label Grid.Column="1" Content="{Binding StatusBarScale, Converter={StaticResource dpsCon}}"/>
+        </Grid>
     </Grid>
 </Window>

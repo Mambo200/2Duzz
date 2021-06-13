@@ -22,9 +22,14 @@ namespace _2Duzz.ViewModels
             HeaderCloseClickCommand = new RelayCommand((e) => ExecuteHeaderCloseClick("MV Constructor Close"));
 
             WPScale = 1;
+            WPWidth = 1200;
+
+            ImageSizeX = 600;
+            ImageSizeY = 600;
+
         }
 
-        #region Statusbar
+        #region Statusbar2
         private object m_StatusBarContent;
         public object StatusBarContent
         {
@@ -32,6 +37,17 @@ namespace _2Duzz.ViewModels
             set
             {
                 SetProperty(ref m_StatusBarContent, value);
+                //NotifyOfPropertyChange(nameof([PROPERTY]));
+            }
+        }
+
+        private object m_StatusBarScale;
+        public object StatusBarScale
+        {
+            get => m_StatusBarScale;
+            set
+            {
+                SetProperty(ref m_StatusBarScale, value);
                 //NotifyOfPropertyChange(nameof([PROPERTY]));
             }
         }
@@ -144,7 +160,7 @@ namespace _2Duzz.ViewModels
         #endregion
 
 
-        #region Wrappanel Scale
+        #region Wrappanel
         private double m_WPScale;
         public double WPScale
         {
@@ -152,6 +168,42 @@ namespace _2Duzz.ViewModels
             set
             {
                 SetProperty(ref m_WPScale, value);
+                m_StatusBarScale = m_WPScale;
+                NotifyOfPropertyChange(nameof(StatusBarScale));
+            }
+        }
+
+        private double m_WPWidth;
+        public double WPWidth
+        {
+            get => m_WPWidth;
+            set
+            {
+                SetProperty(ref m_WPWidth, value);
+                //NotifyOfPropertyChange(nameof([PROPERTY]));
+            }
+        }
+        #endregion
+
+        #region Image Size
+        private double m_ImageSizeX;
+        public double ImageSizeX
+        {
+            get => m_ImageSizeX;
+            set
+            {
+                SetProperty(ref m_ImageSizeX, value);
+                //NotifyOfPropertyChange(nameof([PROPERTY]));
+            }
+        }
+
+        private double m_ImageSizeY;
+        public double ImageSizeY
+        {
+            get => m_ImageSizeY;
+            set
+            {
+                SetProperty(ref m_ImageSizeY, value);
                 //NotifyOfPropertyChange(nameof([PROPERTY]));
             }
         }
