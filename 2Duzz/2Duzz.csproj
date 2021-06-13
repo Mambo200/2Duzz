@@ -55,6 +55,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BindingHelper.cs" />
+    <Compile Include="Converters\DoubleToPercentageStringConverter.cs" />
     <Compile Include="Converters\KeyBindingToStringConverter.cs" />
     <Compile Include="Tools\WheelControlScollViewer.cs" />
     <Compile Include="ViewModels\RelayCommand.cs" />
@@ -107,6 +109,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Ressources\TestImages\Outline.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Ressources\TestImages\X.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Ressources\TestImages\X2.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
