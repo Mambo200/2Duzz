@@ -27,12 +27,12 @@ namespace _2Duzz
         {
             InitializeComponent();
 
-            ScollViewer_Images.main = this;
+            ScollViewer_Images.MainW = this;
         }
 
         public void ChangeStatusBar(object _content)
         {
-            Label_Statusbar.Content = _content;
+            GetMainViewModel.StatusBarContent = _content;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -50,6 +50,20 @@ namespace _2Duzz
                 ChangeStatusBar($"{ DateTime.Now} | {o}");
             }
 
+        }
+
+        private void Zoom_MouseWheelWithCtrl(object sender, MouseWheelEventArgs e)
+        {
+            if (Keyboard.IsKeyDown(Key.LeftCtrl))
+            {
+                GetMainViewModel.WPScale = Math.Max(0.1, GetMainViewModel.WPScale + e.Delta * 0.001);
+            }
+        }
+
+        private void Zoom_MouseWheelWithoutCtrl(object sender, MouseWheelEventArgs e)
+        {
+            e.Handled = true;
+            GetMainViewModel.WPScale = Math.Max(0.1, GetMainViewModel.WPScale + e.Delta * 0.001);            
         }
     }
 }

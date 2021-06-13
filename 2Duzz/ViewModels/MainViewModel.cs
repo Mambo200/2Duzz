@@ -8,7 +8,7 @@ using System.Windows.Input;
 
 namespace _2Duzz.ViewModels
 {
-    public class MainViewModel
+    public class MainViewModel : BaseViewModel
     {
         /// <summary>
         /// Constructor of MV. This is called AFTER <see cref="MainWindow.MainWindow"/> so we can't set command there.
@@ -20,9 +20,25 @@ namespace _2Duzz.ViewModels
             HeaderSaveClickCommand = new RelayCommand((e) => ExecuteHeaderSaveClick("MV Constructor Save"));
             HeaderSaveAsClickCommand = new RelayCommand((e) => ExecuteHeaderSaveAsClick("MV Constructor SaveAs"));
             HeaderCloseClickCommand = new RelayCommand((e) => ExecuteHeaderCloseClick("MV Constructor Close"));
+
+            WPScale = 1;
         }
 
+        #region Statusbar
+        private object m_StatusBarContent;
+        public object StatusBarContent
+        {
+            get => m_StatusBarContent;
+            set
+            {
+                SetProperty(ref m_StatusBarContent, value);
+                //NotifyOfPropertyChange(nameof([PROPERTY]));
+            }
+        }
+        #endregion
 
+
+        #region KeyBinding
         #region Header New Click
         /// <summary>
         /// Header New Click command
@@ -122,6 +138,23 @@ namespace _2Duzz.ViewModels
             MessageBox.Show(_parameter.ToString());
         }
         #endregion
+        #endregion
 
+        #region MouseBinding
+        #endregion
+
+
+        #region Wrappanel Scale
+        private double m_WPScale;
+        public double WPScale
+        {
+            get => m_WPScale;
+            set
+            {
+                SetProperty(ref m_WPScale, value);
+                //NotifyOfPropertyChange(nameof([PROPERTY]));
+            }
+        }
+        #endregion
     }
 }

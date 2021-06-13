@@ -11,7 +11,7 @@ namespace _2Duzz.Tools
 {
     public class WheelControlScollViewer : ScrollViewer
     {
-        public MainWindow main { get; set; }
+        public MainWindow MainW { get; set; }
 
         /// <summary>Tells if wheel button is pressed</summary>
         public bool MiddleButtonPressed { get; protected set; }
@@ -59,11 +59,14 @@ namespace _2Duzz.Tools
             Mouse.OverrideCursor = null;
         }
 
+        public void CallOnMouseMove(MouseEventArgs e) => OnMouseMove(e);
+        private int count;
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
 
             if (!MiddleButtonPressed) return;
+            MainW.ChangeStatusBar(++count);
 
             // Check Position
             Point currentPosition = e.GetPosition(this);
@@ -87,7 +90,7 @@ namespace _2Duzz.Tools
                 offsetX = 0;
 
             // Check if deadzone is between positive and negative offset value. If so do not move --> offset = 0
-            if(IsBetween(offsetY, DeadZone))
+            if (IsBetween(offsetY, DeadZone))
             {
                 // deadzone is not between positive and negative offset value. Check sign of offset and ether add or substract deadzone from offset.
                 if (offsetY > 0)
@@ -107,7 +110,7 @@ namespace _2Duzz.Tools
         }
 
         /// <summary>
-        /// Set Cursor from Offset
+        /// Set Scroll cursor from Offset
         /// </summary>
         /// <param name="_x">Offset x</param>
         /// <param name="_y">Offset y</param>
