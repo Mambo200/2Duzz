@@ -21,8 +21,8 @@ namespace _2Duzz.ViewModels
             HeaderSaveAsClickCommand = new RelayCommand((e) => ExecuteHeaderSaveAsClick("MV Constructor SaveAs"));
             HeaderCloseClickCommand = new RelayCommand((e) => ExecuteHeaderCloseClick("MV Constructor Close"));
 
-            WPScale = 1;
-            WPWidth = 1200;
+            GridContentScale = 1;
+            GridContentWidth = 1200;
 
             ImageSizeX = 600;
             ImageSizeY = 600;
@@ -160,26 +160,26 @@ namespace _2Duzz.ViewModels
         #endregion
 
 
-        #region Wrappanel
-        private double m_WPScale;
-        public double WPScale
+        #region Canvas
+        private double m_GridContentScale;
+        public double GridContentScale
         {
-            get => m_WPScale;
+            get => m_GridContentScale;
             set
             {
-                SetProperty(ref m_WPScale, value);
-                m_StatusBarScale = m_WPScale;
+                SetProperty(ref m_GridContentScale, value);
+                m_StatusBarScale = m_GridContentScale;
                 NotifyOfPropertyChange(nameof(StatusBarScale));
             }
         }
 
-        private double m_WPWidth;
-        public double WPWidth
+        private double m_GridContentWidth;
+        public double GridContentWidth
         {
-            get => m_WPWidth;
+            get => m_GridContentWidth;
             set
             {
-                SetProperty(ref m_WPWidth, value);
+                SetProperty(ref m_GridContentWidth, value);
                 //NotifyOfPropertyChange(nameof([PROPERTY]));
             }
         }
