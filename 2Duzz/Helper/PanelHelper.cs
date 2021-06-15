@@ -34,7 +34,7 @@ namespace _2Duzz.Helper
         }
         #endregion
 
-        public List<Panel> Panels;
+        public List<Panel> Panels { get; private set; }
         public Panel CurrentPanel { get; private set; }
 
         public int ChildrenCount { get => CurrentPanel.Children.Count; }
@@ -43,7 +43,7 @@ namespace _2Duzz.Helper
         {
             // Create new Panel
             WrapPanel panel = new WrapPanel();
-            
+
             // Add new Panel as children of main Panel
             CurrentPanel.Children.Insert(_layer, panel);
 

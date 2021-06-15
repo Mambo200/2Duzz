@@ -46,27 +46,12 @@
         </Menu>
         <Grid Grid.Row="1">
             <ContentControl>
-                <Tools:WheelControlScollViewer x:Name="ScollViewer_Images" HorizontalScrollBarVisibility="Visible" DeadZone="30" MoveMultiplicator="0.01" VerticalScrollBarVisibility="Hidden" PreviewMouseWheel="Zoom_MouseWheelWithoutCtrl">
+                <Tools:WheelControlScollViewer x:Name="ScollViewer_Images" HorizontalScrollBarVisibility="Hidden" DeadZone="30" MoveMultiplicator="0.01" VerticalScrollBarVisibility="Hidden" PreviewMouseWheel="Zoom_MouseWheelWithoutCtrl">
                     <Grid x:Name="GridContent_Images" Width="{Binding GridContentWidth}" MouseLeftButtonDown="ImageClick">
                         <Grid.LayoutTransform>
                             <ScaleTransform ScaleX="{Binding GridContentScale}" ScaleY="{Binding GridContentScale}"/>
                         </Grid.LayoutTransform>
-                        <WrapPanel>
-                            <Image Tag="0" Source="Ressources/TestImages/Outline.png" Width="{Binding ImageSizeX}" Height="{Binding ImageSizeY}" Stretch="Fill"/>
-                            <Image Tag="1" Source="Ressources/TestImages/Outline.png" Width="{Binding ImageSizeX}" Height="{Binding ImageSizeY}" Stretch="Fill"/>
-                        </WrapPanel>
-                        <WrapPanel>
-                            <Image Tag="5" Source="Ressources/TestImages/X.png" Width="{Binding ImageSizeX}" Height="{Binding ImageSizeY}" Stretch="Fill"/>
-                            <Image Tag="6" Source="Ressources/TestImages/X2.png" Width="{Binding ImageSizeX}" Height="{Binding ImageSizeY}" Stretch="Fill"/>
-                            <Image Tag="7" Source="Ressources/TestImages/Debuf Mode.png" Width="{Binding ImageSizeX}" Height="{Binding ImageSizeY}" Stretch="Fill"/>
-                        </WrapPanel>
-                        <WrapPanel>
-                            <Image Tag="2" Source="Ressources/TestImages/Outline.png" Width="{Binding ImageSizeX}" Height="{Binding ImageSizeY}" Stretch="Fill"/>
-                            <Image Tag="3" Source="Ressources/TestImages/Outline.png" Width="{Binding ImageSizeX}" Height="{Binding ImageSizeY}" Stretch="Fill"/>
-                            <Image Tag="4" Source="Ressources/TestImages/X2.png" Width="{Binding ImageSizeX}" Height="{Binding ImageSizeY}" Stretch="Fill"/>
-                            <Image Tag="4" Source="Ressources/TestImages/X2.png" Width="{Binding ImageSizeX}" Height="{Binding ImageSizeY}" Stretch="Fill"/>
-                        </WrapPanel>
-
+                        <!--Panel will be created here cia Code-->
                     </Grid>
                 </Tools:WheelControlScollViewer>
             </ContentControl>
