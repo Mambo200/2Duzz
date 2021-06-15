@@ -22,7 +22,7 @@ namespace _2Duzz
     /// <summary>
     /// Interaktionslogik für MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IStatusBar
     {
         public static string[] Args;
         public MainViewModel GetMainViewModel { get => this.DataContext as MainViewModel; }
@@ -32,11 +32,11 @@ namespace _2Duzz
 
             BindingHelper.Get.Init(this);
             ImageHelper.Get.Init(this);
+            PanelHelper.Get.Init(this, GridContent_Images);
             ScollViewer_Images.MainW = this;
             //Image i = ImageHelper.Get.AddImageToPanel(new Uri("E:\\Tobias\\Bilder\\ebf5__150_player_emotes_by_kupogames-dbn7dy7\\emo0001.jpg"), 2);
             //ChangeStatusBar(((Panel)GridContent_Images.Children[2]).Children.IndexOf(i));
         }
-
 
         public void ChangeStatusBar(object _content)
         {

@@ -11,7 +11,8 @@ namespace _2Duzz.Tools
 {
     public class WheelControlScollViewer : ScrollViewer
     {
-        public MainWindow MainW { get; set; }
+        /// <summary>Main Window. Delete later?</summary>
+        public IStatusBar MainW { get; set; }
 
         /// <summary>Tells if wheel button is pressed</summary>
         public bool MiddleButtonPressed { get; protected set; }
