@@ -13,15 +13,17 @@ using System.Windows;
 
 namespace _2Duzz.Helper
 {
-    public class ImageHelper
+    public class ImageManager
     {
-        private static ImageHelper m_Instance;
-        public static ImageHelper Get
+        public const string PLACEHOLDERPATH = "pack://application:,,,/2Duzz;component/Ressources/TestImages/X2.png";
+
+        private static ImageManager m_Instance;
+        public static ImageManager Get
         {
             get
             {
                 if (m_Instance == null)
-                    m_Instance = new ImageHelper();
+                    m_Instance = new ImageManager();
                 return m_Instance;
             }
         }
@@ -33,6 +35,93 @@ namespace _2Duzz.Helper
         }
 
         #region Add Image to Panel
+        /// <summary>
+        /// Add placeholder Image to Panel
+        /// </summary>
+        /// <param name="_layer">Layer</param>
+        /// <returns>added Image</returns>
+        public Image AddImageToPanel(int _layer)
+        {
+            // create BitmapImage for Image source
+            BitmapImage bImg = PrepareBitmapImage(new Uri(PLACEHOLDERPATH));
+
+            // create Image for UI Visibility
+            Image img = PrepareImageForUI(bImg);
+            ((Panel)mainWindow.GridContent_Images.Children[_layer]).Children.Add(img);
+
+            // Set Binding
+            BindingOperations.SetBinding(img, Image.WidthProperty, BindingHelper.Get.BindingImageSizeWidth);
+            BindingOperations.SetBinding(img, Image.HeightProperty, BindingHelper.Get.BindingImageSizeHeight);
+
+            return img;
+        }
+
+        /// <summary>
+        /// Add placeholder Image to Panel
+        /// </summary>
+        /// <param name="_layer">Layer</param>
+        /// <param name="_position">Position of Image</param>
+        /// <returns>added Image</returns>
+        public Image AddImageToPanel(int _layer, int _position)
+        {
+            // create BitmapImage for Image source
+            BitmapImage bImg = PrepareBitmapImage(new Uri(PLACEHOLDERPATH));
+
+            // create Image for UI Visibility
+            Image img = PrepareImageForUI(bImg);
+            ((Panel)mainWindow.GridContent_Images.Children[_layer]).Children.Insert(_position, img);
+
+            // Set Binding
+            BindingOperations.SetBinding(img, Image.WidthProperty, BindingHelper.Get.BindingImageSizeWidth);
+            BindingOperations.SetBinding(img, Image.HeightProperty, BindingHelper.Get.BindingImageSizeHeight);
+
+            return img;
+        }
+
+        /// <summary>
+        /// Add placeholder Image to Panel
+        /// </summary>
+        /// <param name="_panel">Panel where the image gets inserted</param>
+        /// <param name="_position">Position of Image</param>
+        /// <returns>added Image</returns>
+        public Image AddImageToPanel(Panel _panel, int _position)
+        {
+            // create BitmapImage for Image source
+            BitmapImage bImg = PrepareBitmapImage(new Uri(PLACEHOLDERPATH));
+
+            // create Image for UI Visibility
+            Image img = PrepareImageForUI(bImg);
+            _panel.Children.Insert(_position, img);
+
+            // Set Binding
+            BindingOperations.SetBinding(img, Image.WidthProperty, BindingHelper.Get.BindingImageSizeWidth);
+            BindingOperations.SetBinding(img, Image.HeightProperty, BindingHelper.Get.BindingImageSizeHeight);
+
+            return img;
+        }
+
+        /// <summary>
+        /// Add placeholder Image to Panel
+        /// </summary>
+        /// <param name="_panel">Panel where the image gets inserted</param>
+        /// <returns>added Image</returns>
+        public Image AddImageToPanel(Panel _panel)
+        {
+            // create BitmapImage for Image source
+            BitmapImage bImg = PrepareBitmapImage(new Uri(PLACEHOLDERPATH));
+
+            // create Image for UI Visibility
+            Image img = PrepareImageForUI(bImg);
+            _panel.Children.Add(img);
+
+            // Set Binding
+            BindingOperations.SetBinding(img, Image.WidthProperty, BindingHelper.Get.BindingImageSizeWidth);
+            BindingOperations.SetBinding(img, Image.HeightProperty, BindingHelper.Get.BindingImageSizeHeight);
+
+            return img;
+        }
+
+
         /// <summary>
         /// Add Image to Panel
         /// </summary>

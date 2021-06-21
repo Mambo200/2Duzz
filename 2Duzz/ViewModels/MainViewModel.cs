@@ -1,4 +1,5 @@
-﻿using System;
+﻿using _2Duzz.Helper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -71,7 +72,15 @@ namespace _2Duzz.ViewModels
         /// <param name="_parameter"></param>
         private void ExecuteHeaderNewClick(object _parameter)
         {
-            MessageBox.Show(_parameter.ToString());
+            //MessageBox.Show(_parameter.ToString());
+            PanelManager.Get.CreatePanel();
+            for (int x = 0; x < 10; x++)
+            {
+                for (int y = 0; y < 10; y++)
+                {
+                    ImageManager.Get.AddImageToPanel(0);
+                }
+            }
         }
         #endregion
 

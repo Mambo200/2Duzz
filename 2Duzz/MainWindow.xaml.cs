@@ -31,20 +31,9 @@ namespace _2Duzz
             InitializeComponent();
 
             BindingHelper.Get.Init(this);
-            ImageHelper.Get.Init(this);
+            ImageManager.Get.Init(this);
             PanelManager.Get.Init(this, GridContent_Images);
             ScollViewer_Images.MainW = this;
-            //Image i = ImageHelper.Get.AddImageToPanel(new Uri("E:\\Tobias\\Bilder\\ebf5__150_player_emotes_by_kupogames-dbn7dy7\\emo0001.jpg"), 2);
-            //ChangeStatusBar(((Panel)GridContent_Images.Children[2]).Children.IndexOf(i));
-
-            PanelManager.Get.CreatePanel();
-            ImageHelper.Get.AddImageToPanel(new Uri("E:\\Tobias\\Bilder\\ebf5__150_player_emotes_by_kupogames-dbn7dy7\\emo0001.jpg"), PanelManager.Get.Panels[0]);
-            ImageHelper.Get.AddImageToPanel(new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Outline.png"), PanelManager.Get.Panels[0]);
-            ImageHelper.Get.AddImageToPanel(new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X.png"), PanelManager.Get.Panels[0]);
-            ImageHelper.Get.AddImageToPanel(new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"), PanelManager.Get.Panels[0]);
-
-            Panel p2 = PanelManager.Get.CreatePanel();
-            ImageHelper.Get.AddImageToPanel(new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X2.png"), p2);
         }
 
         public void ChangeStatusBar(object _content)
