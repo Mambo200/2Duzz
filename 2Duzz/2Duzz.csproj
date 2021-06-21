@@ -59,7 +59,7 @@
     <Compile Include="Converters\DoubleToPercentageStringConverter.cs" />
     <Compile Include="Converters\KeyBindingToStringConverter.cs" />
     <Compile Include="Helper\ImageHelper.cs" />
-    <Compile Include="Helper\PanelHelper.cs" />
+    <Compile Include="Helper\PanelManager.cs" />
     <Compile Include="IStatusBar.cs" />
     <Compile Include="Tools\WheelControlScollViewer.cs" />
     <Compile Include="ViewModels\RelayCommand.cs" />

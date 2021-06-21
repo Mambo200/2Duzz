@@ -32,24 +32,32 @@ namespace _2Duzz
 
             BindingHelper.Get.Init(this);
             ImageHelper.Get.Init(this);
-            PanelHelper.Get.Init(this, GridContent_Images);
+            PanelManager.Get.Init(this, GridContent_Images);
             ScollViewer_Images.MainW = this;
             //Image i = ImageHelper.Get.AddImageToPanel(new Uri("E:\\Tobias\\Bilder\\ebf5__150_player_emotes_by_kupogames-dbn7dy7\\emo0001.jpg"), 2);
             //ChangeStatusBar(((Panel)GridContent_Images.Children[2]).Children.IndexOf(i));
 
-            PanelHelper.Get.CreatePanel();
-            ImageHelper.Get.AddImageToPanel(new Uri("E:\\Tobias\\Bilder\\ebf5__150_player_emotes_by_kupogames-dbn7dy7\\emo0001.jpg"), PanelHelper.Get.Panels[0]);
-            ImageHelper.Get.AddImageToPanel(new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Outline.png"), PanelHelper.Get.Panels[0]);
-            ImageHelper.Get.AddImageToPanel(new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X.png"), PanelHelper.Get.Panels[0]);
-            ImageHelper.Get.AddImageToPanel(new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"), PanelHelper.Get.Panels[0]);
+            PanelManager.Get.CreatePanel();
+            ImageHelper.Get.AddImageToPanel(new Uri("E:\\Tobias\\Bilder\\ebf5__150_player_emotes_by_kupogames-dbn7dy7\\emo0001.jpg"), PanelManager.Get.Panels[0]);
+            ImageHelper.Get.AddImageToPanel(new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Outline.png"), PanelManager.Get.Panels[0]);
+            ImageHelper.Get.AddImageToPanel(new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X.png"), PanelManager.Get.Panels[0]);
+            ImageHelper.Get.AddImageToPanel(new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"), PanelManager.Get.Panels[0]);
 
-            Panel p2 = PanelHelper.Get.CreatePanel();
+            Panel p2 = PanelManager.Get.CreatePanel();
             ImageHelper.Get.AddImageToPanel(new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X2.png"), p2);
         }
 
         public void ChangeStatusBar(object _content)
         {
             GetMainViewModel.StatusBarContent = _content;
+        }
+
+        private void Zoom_MouseWheelWithCtrl(object sender, MouseWheelEventArgs e)
+        {
+            if (Keyboard.IsKeyDown(Key.LeftCtrl))
+            {
+                GetMainViewModel.GridContentScale = Math.Max(0.1, GetMainViewModel.GridContentScale + e.Delta * 0.001);
+            }
         }
 
         private void ImageClick(object sender, MouseButtonEventArgs e)
@@ -62,14 +70,6 @@ namespace _2Duzz
                 ChangeStatusBar($"{ DateTime.Now} | {o}");
             }
 
-        }
-
-        private void Zoom_MouseWheelWithCtrl(object sender, MouseWheelEventArgs e)
-        {
-            if (Keyboard.IsKeyDown(Key.LeftCtrl))
-            {
-                GetMainViewModel.GridContentScale = Math.Max(0.1, GetMainViewModel.GridContentScale + e.Delta * 0.001);
-            }
         }
 
         private void Zoom_MouseWheelWithoutCtrl(object sender, MouseWheelEventArgs e)

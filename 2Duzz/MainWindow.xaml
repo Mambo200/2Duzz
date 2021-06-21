@@ -51,7 +51,8 @@
                         <Grid.LayoutTransform>
                             <ScaleTransform ScaleX="{Binding GridContentScale}" ScaleY="{Binding GridContentScale}"/>
                         </Grid.LayoutTransform>
-                        <!--Panel will be created here cia Code-->
+                            
+                        <!--Panels will be created here cia Code-->
                     </Grid>
                 </Tools:WheelControlScollViewer>
             </ContentControl>
