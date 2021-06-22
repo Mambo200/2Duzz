@@ -72,15 +72,16 @@ namespace _2Duzz.ViewModels
         /// <param name="_parameter"></param>
         private void ExecuteHeaderNewClick(object _parameter)
         {
-            //MessageBox.Show(_parameter.ToString());
-            PanelManager.Get.CreatePanel();
-            for (int x = 0; x < 10; x++)
-            {
-                for (int y = 0; y < 10; y++)
-                {
-                    ImageManager.Get.AddImageToPanel(0);
-                }
-            }
+            WindowsXAML.NewMap newMap = new WindowsXAML.NewMap();
+            newMap.ShowDialog();
+            //PanelManager.Get.CreatePanel();
+            //for (int x = 0; x < 10; x++)
+            //{
+            //    for (int y = 0; y < 10; y++)
+            //    {
+            //        ImageManager.Get.AddImageToPanel(0);
+            //    }
+            //}
         }
         #endregion
 
