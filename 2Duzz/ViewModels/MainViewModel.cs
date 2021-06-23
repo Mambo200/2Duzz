@@ -16,7 +16,7 @@ namespace _2Duzz.ViewModels
         /// </summary>
         public MainViewModel()
         {
-            HeaderNewClickCommand = new RelayCommand((e) => ExecuteHeaderNewClick("MV Constructor New"));
+            //HeaderNewClickCommand = new RelayCommand((e) => ExecuteHeaderNewClick("MV Constructor New"));
             HeaderOpenClickCommand = new RelayCommand((e) => ExecuteHeaderOpenClick("MV Constructor Open"));
             HeaderSaveClickCommand = new RelayCommand((e) => ExecuteHeaderSaveClick("MV Constructor Save"));
             HeaderSaveAsClickCommand = new RelayCommand((e) => ExecuteHeaderSaveAsClick("MV Constructor SaveAs"));
@@ -57,13 +57,17 @@ namespace _2Duzz.ViewModels
 
         #region KeyBinding
         #region Header New Click
+        private ICommand m_HeaderNewClickCommand;
         /// <summary>
         /// Header New Click command
         /// </summary>
         public ICommand HeaderNewClickCommand
         {
-            get;
-            set;
+            get => m_HeaderNewClickCommand;
+            set
+            {
+                SetProperty(ref m_HeaderNewClickCommand, value);
+            }
         }
 
         /// <summary>

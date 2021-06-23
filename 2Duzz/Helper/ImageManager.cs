@@ -15,7 +15,7 @@ namespace _2Duzz.Helper
 {
     public class ImageManager
     {
-        public const string PLACEHOLDERPATH = "pack://application:,,,/2Duzz;component/Ressources/TestImages/X2.png";
+        public const string PLACEHOLDERPATH = "pack://application:,,,/2Duzz;component/Ressources/TestImages/XTiny.png";
 
         private static ImageManager m_Instance;
         public static ImageManager Get

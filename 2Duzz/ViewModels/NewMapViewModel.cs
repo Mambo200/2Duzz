@@ -17,8 +17,8 @@ namespace _2Duzz.ViewModels
 
             LevelNameText = LEVELNAMEDEFAULTVALUE;
 
-            SpriteSizeXText = "128";
-            SpriteSizeYText = "128";
+            SpriteSizeXText = "32";
+            SpriteSizeYText = "32";
 
             LevelSizeXText = "Level Size X";
             LevelSizeYText = "Level Size Y";
