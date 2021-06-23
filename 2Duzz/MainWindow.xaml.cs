@@ -84,6 +84,9 @@ namespace _2Duzz
             if (newMap.DialogResult != true)
                 return;
 
+
+            ChangeStatusBar("Create Level ...");
+
             // returned true, create new Level
             CurrentLevel = new Level(
                 newMap.LevelName,
@@ -92,6 +95,32 @@ namespace _2Duzz
                 newMap.SpriteSizeX,
                 newMap.SpriteSizeY
                 );
+
+            // Reset Panel
+            PanelManager.Get.ClearPanels();
+            PanelManager.Get.CreatePanel();
+
+            // Set grid size
+            PanelManager.Get.SetFieldSize(CurrentLevel.SpriteSizeX, CurrentLevel.SpriteSizeY, CurrentLevel.LevelSizeX, CurrentLevel.LevelSizeY, GetMainViewModel);
+
+            // Set image size
+            GetMainViewModel.ImageSizeX = CurrentLevel.SpriteSizeX;
+            GetMainViewModel.ImageSizeY = CurrentLevel.SpriteSizeY;
+
+            // Add dummy images
+            for (int x = 0; x < CurrentLevel.LevelSizeX; x++)
+            {
+                for (int y = 0; y < CurrentLevel.LevelSizeY; y++)
+                {
+                    ImageManager.Get.AddImageToPanel(0);
+                }
+            }
+            ChangeStatusBar("Level Created!");
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            GetMainViewModel.HeaderNewClickCommand = new RelayCommand((r) => ExecuteHeaderNewClick(sender));
         }
     }
 }
