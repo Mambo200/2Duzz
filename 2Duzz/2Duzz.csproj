@@ -127,6 +127,11 @@
   <ItemGroup>
     <Resource Include="Ressources\TestImages\X2.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\LevelData\LevelData.csproj">
+      <Project>{652c1f05-85f2-4c6a-a875-458665d76477}</Project>
+      <Name>LevelData</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
