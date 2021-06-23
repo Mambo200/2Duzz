@@ -1,0 +1,72 @@
+﻿<Window x:Class="_2Duzz.WindowsXAML.NewMap"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:_2Duzz.WindowsXAML"
+        xmlns:mvvm="clr-namespace:_2Duzz.ViewModels"
+        mc:Ignorable="d"
+        Title="NewMap" Height="300" Width="400" ResizeMode="NoResize" ShowInTaskbar="True">
+    <Window.DataContext>
+        <mvvm:NewMapViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="90*"/>
+            <RowDefinition Height="10*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="2*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <GroupBox Header="Level Name">
+                    <TextBox Grid.Column="1" Text="{Binding LevelNameText, UpdateSourceTrigger=PropertyChanged}" Margin="5" FontSize="{Binding NewFontSize}" FocusManager.GotFocus="TextBox_GotFocus"/>
+                </GroupBox>
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <GroupBox Grid.Row="0" Header="Level Size">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox Grid.Column="0" Text="{Binding LevelSizeXText, UpdateSourceTrigger=PropertyChanged}" Margin="5" FontSize="{Binding NewFontSize}"  FocusManager.GotFocus="TextBox_GotFocus"/>
+                        <TextBox Grid.Column="1" Text="{Binding LevelSizeYText, UpdateSourceTrigger=PropertyChanged}" Margin="5" FontSize="{Binding NewFontSize}"  FocusManager.GotFocus="TextBox_GotFocus"/>
+                    </Grid>
+                </GroupBox>
+
+                <GroupBox Grid.Row="1" Header="Sprite Size">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox Grid.Column="0" Text="{Binding SpriteSizeXText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="5" FontSize="{Binding NewFontSize}" FocusManager.GotFocus="TextBox_GotFocus"/>
+                        <TextBox Grid.Column="1" Text="{Binding SpriteSizeYText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="5" FontSize="{Binding NewFontSize}" FocusManager.GotFocus="TextBox_GotFocus"/>
+                    </Grid>
+                </GroupBox>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Content="Create Level" Margin="2" Command="{Binding ClickCreateLevel}" IsEnabled="{Binding CanClickButton}"/>
+            <Button Grid.Column="1" Content="Cancel" Margin="2" Command="{Binding ClickCancel}"/>
+        </Grid>
+    </Grid>
+</Window>

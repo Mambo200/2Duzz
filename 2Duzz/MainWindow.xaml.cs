@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using LevelData;
 
 
 namespace _2Duzz
@@ -26,6 +27,8 @@ namespace _2Duzz
     {
         public static string[] Args;
         public MainViewModel GetMainViewModel { get => this.DataContext as MainViewModel; }
+        public static Level CurrentLevel { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -65,6 +68,30 @@ namespace _2Duzz
         {
             e.Handled = true;
             GetMainViewModel.GridContentScale = Math.Max(0.01, GetMainViewModel.GridContentScale + e.Delta * 0.001);            
+        }
+
+        /// <summary>
+        /// Header New Click Execution method
+        /// </summary>
+        /// <param name="_parameter"></param>
+        private void ExecuteHeaderNewClick(object _parameter)
+        {
+            // Create and open new Window
+            WindowsXAML.NewMap newMap = new WindowsXAML.NewMap();
+            newMap.ShowDialog();
+
+            // Check DialogResult. If not true then stop.
+            if (newMap.DialogResult != true)
+                return;
+
+            // returned true, create new Level
+            CurrentLevel = new Level(
+                newMap.LevelName,
+                newMap.LevelSizeX,
+                newMap.LevelSizeY,
+                newMap.SpriteSizeX,
+                newMap.SpriteSizeY
+                );
         }
     }
 }
