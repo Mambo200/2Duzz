@@ -54,13 +54,25 @@
             </Grid.ColumnDefinitions>
 
             <!--Gridsplitter-->
-            <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" Focusable="False" DragDelta="GridSplitter_DragDelta"/>
+            <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" Focusable="False" DragDelta="GridSplitter_CheckWidth"/>
 
-            <!--Image Sprite Grid-->
+            <!--Image Sprite and Information Grid-->
             <Grid Grid.Column="0">
-                <TabControl x:Name="TabControl_Sprites"/>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="200"/>
+                    <RowDefinition Height="5"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                
+                <!--Image Sprites-->
+                <TabControl Grid.Row="0" x:Name="TabControl_Sprites"/>
+                <!--/Image Sprites-->
+
+                <!--Gridsplitter-->
+                <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" Focusable="False" DragDelta="GridSplitter_CheckHeight"/>
+
             </Grid>
-            <!--/Image Sprite Grid-->
+            <!--/Image Sprite and Information Grid-->
 
             <!--Image Grid-->
             <Grid Grid.Column="2">

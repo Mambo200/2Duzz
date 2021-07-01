@@ -36,11 +36,47 @@ namespace _2Duzz
             BindingHelper.Get.Init(this);
             ImageManager.Get.Init(this);
             PanelManager.Get.Init(this, GridContent_Images);
-
-            //ImageDrawingHelper.Get.Init(this, GridContent_Images);
-            //ImageDrawingHelper.Get.CreateLayer(100, 100, 128);
-
+            TabItemManager.Get.Init(this, TabControl_Sprites);
             ScollViewer_Images.MainW = this;
+
+            #region Testing Only
+            // TESTING PURPOSES!
+            TabItemManager.Get.AddTabItem("Papagei");
+            TabItemManager.Get.AddTabItem("Affe");
+            TabItemManager.Get.AddTabItem("Urangutan");
+            TabItemManager.Get.AddImageToTabItem(0, new Uri("E:\\Tobias\\Bilder\\ebf5__150_player_emotes_by_kupogames-dbn7dy7\\emo0010.jpg"));
+            TabItemManager.Get.AddImageToTabItem(0, new Uri("E:\\Tobias\\Bilder\\ebf5__150_player_emotes_by_kupogames-dbn7dy7\\emo0010.jpg"));
+            TabItemManager.Get.AddImageToTabItem(0, new Uri("E:\\Tobias\\Bilder\\ebf5__150_player_emotes_by_kupogames-dbn7dy7\\emo0010.jpg"));
+            TabItemManager.Get.AddImageToTabItem(0, new Uri("E:\\Tobias\\Bilder\\ebf5__150_player_emotes_by_kupogames-dbn7dy7\\emo0010.jpg"));
+            TabItemManager.Get.AddImageToTabItem(0, new Uri("E:\\Tobias\\Bilder\\ebf5__150_player_emotes_by_kupogames-dbn7dy7\\emo0010.jpg"));
+            TabItemManager.Get.AddImageToTabItem(0, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/XTiny.png"));
+            TabItemManager.Get.AddImageToTabItem(0, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/XTiny.png"));
+            TabItemManager.Get.AddImageToTabItem(0, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/XTiny.png"));
+            TabItemManager.Get.AddImageToTabItem(0, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/XTiny.png"));
+
+            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X.png"));
+            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X2.png"));
+            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X.png"));
+            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X2.png"));
+            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X.png"));
+            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X2.png"));
+            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X.png"));
+            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X2.png"));
+            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X.png"));
+            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X2.png"));
+
+            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"));
+            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"));
+            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"));
+            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"));
+            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"));
+            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"));
+            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"));
+            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"));
+            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"));
+            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"));
+            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Outline.png"));
+            #endregion
 
         }
 
@@ -49,6 +85,7 @@ namespace _2Duzz
             GetMainViewModel.StatusBarContent = _content;
         }
 
+        [Obsolete("We scroll without STRG now")]
         private void Zoom_MouseWheelWithCtrl(object sender, MouseWheelEventArgs e)
         {
             if (Keyboard.IsKeyDown(Key.LeftCtrl))
@@ -75,6 +112,8 @@ namespace _2Duzz
             e.Handled = true;
             if (e.Delta < 0)
                 scrollValue *= -1;
+
+            // We Use Math.Max because if scale is negative, the level does flip.
             GetMainViewModel.GridContentScale = Math.Max(0.1, GetMainViewModel.GridContentScale + scrollValue);
         }
 
@@ -136,7 +175,7 @@ namespace _2Duzz
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void GridSplitter_DragDelta(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
+        private void GridSplitter_CheckWidth(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
         {
             FrameworkElement parent = sender as FrameworkElement;
             //Type t = sender.GetType();
@@ -168,5 +207,44 @@ namespace _2Duzz
                 g.ColumnDefinitions[Grid.GetColumn((FrameworkElement)sender) - 1].Width = new GridLength(1000);
             }
         }
+
+        /// <summary>
+        /// When Gripsplitter moves, check for min and max values of row above it. PLEASE REWORK LATER!
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void GridSplitter_CheckHeight(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
+        {
+            FrameworkElement parent = sender as FrameworkElement;
+            //Type t = sender.GetType();
+            //Type t2 = typeof(FrameworkElement);
+            // check if Type of Sender is type of FrameworkElement. If Value is null, sender was not a FrameworkElement.
+            if (parent == null)
+                return;
+
+            // check if Parent is null and if parent is type of Grid
+            // If parent is null, escape loop
+            while (parent != null && parent.Parent.GetType() != typeof(Grid))
+            {
+                parent = parent.Parent as FrameworkElement;
+            }
+
+            if (parent == null)
+                return;
+
+            // We have Grid, now we can check Values
+            Grid g = parent.Parent as Grid;
+            GetMainViewModel.StatusBarContent = g.RowDefinitions[Grid.GetRow((FrameworkElement)sender) - 1].Height.Value;
+
+            if (g.RowDefinitions[Grid.GetRow((FrameworkElement)sender) - 1].Height.Value <= 200)
+            {
+                g.RowDefinitions[Grid.GetRow((FrameworkElement)sender) - 1].Height = new GridLength(200);
+            }
+            else if (g.RowDefinitions[Grid.GetRow((FrameworkElement)sender) - 1].Height.Value >= 1000)
+            {
+                g.RowDefinitions[Grid.GetRow((FrameworkElement)sender) - 1].Height = new GridLength(1000);
+            }
+        }
+
     }
 }
