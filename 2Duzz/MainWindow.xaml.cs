@@ -36,7 +36,12 @@ namespace _2Duzz
             BindingHelper.Get.Init(this);
             ImageManager.Get.Init(this);
             PanelManager.Get.Init(this, GridContent_Images);
+
+            //ImageDrawingHelper.Get.Init(this, GridContent_Images);
+            //ImageDrawingHelper.Get.CreateLayer(100, 100, 128);
+            
             ScollViewer_Images.MainW = this;
+            
         }
 
         public void ChangeStatusBar(object _content)
@@ -66,8 +71,11 @@ namespace _2Duzz
 
         private void Zoom_MouseWheelWithoutCtrl(object sender, MouseWheelEventArgs e)
         {
+            double scrollValue = 0.05d;
             e.Handled = true;
-            GetMainViewModel.GridContentScale = Math.Max(0.01, GetMainViewModel.GridContentScale + e.Delta * 0.001);            
+            if (e.Delta < 0)
+                scrollValue *= -1;
+            GetMainViewModel.GridContentScale = Math.Max(0.1, GetMainViewModel.GridContentScale + scrollValue);            
         }
 
         /// <summary>
