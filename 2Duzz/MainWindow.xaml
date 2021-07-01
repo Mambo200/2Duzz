@@ -51,7 +51,20 @@
                         <Grid.LayoutTransform>
                             <ScaleTransform ScaleX="{Binding GridContentScale}" ScaleY="{Binding GridContentScale}"/>
                         </Grid.LayoutTransform>
-                            
+
+
+                        <Image Stretch="None">
+                            <Image.Source>
+                                <DrawingImage>
+                                    <DrawingImage.Drawing>
+                                        <DrawingGroup x:Name="DrawingGoup_Images"/>
+                                    </DrawingImage.Drawing>
+                                </DrawingImage>
+                            </Image.Source>
+                        </Image>
+
+
+
                         <!--Panels will be created here cia Code-->
                     </Grid>
                 </Tools:WheelControlScollViewer>
