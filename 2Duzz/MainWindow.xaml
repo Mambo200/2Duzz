@@ -44,31 +44,54 @@
                 <MenuItem Header="Close" Command="{Binding HeaderCloseClickCommand}"/>
             </MenuItem>
         </Menu>
+
+        <!--Content Middle-->
         <Grid Grid.Row="1">
-            <ContentControl>
-                <Tools:WheelControlScollViewer x:Name="ScollViewer_Images" HorizontalScrollBarVisibility="Hidden" DeadZone="30" MoveMultiplicator="0.01" VerticalScrollBarVisibility="Hidden" PreviewMouseWheel="Zoom_MouseWheelWithoutCtrl">
-                    <Grid x:Name="GridContent_Images" Width="{Binding GridContentWidth}" MouseLeftButtonDown="ImageClick">
-                        <Grid.LayoutTransform>
-                            <ScaleTransform ScaleX="{Binding GridContentScale}" ScaleY="{Binding GridContentScale}"/>
-                        </Grid.LayoutTransform>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!--Gridsplitter-->
+            <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" Focusable="False" DragDelta="GridSplitter_DragDelta"/>
+
+            <!--Image Sprite Grid-->
+            <Grid Grid.Column="0">
+                <TabControl x:Name="TabControl_Sprites"/>
+            </Grid>
+            <!--/Image Sprite Grid-->
+
+            <!--Image Grid-->
+            <Grid Grid.Column="2">
+
+                <ContentControl>
+                    <Tools:WheelControlScollViewer x:Name="ScollViewer_Images" HorizontalScrollBarVisibility="Hidden" DeadZone="30" MoveMultiplicator="0.01" VerticalScrollBarVisibility="Hidden" PreviewMouseWheel="Zoom_MouseWheelWithoutCtrl">
+
+                        <Grid x:Name="GridContent_Images" Width="{Binding GridContentWidth}" MouseLeftButtonDown="ImageClick">
+                            <Grid.LayoutTransform>
+                                <ScaleTransform ScaleX="{Binding GridContentScale}" ScaleY="{Binding GridContentScale}"/>
+                            </Grid.LayoutTransform>
 
 
-                        <Image Stretch="None">
-                            <Image.Source>
-                                <DrawingImage>
-                                    <DrawingImage.Drawing>
-                                        <DrawingGroup x:Name="DrawingGoup_Images"/>
-                                    </DrawingImage.Drawing>
-                                </DrawingImage>
-                            </Image.Source>
-                        </Image>
+                            <Image Stretch="None">
+                                <Image.Source>
+                                    <DrawingImage>
+                                        <DrawingImage.Drawing>
+                                            <DrawingGroup x:Name="DrawingGoup_Images"/>
+                                        </DrawingImage.Drawing>
+                                    </DrawingImage>
+                                </Image.Source>
+                            </Image>
+                            <!--Panels will be created here cia Code-->
+                        </Grid>
 
+                    </Tools:WheelControlScollViewer>
+                </ContentControl>
 
+            </Grid>
+            <!--/Image Grid-->
 
-                        <!--Panels will be created here cia Code-->
-                    </Grid>
-                </Tools:WheelControlScollViewer>
-            </ContentControl>
         </Grid>
 
         <Grid Grid.Row="2" Background="#FFC8FFC8">

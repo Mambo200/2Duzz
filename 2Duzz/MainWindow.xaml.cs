@@ -39,9 +39,9 @@ namespace _2Duzz
 
             //ImageDrawingHelper.Get.Init(this, GridContent_Images);
             //ImageDrawingHelper.Get.CreateLayer(100, 100, 128);
-            
+
             ScollViewer_Images.MainW = this;
-            
+
         }
 
         public void ChangeStatusBar(object _content)
@@ -75,7 +75,7 @@ namespace _2Duzz
             e.Handled = true;
             if (e.Delta < 0)
                 scrollValue *= -1;
-            GetMainViewModel.GridContentScale = Math.Max(0.1, GetMainViewModel.GridContentScale + scrollValue);            
+            GetMainViewModel.GridContentScale = Math.Max(0.1, GetMainViewModel.GridContentScale + scrollValue);
         }
 
         /// <summary>
@@ -129,6 +129,44 @@ namespace _2Duzz
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             GetMainViewModel.HeaderNewClickCommand = new RelayCommand((r) => ExecuteHeaderNewClick(sender));
+        }
+
+        /// <summary>
+        /// When Gripsplitter moves, check for min and max values of column above it. PLEASE REWORK LATER!
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void GridSplitter_DragDelta(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
+        {
+            FrameworkElement parent = sender as FrameworkElement;
+            //Type t = sender.GetType();
+            //Type t2 = typeof(FrameworkElement);
+            // check if Type of Sender is type of FrameworkElement. If Value is null, sender was not a FrameworkElement.
+            if (parent == null)
+                return;
+
+            // check if Parent is null and if parent is type of Grid
+            // If parent is null, escape loop
+            while (parent != null && parent.Parent.GetType() != typeof(Grid))
+            {
+                parent = parent.Parent as FrameworkElement;
+            }
+
+            if (parent == null)
+                return;
+
+            // We have Grid, now we can check Values
+            Grid g = parent.Parent as Grid;
+            GetMainViewModel.StatusBarContent = g.ColumnDefinitions[Grid.GetColumn((FrameworkElement)sender) - 1].Width.Value;
+
+            if (g.ColumnDefinitions[Grid.GetColumn((FrameworkElement)sender) - 1].Width.Value <= 200)
+            {
+                g.ColumnDefinitions[Grid.GetColumn((FrameworkElement)sender) - 1].Width = new GridLength(200);
+            }
+            else if (g.ColumnDefinitions[Grid.GetColumn((FrameworkElement)sender) - 1].Width.Value >= 1000)
+            {
+                g.ColumnDefinitions[Grid.GetColumn((FrameworkElement)sender) - 1].Width = new GridLength(1000);
+            }
         }
     }
 }
