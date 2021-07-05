@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using System.Windows.Input;
 
 namespace _2Duzz.Helper
 {
@@ -84,6 +85,30 @@ namespace _2Duzz.Helper
             return img;
         }
 
+        /// <summary>
+        /// Add Item to TabItem
+        /// </summary>
+        /// <param name="_layer">Position of TabItem in ItemControl</param>
+        /// <param name="_path">Path of Image</param>
+        /// <param name="_leftButtonDown">event called when item is leftclicked</param>
+        /// <param name="_rightButtonDown">event called when item is rightclicked</param>
+        /// <returns></returns>
+        public Image AddImageToTabItem(int _layer, Uri _path, MouseButtonEventHandler _leftButtonDown, MouseButtonEventHandler _rightButtonDown)
+        {
+            WrapPanel wp = GetWrapPanel(GetTabItem(_layer));
+
+            Image img = PrepareImage(_path, _leftButtonDown, _rightButtonDown);
+            SetTag(img, wp);
+            wp.Children.Add(img);
+
+            return img;
+        }
+
+        private void SetTag(Image img, Panel _panel)
+        {
+            img.Tag = _panel.Children.Count;
+        }
+
         [Obsolete("Does not Work with streams so be aware.")]
         /// <summary>
         /// Add Item to TabItem
@@ -123,6 +148,30 @@ namespace _2Duzz.Helper
             return img;
         }
 
+        /// <summary>
+        /// Prepare <see cref="Image"/>
+        /// </summary>
+        /// <param name="_path">Path of Image</param>
+        /// <param name="_leftButtonDown">event called when item is leftclicked</param>
+        /// <param name="_rightButtonDown">event called when item is rightclicked</param>
+        /// <returns></returns>
+        private Image PrepareImage(Uri _path, MouseButtonEventHandler _leftButtonDown, MouseButtonEventHandler _rightButtonDown)
+        {
+            Image img = new Image();
+
+            img.BeginInit();
+            img.Focusable = false;
+            img.Source = new BitmapImage(_path);
+            img.Height = 50;
+            img.Width = 50;
+            img.Stretch = System.Windows.Media.Stretch.Uniform;
+            img.MouseLeftButtonDown += _leftButtonDown;
+            img.MouseRightButtonDown += _rightButtonDown;
+            img.EndInit();
+
+            return img;
+        }
+
         [Obsolete("Does not Work with streams so be aware.")]
         /// <summary>
         /// Prepare <see cref="Image"/>
@@ -142,8 +191,33 @@ namespace _2Duzz.Helper
             img.EndInit();
 
             return img;
-
         }
+
+        [Obsolete("Does not Work with streams so be aware.")]
+        /// <summary>
+        /// Prepare <see cref="Image"/>
+        /// </summary>
+        /// <param name="_stream">Path of Image</param>
+        /// <param name="_leftButtonDown">event called when item is leftclicked</param>
+        /// <param name="_rightButtonDown">event called when item is rightclicked</param>
+        /// <returns></returns>
+        private Image PrepareImage(System.IO.Stream _stream, MouseButtonEventHandler _leftButtonDown, MouseButtonEventHandler _rightButtonDown)
+        {
+            Image img = new Image();
+
+            img.BeginInit();
+            img.Focusable = false;
+            img.Source = new BitmapImage() { StreamSource = _stream };
+            img.Height = 50;
+            img.Width = 50;
+            img.Stretch = System.Windows.Media.Stretch.Uniform;
+            img.MouseLeftButtonDown += _leftButtonDown;
+            img.MouseRightButtonDown += _rightButtonDown;
+            img.EndInit();
+
+            return img;
+        }
+
         #endregion
 
         /// <summary>
