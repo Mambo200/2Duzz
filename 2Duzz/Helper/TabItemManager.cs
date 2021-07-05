@@ -6,11 +6,16 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using System.Windows.Input;
+using System.Windows.Media;
 
 namespace _2Duzz.Helper
 {
     public class TabItemManager
     {
+        private static Brush NoHighlightColor { get => Brushes.Black; }
+        private static Brush HighlightColor { get => Brushes.Red; }
+
         #region Constructor
         private static TabItemManager m_Instance;
         public static TabItemManager Get
@@ -79,7 +84,27 @@ namespace _2Duzz.Helper
             WrapPanel wp = GetWrapPanel(GetTabItem(_layer));
 
             Image img = PrepareImage(_path);
-            wp.Children.Add(img);
+            wp.Children.Add(PrepareBorder(img));
+            SetTag(img, wp);
+
+            return img;
+        }
+
+        /// <summary>
+        /// Add Item to TabItem
+        /// </summary>
+        /// <param name="_layer">Position of TabItem in ItemControl</param>
+        /// <param name="_path">Path of Image</param>
+        /// <param name="_leftButtonDown">event called when item is leftclicked</param>
+        /// <param name="_rightButtonDown">event called when item is rightclicked</param>
+        /// <returns></returns>
+        public Image AddImageToTabItem(int _layer, Uri _path, MouseButtonEventHandler _leftButtonDown, MouseButtonEventHandler _rightButtonDown)
+        {
+            WrapPanel wp = GetWrapPanel(GetTabItem(_layer));
+
+            Image img = PrepareImage(_path, _leftButtonDown, _rightButtonDown);
+            SetTag(img, wp);
+            wp.Children.Add(PrepareBorder(img));
 
             return img;
         }
@@ -123,6 +148,30 @@ namespace _2Duzz.Helper
             return img;
         }
 
+        /// <summary>
+        /// Prepare <see cref="Image"/>
+        /// </summary>
+        /// <param name="_path">Path of Image</param>
+        /// <param name="_leftButtonDown">event called when item is leftclicked</param>
+        /// <param name="_rightButtonDown">event called when item is rightclicked</param>
+        /// <returns></returns>
+        private Image PrepareImage(Uri _path, MouseButtonEventHandler _leftButtonDown, MouseButtonEventHandler _rightButtonDown)
+        {
+            Image img = new Image();
+
+            img.BeginInit();
+            img.Focusable = false;
+            img.Source = new BitmapImage(_path);
+            img.Height = 50;
+            img.Width = 50;
+            img.Stretch = System.Windows.Media.Stretch.Uniform;
+            img.MouseLeftButtonDown += _leftButtonDown;
+            img.MouseRightButtonDown += _rightButtonDown;
+            img.EndInit();
+
+            return img;
+        }
+
         [Obsolete("Does not Work with streams so be aware.")]
         /// <summary>
         /// Prepare <see cref="Image"/>
@@ -142,8 +191,33 @@ namespace _2Duzz.Helper
             img.EndInit();
 
             return img;
-
         }
+
+        [Obsolete("Does not Work with streams so be aware.")]
+        /// <summary>
+        /// Prepare <see cref="Image"/>
+        /// </summary>
+        /// <param name="_stream">Path of Image</param>
+        /// <param name="_leftButtonDown">event called when item is leftclicked</param>
+        /// <param name="_rightButtonDown">event called when item is rightclicked</param>
+        /// <returns></returns>
+        private Image PrepareImage(System.IO.Stream _stream, MouseButtonEventHandler _leftButtonDown, MouseButtonEventHandler _rightButtonDown)
+        {
+            Image img = new Image();
+
+            img.BeginInit();
+            img.Focusable = false;
+            img.Source = new BitmapImage() { StreamSource = _stream };
+            img.Height = 50;
+            img.Width = 50;
+            img.Stretch = System.Windows.Media.Stretch.Uniform;
+            img.MouseLeftButtonDown += _leftButtonDown;
+            img.MouseRightButtonDown += _rightButtonDown;
+            img.EndInit();
+
+            return img;
+        }
+
         #endregion
 
         /// <summary>
@@ -219,5 +293,65 @@ namespace _2Duzz.Helper
 
             return w;
         }
+
+        /// <summary>
+        /// Prepare Border to add to list later.
+        /// </summary>
+        /// <param name="_img">Image which will be the child of <see cref="Border"/>.</param>
+        /// <returns></returns>
+        private Border PrepareBorder(Image _img)
+        {
+            Border b = new Border();
+            b.BorderBrush = NoHighlightColor;
+            b.BorderThickness = new Thickness(1);
+            b.Child = _img;
+            return b;
+        }
+
+        private void SetTag(Image img, Panel _panel)
+        {
+            img.Tag = _panel.Children.Count;
+        }
+
+        #region (un)highlight
+        /// <summary>
+        /// Unhighlight Border --> Set Border Color
+        /// </summary>
+        /// <param name="_border">Border to unhighlght</param>
+        public void Unhighlight(Border _border)
+        {
+            _border.BorderBrush = NoHighlightColor;
+        }
+
+        /// <summary>
+        /// Unhighlight Border --> Set Border Color. Does only work if Parent of <see cref="Image"/> is <see cref="Border"/>.
+        /// </summary>
+        /// <param name="_image">Image of which Parent has to be <see cref="Border"/>.</param>
+        public void Unhighlight(Image _image)
+        {
+            if (_image != null 
+                && _image.Parent.GetType() == typeof(Border))
+                ((Border)(_image.Parent)).BorderBrush = NoHighlightColor;
+        }
+
+        /// <summary>
+        /// Highlight Border --> Set Border Color
+        /// </summary>
+        /// <param name="_border">Border to highlght</param>
+        public void Highlight(Border _border)
+        {
+            _border.BorderBrush = HighlightColor;
+        }
+
+        /// <summary>
+        /// Highlight Border --> Set Border Color. Does only work if Parent of <see cref="Image"/> is <see cref="Border"/>.
+        /// </summary>
+        /// <param name="_image">Image of which Parent has to be <see cref="Border"/>.</param>
+        public void Highlight(Image _image)
+        {
+            if (_image.Parent.GetType() == typeof(Border))
+                ((Border)(_image.Parent)).BorderBrush = HighlightColor;
+        }
+        #endregion
     }
 }
