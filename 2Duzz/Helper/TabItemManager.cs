@@ -85,7 +85,7 @@ namespace _2Duzz.Helper
 
             Image img = PrepareImage(_path);
             wp.Children.Add(PrepareBorder(img));
-            SetTag(img, wp);
+            //SetTag(img, wp);
 
             return img;
         }
@@ -103,7 +103,7 @@ namespace _2Duzz.Helper
             WrapPanel wp = GetWrapPanel(GetTabItem(_layer));
 
             Image img = PrepareImage(_path, _leftButtonDown, _rightButtonDown);
-            SetTag(img, wp);
+            //SetTag(img, wp);
             wp.Children.Add(PrepareBorder(img));
 
             return img;
@@ -143,6 +143,7 @@ namespace _2Duzz.Helper
             img.Height = 50;
             img.Width = 50;
             img.Stretch = System.Windows.Media.Stretch.Uniform;
+            img.Tag = _path.AbsoluteUri;
             img.EndInit();
 
             return img;
@@ -167,6 +168,7 @@ namespace _2Duzz.Helper
             img.Stretch = System.Windows.Media.Stretch.Uniform;
             img.MouseLeftButtonDown += _leftButtonDown;
             img.MouseRightButtonDown += _rightButtonDown;
+            img.Tag = _path.AbsoluteUri;
             img.EndInit();
 
             return img;
