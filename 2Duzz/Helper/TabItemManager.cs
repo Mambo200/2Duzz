@@ -7,11 +7,15 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace _2Duzz.Helper
 {
     public class TabItemManager
     {
+        private static Brush NoHighlightColor { get => Brushes.Black; }
+        private static Brush HighlightColor { get => Brushes.Red; }
+
         #region Constructor
         private static TabItemManager m_Instance;
         public static TabItemManager Get
@@ -80,7 +84,8 @@ namespace _2Duzz.Helper
             WrapPanel wp = GetWrapPanel(GetTabItem(_layer));
 
             Image img = PrepareImage(_path);
-            wp.Children.Add(img);
+            wp.Children.Add(PrepareBorder(img));
+            SetTag(img, wp);
 
             return img;
         }
@@ -99,14 +104,9 @@ namespace _2Duzz.Helper
 
             Image img = PrepareImage(_path, _leftButtonDown, _rightButtonDown);
             SetTag(img, wp);
-            wp.Children.Add(img);
+            wp.Children.Add(PrepareBorder(img));
 
             return img;
-        }
-
-        private void SetTag(Image img, Panel _panel)
-        {
-            img.Tag = _panel.Children.Count;
         }
 
         [Obsolete("Does not Work with streams so be aware.")]
@@ -293,5 +293,65 @@ namespace _2Duzz.Helper
 
             return w;
         }
+
+        /// <summary>
+        /// Prepare Border to add to list later.
+        /// </summary>
+        /// <param name="_img">Image which will be the child of <see cref="Border"/>.</param>
+        /// <returns></returns>
+        private Border PrepareBorder(Image _img)
+        {
+            Border b = new Border();
+            b.BorderBrush = NoHighlightColor;
+            b.BorderThickness = new Thickness(1);
+            b.Child = _img;
+            return b;
+        }
+
+        private void SetTag(Image img, Panel _panel)
+        {
+            img.Tag = _panel.Children.Count;
+        }
+
+        #region (un)highlight
+        /// <summary>
+        /// Unhighlight Border --> Set Border Color
+        /// </summary>
+        /// <param name="_border">Border to unhighlght</param>
+        public void Unhighlight(Border _border)
+        {
+            _border.BorderBrush = NoHighlightColor;
+        }
+
+        /// <summary>
+        /// Unhighlight Border --> Set Border Color. Does only work if Parent of <see cref="Image"/> is <see cref="Border"/>.
+        /// </summary>
+        /// <param name="_image">Image of which Parent has to be <see cref="Border"/>.</param>
+        public void Unhighlight(Image _image)
+        {
+            if (_image != null 
+                && _image.Parent.GetType() == typeof(Border))
+                ((Border)(_image.Parent)).BorderBrush = NoHighlightColor;
+        }
+
+        /// <summary>
+        /// Highlight Border --> Set Border Color
+        /// </summary>
+        /// <param name="_border">Border to highlght</param>
+        public void Highlight(Border _border)
+        {
+            _border.BorderBrush = HighlightColor;
+        }
+
+        /// <summary>
+        /// Highlight Border --> Set Border Color. Does only work if Parent of <see cref="Image"/> is <see cref="Border"/>.
+        /// </summary>
+        /// <param name="_image">Image of which Parent has to be <see cref="Border"/>.</param>
+        public void Highlight(Image _image)
+        {
+            if (_image.Parent.GetType() == typeof(Border))
+                ((Border)(_image.Parent)).BorderBrush = HighlightColor;
+        }
+        #endregion
     }
 }

@@ -178,11 +178,10 @@ namespace _2Duzz
         /// <param name="e"></param>
         private void GridSplitter_CheckWidth(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
         {
-            FrameworkElement parent = sender as FrameworkElement;
             //Type t = sender.GetType();
             //Type t2 = typeof(FrameworkElement);
             // check if Type of Sender is type of FrameworkElement. If Value is null, sender was not a FrameworkElement.
-            if (parent == null)
+            if (!(sender is FrameworkElement parent))
                 return;
 
             // check if Parent is null and if parent is type of Grid
@@ -216,11 +215,10 @@ namespace _2Duzz
         /// <param name="e"></param>
         private void GridSplitter_CheckHeight(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
         {
-            FrameworkElement parent = sender as FrameworkElement;
             //Type t = sender.GetType();
             //Type t2 = typeof(FrameworkElement);
             // check if Type of Sender is type of FrameworkElement. If Value is null, sender was not a FrameworkElement.
-            if (parent == null)
+            if (!(sender is FrameworkElement parent))
                 return;
 
             // check if Parent is null and if parent is type of Grid
@@ -251,16 +249,23 @@ namespace _2Duzz
         private void Img_MouseRightButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             Image tmp = (Image)sender;
-            ChangeStatusBar($"{tmp.Tag.ToString()}");
+            ChangeStatusBar($"{tmp.Tag}");
         }
 
         private void Img_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             Image tmp = (Image)sender;
-            
-            System.Windows.Media.Effects.BlurBitmapEffect ef = new System.Windows.Media.Effects.BlurBitmapEffect();
+            Border b = (Border)(tmp.Parent);
+
+            // unhighlight border of current selected image
+            TabItemManager.Get.Unhighlight(CurrentSelectedImage);
+
+            // highlight border of new selected image
+            TabItemManager.Get.Highlight(b);
+
+            // set current selected Image
             CurrentSelectedImage = tmp;
-            ChangeStatusBar($"Selected Image: {tmp.Tag.ToString()}");
+            ChangeStatusBar($"Selected Image: {tmp.Tag}");
         }
 
     }
