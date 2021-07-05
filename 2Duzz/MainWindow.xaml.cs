@@ -28,7 +28,8 @@ namespace _2Duzz
         public static string[] Args;
         public MainViewModel GetMainViewModel { get => this.DataContext as MainViewModel; }
         public static Level CurrentLevel { get; set; }
-        private Image CurrentSelectedImage { get; set; }
+        public Image CurrentSelectedImage { get; private set; }
+        public int CurrentLayer { get; private set; }
 
         public MainWindow()
         {

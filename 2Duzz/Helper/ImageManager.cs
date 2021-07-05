@@ -303,9 +303,21 @@ namespace _2Duzz.Helper
 
             return img;
         }
-
-
         #endregion
+
+        public void RemoveImageFromPanel(int _layer, int _position)
+        {
+            ((Panel)mainWindow.GridContent_Images.Children[_layer]).Children.RemoveAt(_position);
+        }
+        public int RemoveImageFromPanel(int _layer, Image _image)
+        {
+            int index = ((Panel)mainWindow.GridContent_Images.Children[_layer]).Children.IndexOf(_image);
+
+            if (index >= 0)
+                RemoveImageFromPanel(_layer, index);
+
+            return index;
+        }
 
         #region Image Preperation
         /// <summary>
@@ -349,7 +361,7 @@ namespace _2Duzz.Helper
             img.BeginInit();
             img.Source = _source;
             img.Stretch = Stretch.Fill;
-            img.MouseDown += ImageClick;
+            img.MouseLeftButtonDown += ImageClick;
             img.Tag = img.Source;
             img.EndInit();
 
@@ -361,12 +373,26 @@ namespace _2Duzz.Helper
         {
             Point currentPosition = e.GetPosition(mainWindow);
             HitTestResult result = VisualTreeHelper.HitTest(mainWindow, currentPosition);
-            object o = result.VisualHit.GetValue(Image.TagProperty);
-            if (o != null)
-            {
-                mainWindow.ChangeStatusBar($"{ DateTime.Now} | {o}");
-            }
+            //object o = result.VisualHit.GetValue(Image.TagProperty);
+            //if (o.GetType() == typeof(Image))
+            //{
+            //    mainWindow.ChangeStatusBar($"{ DateTime.Now} | {o}");
+            //}
 
+            if (result.VisualHit.GetType() == typeof(Image)
+                && mainWindow.CurrentSelectedImage != null)
+            {
+
+                int index = RemoveImageFromPanel(mainWindow.CurrentLayer, result.VisualHit as Image);
+                
+                BitmapImage i = PrepareBitmapImage(new Uri(mainWindow.CurrentSelectedImage.Tag.ToString()));
+                Image newImg = PrepareImageForUI(i);
+
+                AddImageToPanel(new Uri(mainWindow.CurrentSelectedImage.Tag.ToString()), mainWindow.CurrentLayer, index);
+
+
+                    mainWindow.ChangeStatusBar($"{ DateTime.Now}");
+            }
         }
 
     }
