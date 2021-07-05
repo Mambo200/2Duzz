@@ -1,4 +1,5 @@
-﻿using System;
+﻿using _2Duzz.Helper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,14 +16,14 @@ namespace _2Duzz.ViewModels
         /// </summary>
         public MainViewModel()
         {
-            HeaderNewClickCommand = new RelayCommand((e) => ExecuteHeaderNewClick("MV Constructor New"));
+            //HeaderNewClickCommand = new RelayCommand((e) => ExecuteHeaderNewClick("MV Constructor New"));
             HeaderOpenClickCommand = new RelayCommand((e) => ExecuteHeaderOpenClick("MV Constructor Open"));
             HeaderSaveClickCommand = new RelayCommand((e) => ExecuteHeaderSaveClick("MV Constructor Save"));
             HeaderSaveAsClickCommand = new RelayCommand((e) => ExecuteHeaderSaveAsClick("MV Constructor SaveAs"));
             HeaderCloseClickCommand = new RelayCommand((e) => ExecuteHeaderCloseClick("MV Constructor Close"));
 
-            WPScale = 1;
-            WPWidth = 1200;
+            GridContentScale = 1;
+            GridContentWidth = 1200;
 
             ImageSizeX = 600;
             ImageSizeY = 600;
@@ -56,13 +57,17 @@ namespace _2Duzz.ViewModels
 
         #region KeyBinding
         #region Header New Click
+        private ICommand m_HeaderNewClickCommand;
         /// <summary>
         /// Header New Click command
         /// </summary>
         public ICommand HeaderNewClickCommand
         {
-            get;
-            set;
+            get => m_HeaderNewClickCommand;
+            set
+            {
+                SetProperty(ref m_HeaderNewClickCommand, value);
+            }
         }
 
         /// <summary>
@@ -71,7 +76,16 @@ namespace _2Duzz.ViewModels
         /// <param name="_parameter"></param>
         private void ExecuteHeaderNewClick(object _parameter)
         {
-            MessageBox.Show(_parameter.ToString());
+            WindowsXAML.NewMap newMap = new WindowsXAML.NewMap();
+            newMap.ShowDialog();
+            //PanelManager.Get.CreatePanel();
+            //for (int x = 0; x < 10; x++)
+            //{
+            //    for (int y = 0; y < 10; y++)
+            //    {
+            //        ImageManager.Get.AddImageToPanel(0);
+            //    }
+            //}
         }
         #endregion
 
@@ -160,26 +174,26 @@ namespace _2Duzz.ViewModels
         #endregion
 
 
-        #region Wrappanel
-        private double m_WPScale;
-        public double WPScale
+        #region Canvas
+        private double m_GridContentScale;
+        public double GridContentScale
         {
-            get => m_WPScale;
+            get => m_GridContentScale;
             set
             {
-                SetProperty(ref m_WPScale, value);
-                m_StatusBarScale = m_WPScale;
+                SetProperty(ref m_GridContentScale, value);
+                m_StatusBarScale = m_GridContentScale;
                 NotifyOfPropertyChange(nameof(StatusBarScale));
             }
         }
 
-        private double m_WPWidth;
-        public double WPWidth
+        private double m_GridContentWidth;
+        public double GridContentWidth
         {
-            get => m_WPWidth;
+            get => m_GridContentWidth;
             set
             {
-                SetProperty(ref m_WPWidth, value);
+                SetProperty(ref m_GridContentWidth, value);
                 //NotifyOfPropertyChange(nameof([PROPERTY]));
             }
         }

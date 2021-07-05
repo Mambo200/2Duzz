@@ -1,4 +1,5 @@
-﻿using _2Duzz.ViewModels;
+﻿using _2Duzz.Helper;
+using _2Duzz.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,79 +15,70 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using LevelData;
+
 
 namespace _2Duzz
 {
     /// <summary>
     /// Interaktionslogik für MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IStatusBar
     {
         public static string[] Args;
-        public MainViewModel GetMainViewModel { get => (MainViewModel)this.DataContext; }
+        public MainViewModel GetMainViewModel { get => this.DataContext as MainViewModel; }
+        public static Level CurrentLevel { get; set; }
+        private Image CurrentSelectedImage { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
 
             BindingHelper.Get.Init(this);
+            ImageManager.Get.Init(this);
+            PanelManager.Get.Init(this, GridContent_Images);
+            TabItemManager.Get.Init(this, TabControl_Sprites);
             ScollViewer_Images.MainW = this;
-            AddImageToPanel(new Uri("E:\\Tobias\\Bilder\\ebf5__150_player_emotes_by_kupogames-dbn7dy7\\emo0001.jpg"));
-        }
 
-        /// <summary>
-        /// Add Image to Wrappanel
-        /// </summary>
-        /// <param name="_source">Uri source</param>
-        /// <returns>added Image</returns>
-        public Image AddImageToPanel(Uri _source)
-        {
-            // create BitmapImage for Image source
-            BitmapImage bImg = new BitmapImage();
-            bImg.BeginInit();
-            bImg.UriSource = _source;
-            bImg.EndInit();
+            #region Testing Only
+            // TESTING PURPOSES!
+            TabItemManager.Get.AddTabItem("Papagei");
+            TabItemManager.Get.AddTabItem("Affe");
+            TabItemManager.Get.AddTabItem("Urangutan");
+            TabItemManager.Get.AddImageToTabItem(0, new Uri("E:\\Tobias\\Bilder\\ebf5__150_player_emotes_by_kupogames-dbn7dy7\\emo0010.jpg"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(0, new Uri("E:\\Tobias\\Bilder\\ebf5__150_player_emotes_by_kupogames-dbn7dy7\\emo0010.jpg"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(0, new Uri("E:\\Tobias\\Bilder\\ebf5__150_player_emotes_by_kupogames-dbn7dy7\\emo0010.jpg"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(0, new Uri("E:\\Tobias\\Bilder\\ebf5__150_player_emotes_by_kupogames-dbn7dy7\\emo0010.jpg"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(0, new Uri("E:\\Tobias\\Bilder\\ebf5__150_player_emotes_by_kupogames-dbn7dy7\\emo0010.jpg"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(0, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/XTiny.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(0, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/XTiny.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(0, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/XTiny.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(0, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/XTiny.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
 
-            // create Image for UI Visibility
-            Image img = new Image();
-            img.BeginInit();
-            img.Source = bImg;
-            img.Stretch = Stretch.Fill;
-            img.EndInit();
-            WrapPanel_Images.Children.Add(img);
+            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X2.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X2.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X2.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X2.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X2.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
 
-            // Set Binding
-            BindingOperations.SetBinding(img, Image.WidthProperty, BindingHelper.Get.BindingImageSizeWidth);
-            BindingOperations.SetBinding(img, Image.HeightProperty, BindingHelper.Get.BindingImageSizeHeight);
+            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Outline.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            #endregion
 
-            return img;
-        }
-
-        /// <summary>
-        /// Add Image to Wrappanel
-        /// </summary>
-        /// <param name="_source">Stream source. Stream does not get disposed automatically so you need to save stream and dispose if afterwards if you do not need in anymore!</param>
-        /// <returns>added Image</returns>
-        public Image AddImageToPanel(Stream _source)
-        {
-            // create BitmapImage for Image source
-            BitmapImage bImg = new BitmapImage();
-            bImg.BeginInit();
-            bImg.StreamSource = _source;
-            bImg.EndInit();
-
-            // create Image for UI Visibility
-            Image img = new Image();
-            img.BeginInit();
-            img.Source = bImg;
-            img.Stretch = Stretch.Fill;
-            img.EndInit();
-            WrapPanel_Images.Children.Add(img);
-
-            // Set Binding
-            BindingOperations.SetBinding(img, Image.WidthProperty, BindingHelper.Get.BindingImageSizeWidth);
-            BindingOperations.SetBinding(img, Image.HeightProperty, BindingHelper.Get.BindingImageSizeHeight);
-
-            return img;
         }
 
         public void ChangeStatusBar(object _content)
@@ -94,9 +86,13 @@ namespace _2Duzz
             GetMainViewModel.StatusBarContent = _content;
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        [Obsolete("We scroll without STRG now")]
+        private void Zoom_MouseWheelWithCtrl(object sender, MouseWheelEventArgs e)
         {
-
+            if (Keyboard.IsKeyDown(Key.LeftCtrl))
+            {
+                GetMainViewModel.GridContentScale = Math.Max(0.1, GetMainViewModel.GridContentScale + e.Delta * 0.001);
+            }
         }
 
         private void ImageClick(object sender, MouseButtonEventArgs e)
@@ -111,18 +107,166 @@ namespace _2Duzz
 
         }
 
-        private void Zoom_MouseWheelWithCtrl(object sender, MouseWheelEventArgs e)
+        private void Zoom_MouseWheelWithoutCtrl(object sender, MouseWheelEventArgs e)
         {
-            if (Keyboard.IsKeyDown(Key.LeftCtrl))
+            double scrollValue = 0.05d;
+            e.Handled = true;
+            if (e.Delta < 0)
+                scrollValue *= -1;
+
+            // We Use Math.Max because if scale is negative, the level does flip.
+            GetMainViewModel.GridContentScale = Math.Max(0.1, GetMainViewModel.GridContentScale + scrollValue);
+        }
+
+        /// <summary>
+        /// Header New Click Execution method
+        /// </summary>
+        /// <param name="_parameter"></param>
+        private void ExecuteHeaderNewClick(object _parameter)
+        {
+            // Create and open new Window
+            WindowsXAML.NewMap newMap = new WindowsXAML.NewMap();
+            newMap.ShowDialog();
+
+            // Check DialogResult. If not true then stop.
+            if (newMap.DialogResult != true)
+                return;
+
+
+            ChangeStatusBar("Create Level ...");
+
+            // returned true, create new Level
+            CurrentLevel = new Level(
+                newMap.LevelName,
+                newMap.LevelSizeX,
+                newMap.LevelSizeY,
+                newMap.SpriteSizeX,
+                newMap.SpriteSizeY
+                );
+
+            // Reset Panel
+            PanelManager.Get.ClearPanels();
+            PanelManager.Get.CreatePanel();
+
+            // Set grid size
+            PanelManager.Get.SetFieldSize(CurrentLevel.SpriteSizeX, CurrentLevel.SpriteSizeY, CurrentLevel.LevelSizeX, CurrentLevel.LevelSizeY, GetMainViewModel);
+
+            // Set image size
+            GetMainViewModel.ImageSizeX = CurrentLevel.SpriteSizeX;
+            GetMainViewModel.ImageSizeY = CurrentLevel.SpriteSizeY;
+
+            // Add dummy images
+            for (int x = 0; x < CurrentLevel.LevelSizeX; x++)
             {
-                GetMainViewModel.WPScale = Math.Max(0.1, GetMainViewModel.WPScale + e.Delta * 0.001);
+                for (int y = 0; y < CurrentLevel.LevelSizeY; y++)
+                {
+                    ImageManager.Get.AddImageToPanel(0);
+                }
+            }
+            ChangeStatusBar("Level Created!");
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            GetMainViewModel.HeaderNewClickCommand = new RelayCommand((r) => ExecuteHeaderNewClick(sender));
+        }
+
+        /// <summary>
+        /// When Gripsplitter moves, check for min and max values of column above it. PLEASE REWORK LATER!
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void GridSplitter_CheckWidth(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
+        {
+            //Type t = sender.GetType();
+            //Type t2 = typeof(FrameworkElement);
+            // check if Type of Sender is type of FrameworkElement. If Value is null, sender was not a FrameworkElement.
+            if (!(sender is FrameworkElement parent))
+                return;
+
+            // check if Parent is null and if parent is type of Grid
+            // If parent is null, escape loop
+            while (parent != null && parent.Parent.GetType() != typeof(Grid))
+            {
+                parent = parent.Parent as FrameworkElement;
+            }
+
+            if (parent == null)
+                return;
+
+            // We have Grid, now we can check Values
+            Grid g = parent.Parent as Grid;
+            GetMainViewModel.StatusBarContent = g.ColumnDefinitions[Grid.GetColumn((FrameworkElement)sender) - 1].Width.Value;
+
+            if (g.ColumnDefinitions[Grid.GetColumn((FrameworkElement)sender) - 1].Width.Value <= 200)
+            {
+                g.ColumnDefinitions[Grid.GetColumn((FrameworkElement)sender) - 1].Width = new GridLength(200);
+            }
+            else if (g.ColumnDefinitions[Grid.GetColumn((FrameworkElement)sender) - 1].Width.Value >= 1000)
+            {
+                g.ColumnDefinitions[Grid.GetColumn((FrameworkElement)sender) - 1].Width = new GridLength(1000);
             }
         }
 
-        private void Zoom_MouseWheelWithoutCtrl(object sender, MouseWheelEventArgs e)
+        /// <summary>
+        /// When Gripsplitter moves, check for min and max values of row above it. PLEASE REWORK LATER!
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void GridSplitter_CheckHeight(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
         {
-            e.Handled = true;
-            GetMainViewModel.WPScale = Math.Max(0.01, GetMainViewModel.WPScale + e.Delta * 0.001);            
+            //Type t = sender.GetType();
+            //Type t2 = typeof(FrameworkElement);
+            // check if Type of Sender is type of FrameworkElement. If Value is null, sender was not a FrameworkElement.
+            if (!(sender is FrameworkElement parent))
+                return;
+
+            // check if Parent is null and if parent is type of Grid
+            // If parent is null, escape loop
+            while (parent != null && parent.Parent.GetType() != typeof(Grid))
+            {
+                parent = parent.Parent as FrameworkElement;
+            }
+
+            if (parent == null)
+                return;
+
+            // We have Grid, now we can check Values
+            Grid g = parent.Parent as Grid;
+            GetMainViewModel.StatusBarContent = g.RowDefinitions[Grid.GetRow((FrameworkElement)sender) - 1].Height.Value;
+
+            if (g.RowDefinitions[Grid.GetRow((FrameworkElement)sender) - 1].Height.Value <= 200)
+            {
+                g.RowDefinitions[Grid.GetRow((FrameworkElement)sender) - 1].Height = new GridLength(200);
+            }
+            else if (g.RowDefinitions[Grid.GetRow((FrameworkElement)sender) - 1].Height.Value >= 1000)
+            {
+                g.RowDefinitions[Grid.GetRow((FrameworkElement)sender) - 1].Height = new GridLength(1000);
+            }
         }
+
+
+        private void Img_MouseRightButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Image tmp = (Image)sender;
+            ChangeStatusBar($"{tmp.Tag}");
+        }
+
+        private void Img_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Image tmp = (Image)sender;
+            Border b = (Border)(tmp.Parent);
+
+            // unhighlight border of current selected image
+            TabItemManager.Get.Unhighlight(CurrentSelectedImage);
+
+            // highlight border of new selected image
+            TabItemManager.Get.Highlight(b);
+
+            // set current selected Image
+            CurrentSelectedImage = tmp;
+            ChangeStatusBar($"Selected Image: {tmp.Tag}");
+        }
+
     }
 }

@@ -7,7 +7,7 @@
         xmlns:mvvm="clr-namespace:_2Duzz.ViewModels" xmlns:converters="clr-namespace:_2Duzz.Converters"
         xmlns:Tools="clr-namespace:_2Duzz.Tools"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded" Background="#FFE7E6FF">
+        Title="MainWindow" Height="450" Width="800" Background="#FFE7E6FF" Loaded="Window_Loaded">
     <Window.DataContext>
         <mvvm:MainViewModel/>
     </Window.DataContext>
@@ -45,21 +45,67 @@
             </MenuItem>
         </Menu>
 
+        <!--Content Middle-->
         <Grid Grid.Row="1">
-            <ContentControl>
-                <Tools:WheelControlScollViewer x:Name="ScollViewer_Images" HorizontalScrollBarVisibility="Hidden" DeadZone="30" MoveMultiplicator="0.01" VerticalScrollBarVisibility="Hidden" PreviewMouseWheel="Zoom_MouseWheelWithoutCtrl">
-                    <WrapPanel x:Name="WrapPanel_Images" Width="{Binding WPWidth}" MouseLeftButtonDown="ImageClick">
-                        <WrapPanel.LayoutTransform>
-                            <ScaleTransform ScaleX="{Binding WPScale}" ScaleY="{Binding WPScale}"/>
-                        </WrapPanel.LayoutTransform>
-                        <Image Tag="0" Source="Ressources/TestImages/Outline.png" Width="{Binding ImageSizeX}" Height="{Binding ImageSizeY}" Stretch="Fill"/>
-                        <Image Tag="1" Source="Ressources/TestImages/Outline.png" Width="{Binding ImageSizeX}" Height="{Binding ImageSizeY}" Stretch="Fill"/>
-                        <Image Tag="2" Source="Ressources/TestImages/Outline.png" Width="{Binding ImageSizeX}" Height="{Binding ImageSizeY}" Stretch="Fill"/>
-                        <Image Tag="3" Source="Ressources/TestImages/Outline.png" Width="{Binding ImageSizeX}" Height="{Binding ImageSizeY}" Stretch="Fill"/>
-                    </WrapPanel>
-                </Tools:WheelControlScollViewer>
-            </ContentControl>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!--Gridsplitter-->
+            <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" Focusable="False" DragDelta="GridSplitter_CheckWidth"/>
+
+            <!--Image Sprite and Information Grid-->
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="200"/>
+                    <RowDefinition Height="5"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                
+                <!--Image Sprites-->
+                <TabControl Grid.Row="0" x:Name="TabControl_Sprites"/>
+                <!--/Image Sprites-->
+
+                <!--Gridsplitter-->
+                <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" Focusable="False" DragDelta="GridSplitter_CheckHeight"/>
+
+            </Grid>
+            <!--/Image Sprite and Information Grid-->
+
+            <!--Image Grid-->
+            <Grid Grid.Column="2">
+
+                <ContentControl>
+                    <Tools:WheelControlScollViewer x:Name="ScollViewer_Images" HorizontalScrollBarVisibility="Hidden" DeadZone="30" MoveMultiplicator="0.01" VerticalScrollBarVisibility="Hidden" PreviewMouseWheel="Zoom_MouseWheelWithoutCtrl">
+
+                        <Grid x:Name="GridContent_Images" Width="{Binding GridContentWidth}" MouseLeftButtonDown="ImageClick">
+                            <Grid.LayoutTransform>
+                                <ScaleTransform ScaleX="{Binding GridContentScale}" ScaleY="{Binding GridContentScale}"/>
+                            </Grid.LayoutTransform>
+
+
+                            <Image Stretch="None">
+                                <Image.Source>
+                                    <DrawingImage>
+                                        <DrawingImage.Drawing>
+                                            <DrawingGroup x:Name="DrawingGoup_Images"/>
+                                        </DrawingImage.Drawing>
+                                    </DrawingImage>
+                                </Image.Source>
+                            </Image>
+                            <!--Panels will be created here cia Code-->
+                        </Grid>
+
+                    </Tools:WheelControlScollViewer>
+                </ContentControl>
+
+            </Grid>
+            <!--/Image Grid-->
+
         </Grid>
+
         <Grid Grid.Row="2" Background="#FFC8FFC8">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
