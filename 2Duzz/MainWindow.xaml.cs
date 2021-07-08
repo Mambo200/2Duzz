@@ -39,6 +39,7 @@ namespace _2Duzz
             ImageManager.Get.Init(this);
             PanelManager.Get.Init(this, GridContent_Images);
             TabItemManager.Get.Init(this, TabControl_Sprites);
+            ImageDrawingHelper.Get.Init(this, GridContent_Images);
             ScollViewer_Images.MainW = this;
 
             #region Testing Only
@@ -145,25 +146,27 @@ namespace _2Duzz
                 newMap.SpriteSizeY
                 );
 
-            // Reset Panel
-            PanelManager.Get.ClearPanels();
-            PanelManager.Get.CreatePanel();
+            //// Reset Panel
+            //PanelManager.Get.ClearPanels();
+            //PanelManager.Get.CreatePanel();
+            //
+            //// Set grid size
+            //PanelManager.Get.SetFieldSize(CurrentLevel.SpriteSizeX, CurrentLevel.SpriteSizeY, CurrentLevel.LevelSizeX, CurrentLevel.LevelSizeY, GetMainViewModel);
 
-            // Set grid size
-            PanelManager.Get.SetFieldSize(CurrentLevel.SpriteSizeX, CurrentLevel.SpriteSizeY, CurrentLevel.LevelSizeX, CurrentLevel.LevelSizeY, GetMainViewModel);
+            ImageDrawingHelper.Get.CreateLayer(CurrentLevel.LevelSizeX, CurrentLevel.LevelSizeY, CurrentLevel.SpriteSizeX);
 
             // Set image size
             GetMainViewModel.ImageSizeX = CurrentLevel.SpriteSizeX;
             GetMainViewModel.ImageSizeY = CurrentLevel.SpriteSizeY;
 
-            // Add dummy images
-            for (int x = 0; x < CurrentLevel.LevelSizeX; x++)
-            {
-                for (int y = 0; y < CurrentLevel.LevelSizeY; y++)
-                {
-                    ImageManager.Get.AddImageToPanel(0);
-                }
-            }
+            //// Add dummy images
+            //for (int x = 0; x < CurrentLevel.LevelSizeX; x++)
+            //{
+            //    for (int y = 0; y < CurrentLevel.LevelSizeY; y++)
+            //    {
+            //        ImageManager.Get.AddImageToPanel(0);
+            //    }
+            //}
             ChangeStatusBar("Level Created!");
         }
 

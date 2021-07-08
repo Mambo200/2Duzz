@@ -9,7 +9,6 @@ using System.Windows.Media.Imaging;
 
 namespace _2Duzz.Helper
 {
-    [Obsolete("Do not use please.", false)]
     public class ImageDrawingHelper
     {
         #region Constructor
@@ -40,39 +39,71 @@ namespace _2Duzz.Helper
         public List<Image> Panels { get; private set; }
         public Panel CurrentPanel { get; private set; }
 
+        public ImageDrawing AddImage(int _xPosition, int _yPosition, double _imageSize, int _layer)
+        {
+            DrawingGroup dg = GetDrawingGroup(_layer);
+            ImageDrawing t = new ImageDrawing();
+            t.ImageSource = (ImageSource)new ImageSourceConverter().ConvertFromString(ImageManager.PLACEHOLDERPATH);
+            t.Rect = new System.Windows.Rect(_xPosition * _imageSize, _yPosition * _imageSize, _imageSize, _imageSize);
+            dg.Children.Add(t);
 
+            return t;
+        }
+
+        public ImageDrawing AddImage(int _xPosition, int _yPosition, double _imageSize, DrawingGroup _dg)
+        {
+            ImageDrawing t = new ImageDrawing();
+            t.ImageSource = (ImageSource)new ImageSourceConverter().ConvertFromString(ImageManager.PLACEHOLDERPATH);
+            t.Rect = new System.Windows.Rect(_xPosition * _imageSize, _yPosition * _imageSize, _imageSize, _imageSize);
+            _dg.Children.Add(t);
+
+            return t;
+        }
+
+        /// <summary>
+        /// Create Layer on Field
+        /// </summary>
+        /// <param name="_x">Amount of Images in width</param>
+        /// <param name="_y">Amount of Images in height</param>
+        /// <param name="_imageSize">Size of Image in Pixels</param>
+        /// <returns>Layer as Image</returns>
         public Image CreateLayer(int _x, int _y, int _imageSize)
         {
             Image img = CreateNewImageLayer(out DrawingImage _dImage, out DrawingGroup _dGroup);
 
             Panels.Add(img);
 
-            SetRect(_dGroup, _x, _y, _imageSize);
+            SetRect(_x, _y, _imageSize, _dGroup);
 
             CurrentPanel.Children.Add(img);
 
             return img;
         }
 
-        private void SetRect(DrawingGroup _dg, int _sizeX, int _sizeY, int _imageSize)
+        private void SetRect(DrawingGroup _dg, int _sizeX, int _sizeY, int _imageSize, int _layer)
         {
 
-            for (int x = 0; x < _sizeX * _imageSize; x = x + _imageSize)
+            for (int x = 0; x < _sizeX; x = x++)
             {
-                for (int y = 0; y < _sizeY * _imageSize; y = y + _imageSize)
+                for (int y = 0; y < _sizeY; y = y++)
                 {
-                    ImageDrawing t = new ImageDrawing();
-                    t.ImageSource = (ImageSource)new ImageSourceConverter().ConvertFromString(ImageManager.PLACEHOLDERPATH);
-                    //BitmapImage bImage = new BitmapImage();
-                    //bImage.BeginInit();
-                    //bImage.UriSource = new Uri(ImageManager.PLACEHOLDERPATH);
-                    //bImage.EndInit();
-                    //t.ImageSource = bImage;
-                    t.Rect = new System.Windows.Rect(x, y, _imageSize, _imageSize);
-                    _dg.Children.Add(t);
+                    AddImage(x, y, _imageSize, _layer);
                 }
             }
         }
+
+        private void SetRect(int _sizeX, int _sizeY, int _imageSize, DrawingGroup _dg)
+        {
+
+            for (int x = 0; x < _sizeX; x++)
+            {
+                for (int y = 0; y < _sizeY; y++)
+                {
+                    AddImage(x, y, _imageSize, _dg);
+                }
+            }
+        }
+
 
         /// <summary>
         /// Get Drawing Image
