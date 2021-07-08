@@ -90,7 +90,11 @@
                                 <Image.Source>
                                     <DrawingImage>
                                         <DrawingImage.Drawing>
-                                            <DrawingGroup x:Name="DrawingGoup_Images"/>
+                                            <DrawingGroup x:Name="DrawingGoup_Images">
+                                                <!--<ImageDrawing Rect="0,0,32,32" ImageSource="Ressources/TestImages/Debuf Mode.PNG"/>-->
+                                                <!--<ImageDrawing Rect="0,100,64,64" ImageSource="Ressources/TestImages/Debuf Mode.PNG"/>-->
+                                                <!--<ImageDrawing Rect="0,200,128,128" ImageSource="Ressources/TestImages/Debuf Mode.PNG"/>-->
+                                            </DrawingGroup>
                                         </DrawingImage.Drawing>
                                     </DrawingImage>
                                 </Image.Source>

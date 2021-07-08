@@ -39,6 +39,7 @@ namespace _2Duzz
             ImageManager.Get.Init(this);
             PanelManager.Get.Init(this, GridContent_Images);
             TabItemManager.Get.Init(this, TabControl_Sprites);
+            ImageDrawingHelper.Get.Init(this, GridContent_Images);
             ScollViewer_Images.MainW = this;
 
             #region Testing Only
@@ -98,14 +99,33 @@ namespace _2Duzz
 
         private void ImageClick(object sender, MouseButtonEventArgs e)
         {
-            Point currentPosition = e.GetPosition(this);
-            HitTestResult result = VisualTreeHelper.HitTest(this, currentPosition);
-            object o = result.VisualHit.GetValue(Image.TagProperty);
-            if (o != null)
-            {
-                ChangeStatusBar($"{ DateTime.Now} | {o}");
-            }
+            //Point currentPosition = e.GetPosition(this);
+            //HitTestResult result = VisualTreeHelper.HitTest(this, currentPosition);
+            //object o = result.VisualHit.GetValue(Image.TagProperty);
+            //if (o != null)
+            //{
+            //    ChangeStatusBar($"{ DateTime.Now} | {o}");
+            //}
 
+            Point currentPosition = e.GetPosition(this);
+            PointHitTestResult result = VisualTreeHelper.HitTest(this, currentPosition) as PointHitTestResult;
+            object o = result.VisualHit.GetValue(Image.TagProperty);
+            
+            Image img = result.VisualHit as Image;
+            if (img == null
+                || CurrentSelectedImage == null)
+                return;
+
+            ImageDrawingHelper.Get.ReplaceImage(
+                (int)(result.PointHit.X / CurrentLevel.SpriteSizeX),
+                (int)(result.PointHit.Y / CurrentLevel.SpriteSizeY),
+                CurrentLevel.SpriteSizeX,
+                CurrentLevel.SpriteSizeY,
+                CurrentLevel.LevelSizeX,
+                CurrentLevel.LevelSizeY,
+                ImageDrawingHelper.Get.GetDrawingGroup(img),
+                CurrentSelectedImage.Source.ToString()
+                );
         }
 
         private void Zoom_MouseWheelWithoutCtrl(object sender, MouseWheelEventArgs e)
@@ -146,24 +166,16 @@ namespace _2Duzz
                 );
 
             // Reset Panel
-            PanelManager.Get.ClearPanels();
-            PanelManager.Get.CreatePanel();
+            ImageDrawingHelper.Get.ClearLayer();
+            ImageDrawingHelper.Get.CreateLayer(CurrentLevel.LevelSizeX, CurrentLevel.LevelSizeY, CurrentLevel.SpriteSizeX, CurrentLevel.SpriteSizeY);
 
             // Set grid size
-            PanelManager.Get.SetFieldSize(CurrentLevel.SpriteSizeX, CurrentLevel.SpriteSizeY, CurrentLevel.LevelSizeX, CurrentLevel.LevelSizeY, GetMainViewModel);
-
+            GetMainViewModel.GridContentWidth = CurrentLevel.LevelSizeX * CurrentLevel.SpriteSizeX;
+            
             // Set image size
             GetMainViewModel.ImageSizeX = CurrentLevel.SpriteSizeX;
             GetMainViewModel.ImageSizeY = CurrentLevel.SpriteSizeY;
 
-            // Add dummy images
-            for (int x = 0; x < CurrentLevel.LevelSizeX; x++)
-            {
-                for (int y = 0; y < CurrentLevel.LevelSizeY; y++)
-                {
-                    ImageManager.Get.AddImageToPanel(0);
-                }
-            }
             ChangeStatusBar("Level Created!");
         }
 
