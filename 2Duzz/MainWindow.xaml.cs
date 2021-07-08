@@ -121,6 +121,8 @@ namespace _2Duzz
                 (int)(result.PointHit.Y / CurrentLevel.SpriteSizeY),
                 CurrentLevel.SpriteSizeX,
                 CurrentLevel.SpriteSizeY,
+                CurrentLevel.LevelSizeX,
+                CurrentLevel.LevelSizeY,
                 ImageDrawingHelper.Get.GetDrawingGroup(img),
                 CurrentSelectedImage.Source.ToString()
                 );
