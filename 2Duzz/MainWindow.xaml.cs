@@ -120,6 +120,7 @@ namespace _2Duzz
                 (int)(result.PointHit.X / CurrentLevel.SpriteSizeX),
                 (int)(result.PointHit.Y / CurrentLevel.SpriteSizeY),
                 CurrentLevel.SpriteSizeX,
+                CurrentLevel.SpriteSizeY,
                 ImageDrawingHelper.Get.GetDrawingGroup(img),
                 CurrentSelectedImage.Source.ToString()
                 );
@@ -164,7 +165,7 @@ namespace _2Duzz
 
             // Reset Panel
             ImageDrawingHelper.Get.ClearLayer();
-            ImageDrawingHelper.Get.CreateLayer(CurrentLevel.LevelSizeX, CurrentLevel.LevelSizeY, CurrentLevel.SpriteSizeX);
+            ImageDrawingHelper.Get.CreateLayer(CurrentLevel.LevelSizeX, CurrentLevel.LevelSizeY, CurrentLevel.SpriteSizeX, CurrentLevel.SpriteSizeY);
 
             // Set grid size
             GetMainViewModel.GridContentWidth = CurrentLevel.LevelSizeX * CurrentLevel.SpriteSizeX;
