@@ -99,14 +99,30 @@ namespace _2Duzz
 
         private void ImageClick(object sender, MouseButtonEventArgs e)
         {
-            Point currentPosition = e.GetPosition(this);
-            HitTestResult result = VisualTreeHelper.HitTest(this, currentPosition);
-            object o = result.VisualHit.GetValue(Image.TagProperty);
-            if (o != null)
-            {
-                ChangeStatusBar($"{ DateTime.Now} | {o}");
-            }
+            //Point currentPosition = e.GetPosition(this);
+            //HitTestResult result = VisualTreeHelper.HitTest(this, currentPosition);
+            //object o = result.VisualHit.GetValue(Image.TagProperty);
+            //if (o != null)
+            //{
+            //    ChangeStatusBar($"{ DateTime.Now} | {o}");
+            //}
 
+            Point currentPosition = e.GetPosition(this);
+            PointHitTestResult result = VisualTreeHelper.HitTest(this, currentPosition) as PointHitTestResult;
+            object o = result.VisualHit.GetValue(Image.TagProperty);
+            
+            Image img = result.VisualHit as Image;
+            if (img == null
+                || CurrentSelectedImage == null)
+                return;
+
+            ImageDrawingHelper.Get.AddImage(
+                (int)(result.PointHit.X / CurrentLevel.SpriteSizeX),
+                (int)(result.PointHit.Y / CurrentLevel.SpriteSizeY),
+                CurrentLevel.SpriteSizeX,
+                ImageDrawingHelper.Get.GetDrawingGroup(img),
+                CurrentSelectedImage.Source.ToString()
+                );
         }
 
         private void Zoom_MouseWheelWithoutCtrl(object sender, MouseWheelEventArgs e)
@@ -152,12 +168,13 @@ namespace _2Duzz
             //
             //// Set grid size
             //PanelManager.Get.SetFieldSize(CurrentLevel.SpriteSizeX, CurrentLevel.SpriteSizeY, CurrentLevel.LevelSizeX, CurrentLevel.LevelSizeY, GetMainViewModel);
-
+            ImageDrawingHelper.Get.ClearLayer();
             ImageDrawingHelper.Get.CreateLayer(CurrentLevel.LevelSizeX, CurrentLevel.LevelSizeY, CurrentLevel.SpriteSizeX);
 
             // Set image size
             GetMainViewModel.ImageSizeX = CurrentLevel.SpriteSizeX;
             GetMainViewModel.ImageSizeY = CurrentLevel.SpriteSizeY;
+            GetMainViewModel.GridContentWidth = CurrentLevel.LevelSizeX * CurrentLevel.SpriteSizeX;
 
             //// Add dummy images
             //for (int x = 0; x < CurrentLevel.LevelSizeX; x++)

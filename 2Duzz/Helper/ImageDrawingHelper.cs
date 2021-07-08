@@ -25,7 +25,7 @@ namespace _2Duzz.Helper
 
         private ImageDrawingHelper()
         {
-            Panels = new List<Image>();
+            ImageLayer = new List<Image>();
         }
 
         private MainWindow mainWindow;
@@ -36,9 +36,18 @@ namespace _2Duzz.Helper
         }
         #endregion
 
-        public List<Image> Panels { get; private set; }
+        public List<Image> ImageLayer { get; private set; }
         public Panel CurrentPanel { get; private set; }
 
+        #region Add Images
+        /// <summary>
+        /// Add Image
+        /// </summary>
+        /// <param name="_xPosition">X-index of Image</param>
+        /// <param name="_yPosition">Y-index of Image</param>
+        /// <param name="_imageSize">Size of Sprite</param>
+        /// <param name="_layer">Layer to insert Image</param>
+        /// <returns></returns>
         public ImageDrawing AddImage(int _xPosition, int _yPosition, double _imageSize, int _layer)
         {
             DrawingGroup dg = GetDrawingGroup(_layer);
@@ -50,6 +59,34 @@ namespace _2Duzz.Helper
             return t;
         }
 
+        /// <summary>
+        /// Add Image
+        /// </summary>
+        /// <param name="_xPosition">X-index of Image</param>
+        /// <param name="_yPosition">Y-index of Image</param>
+        /// <param name="_imageSize">Size of Sprite</param>
+        /// <param name="_layer">Layer to insert Image</param>
+        /// <param name="_source">source of Image</param>
+        /// <returns></returns>
+        public ImageDrawing AddImage(int _xPosition, int _yPosition, double _imageSize, int _layer, string _source)
+        {
+            DrawingGroup dg = GetDrawingGroup(_layer);
+            ImageDrawing t = new ImageDrawing();
+            t.ImageSource = (ImageSource)new ImageSourceConverter().ConvertFromString(_source);
+            t.Rect = new System.Windows.Rect(_xPosition * _imageSize, _yPosition * _imageSize, _imageSize, _imageSize);
+            dg.Children.Add(t);
+
+            return t;
+        }
+
+        /// <summary>
+        /// Add Image
+        /// </summary>
+        /// <param name="_xPosition">X-index of Image</param>
+        /// <param name="_yPosition">Y-index of Image</param>
+        /// <param name="_imageSize">Size of Sprite</param>
+        /// <param name="_dg">Drawinggroup to insert Image</param>
+        /// <returns></returns>
         public ImageDrawing AddImage(int _xPosition, int _yPosition, double _imageSize, DrawingGroup _dg)
         {
             ImageDrawing t = new ImageDrawing();
@@ -59,6 +96,25 @@ namespace _2Duzz.Helper
 
             return t;
         }
+
+        /// <summary>
+        /// Add Image
+        /// </summary>
+        /// <param name="_xPosition">X-index of Image</param>
+        /// <param name="_yPosition">Y-index of Image</param>
+        /// <param name="_imageSize">Size of Sprite</param>
+        /// <param name="_dg">Drawinggroup to insert Image</param>
+        /// <returns></returns>
+        public ImageDrawing AddImage(int _xPosition, int _yPosition, double _imageSize, DrawingGroup _dg, string _source)
+        {
+            ImageDrawing t = new ImageDrawing();
+            t.ImageSource = (ImageSource)new ImageSourceConverter().ConvertFromString(_source);
+            t.Rect = new System.Windows.Rect(_xPosition * _imageSize, _yPosition * _imageSize, _imageSize, _imageSize);
+            _dg.Children.Add(t);
+
+            return t;
+        }
+        #endregion
 
         /// <summary>
         /// Create Layer on Field
@@ -71,7 +127,7 @@ namespace _2Duzz.Helper
         {
             Image img = CreateNewImageLayer(out DrawingImage _dImage, out DrawingGroup _dGroup);
 
-            Panels.Add(img);
+            ImageLayer.Add(img);
 
             SetRect(_x, _y, _imageSize, _dGroup);
 
@@ -80,7 +136,53 @@ namespace _2Duzz.Helper
             return img;
         }
 
-        private void SetRect(DrawingGroup _dg, int _sizeX, int _sizeY, int _imageSize, int _layer)
+        /// <summary>
+        /// Create Layer on Field
+        /// </summary>
+        /// <param name="_x">Amount of Images in width</param>
+        /// <param name="_y">Amount of Images in height</param>
+        /// <param name="_imageSize">Size of Image in Pixels</param>
+        /// <param name="_layerIndex">Index of Layer to insert</param>
+        /// <returns>Layer as Image</returns>
+        public Image CreateLayer(int _x, int _y, int _imageSize, int _layerIndex)
+        {
+            Image img = CreateNewImageLayer(out DrawingImage _dImage, out DrawingGroup _dGroup);
+
+            ImageLayer.Insert(_layerIndex, img);
+
+            SetRect(_x, _y, _imageSize, _dGroup);
+
+            CurrentPanel.Children.Insert(_layerIndex, img);
+
+            return img;
+        }
+
+        public void RemoveLayer(int _layer)
+        {
+            ImageLayer.RemoveAt(_layer);
+            CurrentPanel.Children.RemoveAt(_layer);
+        }
+
+        public void RemoveLayer(Image _image)
+        {
+            ImageLayer.Remove(_image);
+            CurrentPanel.Children.Remove(_image);
+        }
+
+        public void ClearLayer()
+        {
+            ImageLayer.Clear();
+            CurrentPanel.Children.Clear();
+        }
+
+        /// <summary>
+        /// Fill Layer with Placeholder Image
+        /// </summary>
+        /// <param name="_sizeX">Amount of Images on X-Axis</param>
+        /// <param name="_sizeY">Amount of Images on Y-Axis</param>
+        /// <param name="_imageSize">Size of Images in Pixel</param>
+        /// <param name="_layer">Layerindex to insert Images</param>
+        private void SetRect(int _sizeX, int _sizeY, int _imageSize, int _layer)
         {
 
             for (int x = 0; x < _sizeX; x = x++)
@@ -92,6 +194,13 @@ namespace _2Duzz.Helper
             }
         }
 
+        /// <summary>
+        /// Fill Layer with Placeholder Image
+        /// </summary>
+        /// <param name="_sizeX">Amount of Images on X-Axis</param>
+        /// <param name="_sizeY">Amount of Images on Y-Axis</param>
+        /// <param name="_imageSize">Size of Images in Pixel</param>
+        /// /// <param name="_dg">Drawinggroup to insert Images</param>
         private void SetRect(int _sizeX, int _sizeY, int _imageSize, DrawingGroup _dg)
         {
 
@@ -142,7 +251,7 @@ namespace _2Duzz.Helper
         public DrawingGroup GetDrawingGroup(DrawingImage _layer) { return _layer.Drawing as DrawingGroup; }
 
         /// <summary>
-        /// Creates Image with DrawingGroup. Does not add anything to <see cref="Panels"/> or <see cref="DrawingGroups"/>
+        /// Creates Image with DrawingGroup. Does not add anything to <see cref="ImageLayer"/> or <see cref="DrawingGroups"/>
         /// </summary>
         /// <param name="_dImage">DrawingImage as <see cref="Image.Source"/>.</param>
         /// <param name="_dGroup">DrawingGroup as <see cref="DrawingImage.Drawing"/>. Children of this are <see cref="ImageDrawing"/>.</param>
@@ -155,7 +264,8 @@ namespace _2Duzz.Helper
 
             _dImage.Drawing = _dGroup;
             tr.Source = _dImage;
-
+            
+            
             return tr;
         }
     }
