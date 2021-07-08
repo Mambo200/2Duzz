@@ -26,6 +26,7 @@ namespace _2Duzz.Helper
         private ImageDrawingHelper()
         {
             ImageLayer = new List<Image>();
+            ImagesAtLayer = new List<Dictionary<int, ImageDrawing>>();
         }
 
         private MainWindow mainWindow;
@@ -37,6 +38,7 @@ namespace _2Duzz.Helper
         #endregion
 
         public List<Image> ImageLayer { get; private set; }
+        public List<Dictionary<int, ImageDrawing>> ImagesAtLayer { get; private set; }
         public Panel CurrentPanel { get; private set; }
 
         #region Add Images
@@ -48,13 +50,15 @@ namespace _2Duzz.Helper
         /// <param name="_imageSize">Size of Sprite</param>
         /// <param name="_layer">Layer to insert Image</param>
         /// <returns></returns>
-        public ImageDrawing AddImage(int _xPosition, int _yPosition, double _imageSize, int _layer)
+        private ImageDrawing AddImage(int _xPosition, int _yPosition, double _imageSize, int _layer)
         {
             DrawingGroup dg = GetDrawingGroup(_layer);
             ImageDrawing t = new ImageDrawing();
             t.ImageSource = (ImageSource)new ImageSourceConverter().ConvertFromString(ImageManager.PLACEHOLDERPATH);
             t.Rect = new System.Windows.Rect(_xPosition * _imageSize, _yPosition * _imageSize, _imageSize, _imageSize);
             dg.Children.Add(t);
+
+            AddToDictionary(_xPosition, _yPosition, (int)_imageSize, _layer, t);
 
             return t;
         }
@@ -68,7 +72,7 @@ namespace _2Duzz.Helper
         /// <param name="_layer">Layer to insert Image</param>
         /// <param name="_source">source of Image</param>
         /// <returns></returns>
-        public ImageDrawing AddImage(int _xPosition, int _yPosition, double _imageSize, int _layer, string _source)
+        private ImageDrawing AddImage(int _xPosition, int _yPosition, double _imageSize, int _layer, string _source)
         {
             DrawingGroup dg = GetDrawingGroup(_layer);
             ImageDrawing t = new ImageDrawing();
@@ -76,6 +80,8 @@ namespace _2Duzz.Helper
             t.Rect = new System.Windows.Rect(_xPosition * _imageSize, _yPosition * _imageSize, _imageSize, _imageSize);
             dg.Children.Add(t);
 
+            AddToDictionary(_xPosition, _yPosition, (int)_imageSize, _layer, t);
+
             return t;
         }
 
@@ -87,13 +93,15 @@ namespace _2Duzz.Helper
         /// <param name="_imageSize">Size of Sprite</param>
         /// <param name="_dg">Drawinggroup to insert Image</param>
         /// <returns></returns>
-        public ImageDrawing AddImage(int _xPosition, int _yPosition, double _imageSize, DrawingGroup _dg)
+        private ImageDrawing AddImage(int _xPosition, int _yPosition, double _imageSize, DrawingGroup _dg)
         {
             ImageDrawing t = new ImageDrawing();
             t.ImageSource = (ImageSource)new ImageSourceConverter().ConvertFromString(ImageManager.PLACEHOLDERPATH);
             t.Rect = new System.Windows.Rect(_xPosition * _imageSize, _yPosition * _imageSize, _imageSize, _imageSize);
             _dg.Children.Add(t);
 
+            AddToDictionary(_xPosition, _yPosition, (int)_imageSize, GetLayerFromDrawingGroup(_dg), t);
+
             return t;
         }
 
@@ -105,14 +113,54 @@ namespace _2Duzz.Helper
         /// <param name="_imageSize">Size of Sprite</param>
         /// <param name="_dg">Drawinggroup to insert Image</param>
         /// <returns></returns>
-        public ImageDrawing AddImage(int _xPosition, int _yPosition, double _imageSize, DrawingGroup _dg, string _source)
+        private ImageDrawing AddImage(int _xPosition, int _yPosition, double _imageSize, DrawingGroup _dg, string _source)
         {
             ImageDrawing t = new ImageDrawing();
             t.ImageSource = (ImageSource)new ImageSourceConverter().ConvertFromString(_source);
             t.Rect = new System.Windows.Rect(_xPosition * _imageSize, _yPosition * _imageSize, _imageSize, _imageSize);
             _dg.Children.Add(t);
 
+            AddToDictionary(_xPosition, _yPosition, (int)_imageSize, GetLayerFromDrawingGroup(_dg), t);
+
             return t;
+        }
+        #endregion
+
+        #region Replace Image
+        public ImageDrawing ReplaceImage(int _xPosition, int _yPosition, double _imageSize, int _layer, string _source)
+        {
+            // Get 1D Position
+            int position = ChangeDimensions(_xPosition, _yPosition, (int)_imageSize);
+
+            // Get DrawingGroup
+            DrawingGroup dg = GetDrawingGroup(_layer);
+
+            // Get index of DrawingGroup
+            int index = dg.Children.IndexOf(ImagesAtLayer[_layer][position]);
+
+            // Remove ImageDrawing from DrawingGroup and Dictionary
+            dg.Children.RemoveAt(index);
+            ImagesAtLayer[_layer].Remove(position);
+
+            return AddImage(_xPosition, _yPosition, _imageSize, _layer, _source);
+        }
+
+        public ImageDrawing ReplaceImage(int _xPosition, int _yPosition, double _imageSize, DrawingGroup _dg, string _source)
+        {
+            // Get 1D Position
+            int position = ChangeDimensions(_xPosition, _yPosition, (int)_imageSize);
+
+            // Get layer from DrawingGroup for better performance
+            int layer = GetLayerFromDrawingGroup(_dg);
+
+            // Get index of DrawingGroup
+            int index = _dg.Children.IndexOf(ImagesAtLayer[layer][position]);
+
+            // Remove ImageDrawing from DrawingGroup and Dictionary
+            _dg.Children.RemoveAt(index);
+            ImagesAtLayer[layer].Remove(position);
+
+            return AddImage(_xPosition, _yPosition, _imageSize, layer, _source);
         }
         #endregion
 
@@ -125,13 +173,15 @@ namespace _2Duzz.Helper
         /// <returns>Layer as Image</returns>
         public Image CreateLayer(int _x, int _y, int _imageSize)
         {
+            ImagesAtLayer.Add(new Dictionary<int, ImageDrawing>());
+
             Image img = CreateNewImageLayer(out DrawingImage _dImage, out DrawingGroup _dGroup);
 
             ImageLayer.Add(img);
 
-            SetRect(_x, _y, _imageSize, _dGroup);
-
             CurrentPanel.Children.Add(img);
+
+            SetRect(_x, _y, _imageSize, _dGroup);
 
             return img;
         }
@@ -146,6 +196,8 @@ namespace _2Duzz.Helper
         /// <returns>Layer as Image</returns>
         public Image CreateLayer(int _x, int _y, int _imageSize, int _layerIndex)
         {
+            ImagesAtLayer.Insert(_layerIndex, new Dictionary<int, ImageDrawing>());
+
             Image img = CreateNewImageLayer(out DrawingImage _dImage, out DrawingGroup _dGroup);
 
             ImageLayer.Insert(_layerIndex, img);
@@ -159,20 +211,34 @@ namespace _2Duzz.Helper
 
         public void RemoveLayer(int _layer)
         {
+            // Remove from Image
             ImageLayer.RemoveAt(_layer);
             CurrentPanel.Children.RemoveAt(_layer);
+
+            // Remove from Dictionary
+            ImagesAtLayer.RemoveAt(_layer);
         }
 
         public void RemoveLayer(Image _image)
         {
+            int index = ImageLayer.IndexOf(_image);
+
+            // Remove from Image
             ImageLayer.Remove(_image);
             CurrentPanel.Children.Remove(_image);
+
+            // Remove from Dictionary
+            ImagesAtLayer.RemoveAt(index);
         }
 
         public void ClearLayer()
         {
+            // clear Images
             ImageLayer.Clear();
             CurrentPanel.Children.Clear();
+
+            // clear Dictionary
+            ImagesAtLayer.Clear();
         }
 
         /// <summary>
@@ -251,6 +317,23 @@ namespace _2Duzz.Helper
         public DrawingGroup GetDrawingGroup(DrawingImage _layer) { return _layer.Drawing as DrawingGroup; }
 
         /// <summary>
+        /// Get layer from <see cref="DrawingGroup"/>.
+        /// </summary>
+        /// <param name="_layer">Layer to look for</param>
+        /// <returns>-1 if no layer was found</returns>
+        public int GetLayerFromDrawingGroup(DrawingGroup _layer)
+        {
+            for (int i = 0; i < CurrentPanel.Children.Count; i++) 
+            {
+                DrawingImage di = GetDrawingImage(i);
+                if (Equals(di.Drawing,_layer))
+                    return i;
+            }
+
+            return -1;
+        }
+
+        /// <summary>
         /// Creates Image with DrawingGroup. Does not add anything to <see cref="ImageLayer"/> or <see cref="DrawingGroups"/>
         /// </summary>
         /// <param name="_dImage">DrawingImage as <see cref="Image.Source"/>.</param>
@@ -264,9 +347,50 @@ namespace _2Duzz.Helper
 
             _dImage.Drawing = _dGroup;
             tr.Source = _dImage;
-            
-            
+
+
             return tr;
+        }
+
+        #region Dictionary
+        private void AddToDictionary(int _xPosition, int _yPosition, int _xSize, int _layer, ImageDrawing _image)
+        {
+            ImagesAtLayer[_layer].Add(ChangeDimensions(_xPosition, _yPosition, _xSize), _image);
+        }
+
+        private void AddToDictionary(int _position, int _layer, ImageDrawing _image)
+        {
+            ImagesAtLayer[_layer].Add(_position, _image);
+        }
+
+        private void RemoveFromDictionary(int _xPosition, int _yPosition, int _xSize, int _layer)
+        {
+            ImagesAtLayer[_layer].Remove(ChangeDimensions(_xPosition, _yPosition, _xSize));
+        }
+
+        private void RemoveFromDictionary(int _position, int _layer)
+        {
+            ImagesAtLayer[_layer].Remove(_position);
+        }
+
+        private void ChangeImageInDictionary(int _xPosition, int _yPosition, int _xSize, int _layer, string _source)
+        {
+
+        }
+        #endregion
+
+        private void ChangeDimensions(int _position, int _xSize, out int _xPosition, out int _yPosition)
+        {
+            _yPosition = _position / _xSize;
+            _xPosition = _position % _xSize;
+        }
+
+        private int ChangeDimensions(int _xPosition, int _yPosition, int _xSize)
+        {
+            int toReturn = _yPosition * _xSize;
+            toReturn += _xPosition;
+
+            return toReturn;
         }
     }
 }

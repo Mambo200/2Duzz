@@ -116,7 +116,7 @@ namespace _2Duzz
                 || CurrentSelectedImage == null)
                 return;
 
-            ImageDrawingHelper.Get.AddImage(
+            ImageDrawingHelper.Get.ReplaceImage(
                 (int)(result.PointHit.X / CurrentLevel.SpriteSizeX),
                 (int)(result.PointHit.Y / CurrentLevel.SpriteSizeY),
                 CurrentLevel.SpriteSizeX,
@@ -162,28 +162,17 @@ namespace _2Duzz
                 newMap.SpriteSizeY
                 );
 
-            //// Reset Panel
-            //PanelManager.Get.ClearPanels();
-            //PanelManager.Get.CreatePanel();
-            //
-            //// Set grid size
-            //PanelManager.Get.SetFieldSize(CurrentLevel.SpriteSizeX, CurrentLevel.SpriteSizeY, CurrentLevel.LevelSizeX, CurrentLevel.LevelSizeY, GetMainViewModel);
+            // Reset Panel
             ImageDrawingHelper.Get.ClearLayer();
             ImageDrawingHelper.Get.CreateLayer(CurrentLevel.LevelSizeX, CurrentLevel.LevelSizeY, CurrentLevel.SpriteSizeX);
 
+            // Set grid size
+            GetMainViewModel.GridContentWidth = CurrentLevel.LevelSizeX * CurrentLevel.SpriteSizeX;
+            
             // Set image size
             GetMainViewModel.ImageSizeX = CurrentLevel.SpriteSizeX;
             GetMainViewModel.ImageSizeY = CurrentLevel.SpriteSizeY;
-            GetMainViewModel.GridContentWidth = CurrentLevel.LevelSizeX * CurrentLevel.SpriteSizeX;
 
-            //// Add dummy images
-            //for (int x = 0; x < CurrentLevel.LevelSizeX; x++)
-            //{
-            //    for (int y = 0; y < CurrentLevel.LevelSizeY; y++)
-            //    {
-            //        ImageManager.Get.AddImageToPanel(0);
-            //    }
-            //}
             ChangeStatusBar("Level Created!");
         }
 
