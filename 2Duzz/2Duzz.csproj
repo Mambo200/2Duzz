@@ -55,6 +55,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Delegates\OnClickImageEventHandler.cs" />
+    <Compile Include="Delegates\SwitchImagesEventHandler.cs" />
     <Compile Include="Helper\BindingHelper.cs" />
     <Compile Include="Converters\DoubleToPercentageStringConverter.cs" />
     <Compile Include="Converters\KeyBindingToStringConverter.cs" />
@@ -63,6 +65,7 @@
     <Compile Include="Helper\PanelManager.cs" />
     <Compile Include="Helper\TabItemManager.cs" />
     <Compile Include="IStatusBar.cs" />
+    <Compile Include="Tools\HoverOverDifferentImageGrid.cs" />
     <Compile Include="Tools\WheelControlScollViewer.cs" />
     <Compile Include="ViewModels\RelayCommand.cs" />
     <Compile Include="WindowsXAML\NewMap.xaml.cs">

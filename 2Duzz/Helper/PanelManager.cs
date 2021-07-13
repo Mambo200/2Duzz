@@ -135,8 +135,9 @@ namespace _2Duzz.Helper
         public void SetFieldSize(double _fieldSizeX, double _fieldSizeY, ViewModels.MainViewModel _viewModel)
         {
             // We do not need to set Height, because height of Grid does not matter to us
+            // EDIT: We need to set Height for Grid to have a set height so it can work with it.
             _viewModel.GridContentWidth = _fieldSizeX;
-            //_viewModel.GridContentHeight = _fieldSizeY;
+            _viewModel.GridContentHeight = _fieldSizeY;
 
         }
 
@@ -151,7 +152,7 @@ namespace _2Duzz.Helper
         public void SetFieldSize(double _spriteSizeX, double _spriteSizeY, int _levelSizeX, int _levelSizeY, ViewModels.MainViewModel _viewModel)
         {
             _viewModel.GridContentWidth = _spriteSizeX * _levelSizeX;
-            //_viewModel.GridContentHeight = _spriteSizeY * _levelSizeY;
+            _viewModel.GridContentHeight = _spriteSizeY * _levelSizeY;
         }
     }
 }

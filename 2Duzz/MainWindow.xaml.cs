@@ -97,35 +97,10 @@ namespace _2Duzz
             }
         }
 
-        private void ImageClick(object sender, MouseButtonEventArgs e)
+        private PointHitTestResult ItemAtCursor(MouseEventArgs _mouseEvent)
         {
-            //Point currentPosition = e.GetPosition(this);
-            //HitTestResult result = VisualTreeHelper.HitTest(this, currentPosition);
-            //object o = result.VisualHit.GetValue(Image.TagProperty);
-            //if (o != null)
-            //{
-            //    ChangeStatusBar($"{ DateTime.Now} | {o}");
-            //}
-
-            Point currentPosition = e.GetPosition(this);
-            PointHitTestResult result = VisualTreeHelper.HitTest(this, currentPosition) as PointHitTestResult;
-            object o = result.VisualHit.GetValue(Image.TagProperty);
-            
-            Image img = result.VisualHit as Image;
-            if (img == null
-                || CurrentSelectedImage == null)
-                return;
-
-            ImageDrawingHelper.Get.ReplaceImage(
-                (int)(result.PointHit.X / CurrentLevel.SpriteSizeX),
-                (int)(result.PointHit.Y / CurrentLevel.SpriteSizeY),
-                CurrentLevel.SpriteSizeX,
-                CurrentLevel.SpriteSizeY,
-                CurrentLevel.LevelSizeX,
-                CurrentLevel.LevelSizeY,
-                ImageDrawingHelper.Get.GetDrawingGroup(img),
-                CurrentSelectedImage.Source.ToString()
-                );
+            Point currentPosition = _mouseEvent.GetPosition(this);
+            return VisualTreeHelper.HitTest(this, currentPosition) as PointHitTestResult;
         }
 
         private void Zoom_MouseWheelWithoutCtrl(object sender, MouseWheelEventArgs e)
@@ -171,7 +146,8 @@ namespace _2Duzz
 
             // Set grid size
             GetMainViewModel.GridContentWidth = CurrentLevel.LevelSizeX * CurrentLevel.SpriteSizeX;
-            
+            GetMainViewModel.GridContentHeight = CurrentLevel.LevelSizeY * CurrentLevel.SpriteSizeY;
+
             // Set image size
             GetMainViewModel.ImageSizeX = CurrentLevel.SpriteSizeX;
             GetMainViewModel.ImageSizeY = CurrentLevel.SpriteSizeY;
@@ -265,6 +241,11 @@ namespace _2Duzz
             ChangeStatusBar($"{tmp.Tag}");
         }
 
+        /// <summary>
+        /// Select an Image with Border. Requires the sender to be an <see cref="Image"/> with a parent of <see cref="Border"/>/>
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Img_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             Image tmp = (Image)sender;
@@ -281,5 +262,40 @@ namespace _2Duzz
             ChangeStatusBar($"Selected Image: {tmp.Tag}");
         }
 
+        private void GridContent_Images_SwitchImage(object sender, MouseEventArgs e, Point oldPosition, Point newPosition)
+        {
+            if (CurrentSelectedImage == null
+                || e.LeftButton != MouseButtonState.Pressed)
+                return;
+
+            ImageDrawingHelper.Get.ReplaceImage(
+                (int)newPosition.X,
+                (int)newPosition.Y,
+                CurrentLevel.SpriteSizeX,
+                CurrentLevel.SpriteSizeY,
+                CurrentLevel.LevelSizeX,
+                CurrentLevel.LevelSizeY,
+                0,
+                CurrentSelectedImage.Source.ToString()
+                );
+
+        }
+
+        private void GridContent_Images_OnClickImage(object sender, MouseEventArgs e, Point imagePosition)
+        {
+            if (CurrentSelectedImage == null)
+                return;
+
+            ImageDrawingHelper.Get.ReplaceImage(
+                (int)imagePosition.X,
+                (int)imagePosition.Y,
+                CurrentLevel.SpriteSizeX,
+                CurrentLevel.SpriteSizeY,
+                CurrentLevel.LevelSizeX,
+                CurrentLevel.LevelSizeY,
+                0,
+                CurrentSelectedImage.Source.ToString()
+                );
+        }
     }
 }

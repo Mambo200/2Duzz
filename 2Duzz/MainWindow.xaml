@@ -80,7 +80,7 @@
                 <ContentControl>
                     <Tools:WheelControlScollViewer x:Name="ScollViewer_Images" HorizontalScrollBarVisibility="Hidden" DeadZone="30" MoveMultiplicator="0.01" VerticalScrollBarVisibility="Hidden" PreviewMouseWheel="Zoom_MouseWheelWithoutCtrl">
 
-                        <Grid x:Name="GridContent_Images" Width="{Binding GridContentWidth}" MouseLeftButtonDown="ImageClick">
+                        <Tools:HoverOverDifferentImageGrid x:Name="GridContent_Images" Width="{Binding GridContentWidth}" Height="{Binding GridContentHeight}" OnClickImage="GridContent_Images_OnClickImage" SwitchImage="GridContent_Images_SwitchImage">
                             <Grid.LayoutTransform>
                                 <ScaleTransform ScaleX="{Binding GridContentScale}" ScaleY="{Binding GridContentScale}"/>
                             </Grid.LayoutTransform>
@@ -100,7 +100,7 @@
                                 </Image.Source>
                             </Image>
                             <!--Panels will be created here cia Code-->
-                        </Grid>
+                        </Tools:HoverOverDifferentImageGrid>
 
                     </Tools:WheelControlScollViewer>
                 </ContentControl>
