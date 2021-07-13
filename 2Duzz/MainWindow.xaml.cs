@@ -31,6 +31,8 @@ namespace _2Duzz
         public Image CurrentSelectedImage { get; private set; }
         public int CurrentLayer { get; private set; }
 
+        private Image LastAffectedImage { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -97,24 +99,24 @@ namespace _2Duzz
             }
         }
 
-        private void ImageClick(object sender, MouseButtonEventArgs e)
+        private PointHitTestResult ItemAtCursor(MouseEventArgs _mouseEvent)
         {
-            //Point currentPosition = e.GetPosition(this);
-            //HitTestResult result = VisualTreeHelper.HitTest(this, currentPosition);
-            //object o = result.VisualHit.GetValue(Image.TagProperty);
-            //if (o != null)
-            //{
-            //    ChangeStatusBar($"{ DateTime.Now} | {o}");
-            //}
+            Point currentPosition = _mouseEvent.GetPosition(this);
+            return VisualTreeHelper.HitTest(this, currentPosition) as PointHitTestResult;
+        }
 
-            Point currentPosition = e.GetPosition(this);
-            PointHitTestResult result = VisualTreeHelper.HitTest(this, currentPosition) as PointHitTestResult;
-            object o = result.VisualHit.GetValue(Image.TagProperty);
-            
+        private void GridContent_Images_MouseMove(object sender, MouseEventArgs e)
+        {
+            //if (e.LeftButton != MouseButtonState.Pressed)
+            //    return;
+
+            PointHitTestResult result = ItemAtCursor(e);
             Image img = result.VisualHit as Image;
-            if (img == null
-                || CurrentSelectedImage == null)
+
+            if (CurrentSelectedImage == null)
                 return;
+
+            LastAffectedImage = img;
 
             ImageDrawingHelper.Get.ReplaceImage(
                 (int)(result.PointHit.X / CurrentLevel.SpriteSizeX),
@@ -171,7 +173,8 @@ namespace _2Duzz
 
             // Set grid size
             GetMainViewModel.GridContentWidth = CurrentLevel.LevelSizeX * CurrentLevel.SpriteSizeX;
-            
+            GetMainViewModel.GridContentHeight = CurrentLevel.LevelSizeY * CurrentLevel.SpriteSizeY;
+
             // Set image size
             GetMainViewModel.ImageSizeX = CurrentLevel.SpriteSizeX;
             GetMainViewModel.ImageSizeY = CurrentLevel.SpriteSizeY;
@@ -281,5 +284,32 @@ namespace _2Duzz
             ChangeStatusBar($"Selected Image: {tmp.Tag}");
         }
 
+        private void GridContent_Images_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Released)
+                LastAffectedImage = null;
+        }
+
+        private int count = 0;
+        private void GridContent_Images_SwitchImage(object sender, MouseEventArgs e, Point oldPosition, Point newPosition)
+        {
+            ChangeStatusBar($"{++count}, {oldPosition} | {newPosition}");
+
+            if (CurrentSelectedImage == null
+                || e.LeftButton != MouseButtonState.Pressed)
+                return;
+
+            ImageDrawingHelper.Get.ReplaceImage(
+                (int)newPosition.X,
+                (int)newPosition.Y,
+                CurrentLevel.SpriteSizeX,
+                CurrentLevel.SpriteSizeY,
+                CurrentLevel.LevelSizeX,
+                CurrentLevel.LevelSizeY,
+                0,
+                CurrentSelectedImage.Source.ToString()
+                );
+
+        }
     }
 }
