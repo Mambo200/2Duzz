@@ -154,19 +154,19 @@ namespace _2Duzz.Helper
         public ImageDrawing ReplaceImage(int _xPosition, int _yPosition, double _imageSizeX, double _imageSizeY, int _imageCountX, int _imageCountY, int _layer, string _source)
         {
             // Get 1D Position
-            int position = ChangeDimensions(_xPosition, _yPosition, (int)_imageSizeX);
-
+            int position = ChangeDimensions(_xPosition, _yPosition, (int)_imageCountX);
+            
             // Get DrawingGroup
             DrawingGroup dg = GetDrawingGroup(_layer);
-
+            
             // Get index of DrawingGroup
             int index = dg.Children.IndexOf(ImagesAtLayer[_layer][position]);
-
+            
             // Remove ImageDrawing from DrawingGroup and Dictionary
             dg.Children.RemoveAt(index);
-            ImagesAtLayer[_layer].Remove(position);
-
-            return AddImage(_xPosition, _yPosition, _imageSizeX, _imageSizeY, _imageCountX, _imageCountY, _layer, _source);
+            RemoveFromDictionary(_xPosition, _yPosition, (int)_imageCountX, _layer);
+            
+            return AddImage(_xPosition, _yPosition, _imageSizeX, _imageSizeY, _layer, _imageCountX, _imageCountY, _source);
         }
 
         /// <summary>
@@ -176,9 +176,9 @@ namespace _2Duzz.Helper
         /// <param name="_yPosition">Y-index of Image</param>
         /// <param name="_imageSizeX">X Size of Sprite</param>
         /// <param name="_imageSizeY">Y Size of Sprite</param>
-        /// <param name="_imageCountX"></param>
-        /// <param name="_imageCountY"></param>
-        /// <param name="_dg"></param>
+        /// <param name="_imageCountX">Width image count</param>
+        /// <param name="_imageCountY">Height image count</param>
+        /// <param name="_dg"><see cref="DrawingGroup"/> to insert image</param>
         /// <param name="_source"></param>
         /// <returns></returns>
         public ImageDrawing ReplaceImage(int _xPosition, int _yPosition, double _imageSizeX, double _imageSizeY, int _imageCountX, int _imageCountY, DrawingGroup _dg, string _source)
@@ -194,6 +194,7 @@ namespace _2Duzz.Helper
 
             // Remove ImageDrawing from DrawingGroup and Dictionary
             _dg.Children.RemoveAt(index);
+            RemoveFromDictionary(_xPosition, _yPosition, (int)_imageCountX, layer);
             ImagesAtLayer[layer].Remove(position);
 
             return AddImage(_xPosition, _yPosition, _imageSizeX, _imageSizeY, layer, _imageCountX, _imageCountY, _source);

@@ -31,8 +31,6 @@ namespace _2Duzz
         public Image CurrentSelectedImage { get; private set; }
         public int CurrentLayer { get; private set; }
 
-        private Image LastAffectedImage { get; set; }
-
         public MainWindow()
         {
             InitializeComponent();
@@ -103,31 +101,6 @@ namespace _2Duzz
         {
             Point currentPosition = _mouseEvent.GetPosition(this);
             return VisualTreeHelper.HitTest(this, currentPosition) as PointHitTestResult;
-        }
-
-        private void GridContent_Images_MouseMove(object sender, MouseEventArgs e)
-        {
-            //if (e.LeftButton != MouseButtonState.Pressed)
-            //    return;
-
-            PointHitTestResult result = ItemAtCursor(e);
-            Image img = result.VisualHit as Image;
-
-            if (CurrentSelectedImage == null)
-                return;
-
-            LastAffectedImage = img;
-
-            ImageDrawingHelper.Get.ReplaceImage(
-                (int)(result.PointHit.X / CurrentLevel.SpriteSizeX),
-                (int)(result.PointHit.Y / CurrentLevel.SpriteSizeY),
-                CurrentLevel.SpriteSizeX,
-                CurrentLevel.SpriteSizeY,
-                CurrentLevel.LevelSizeX,
-                CurrentLevel.LevelSizeY,
-                ImageDrawingHelper.Get.GetDrawingGroup(img),
-                CurrentSelectedImage.Source.ToString()
-                );
         }
 
         private void Zoom_MouseWheelWithoutCtrl(object sender, MouseWheelEventArgs e)
@@ -268,6 +241,11 @@ namespace _2Duzz
             ChangeStatusBar($"{tmp.Tag}");
         }
 
+        /// <summary>
+        /// Select an Image with Border. Requires the sender to be an <see cref="Image"/> with a parent of <see cref="Border"/>/>
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Img_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             Image tmp = (Image)sender;
@@ -284,17 +262,8 @@ namespace _2Duzz
             ChangeStatusBar($"Selected Image: {tmp.Tag}");
         }
 
-        private void GridContent_Images_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            if (e.LeftButton == MouseButtonState.Released)
-                LastAffectedImage = null;
-        }
-
-        private int count = 0;
         private void GridContent_Images_SwitchImage(object sender, MouseEventArgs e, Point oldPosition, Point newPosition)
         {
-            ChangeStatusBar($"{++count}, {oldPosition} | {newPosition}");
-
             if (CurrentSelectedImage == null
                 || e.LeftButton != MouseButtonState.Pressed)
                 return;
@@ -310,6 +279,23 @@ namespace _2Duzz
                 CurrentSelectedImage.Source.ToString()
                 );
 
+        }
+
+        private void GridContent_Images_OnClickImage(object sender, MouseEventArgs e, Point imagePosition)
+        {
+            if (CurrentSelectedImage == null)
+                return;
+
+            ImageDrawingHelper.Get.ReplaceImage(
+                (int)imagePosition.X,
+                (int)imagePosition.Y,
+                CurrentLevel.SpriteSizeX,
+                CurrentLevel.SpriteSizeY,
+                CurrentLevel.LevelSizeX,
+                CurrentLevel.LevelSizeY,
+                0,
+                CurrentSelectedImage.Source.ToString()
+                );
         }
     }
 }

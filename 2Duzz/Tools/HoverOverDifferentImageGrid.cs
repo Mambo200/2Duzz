@@ -45,6 +45,29 @@ namespace _2Duzz.Tools
             LatestImagePosition = temp;
         }
 
+        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
+        {
+            base.OnMouseLeftButtonDown(e);
+
+            // Get Position of Mouse
+            PointHitTestResult result = ItemAtCursor(e, out Point hit);
+
+            // check if Hit was valid
+            Image img = result.VisualHit as Image;
+            if (img == null)
+                return;
+
+            // Try get image size
+            Point size = GetImageSize(img);
+            if (size == InvalidPoint)
+                return;
+
+            Point temp = CalculateImagePosition(hit, size);
+
+            if (OnClickImage != null)
+                OnClickImage(this, e, temp);
+        }
+
         protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
         {
             base.OnMouseLeftButtonUp(e);
@@ -90,5 +113,6 @@ namespace _2Duzz.Tools
         }
 
         public event Delegates.SwitchImagesEventHandler SwitchImage;
+        public event Delegates.OnClickImageEventHandler OnClickImage;
     }
 }
