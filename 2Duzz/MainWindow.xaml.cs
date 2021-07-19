@@ -105,13 +105,19 @@ namespace _2Duzz
 
         private void Zoom_MouseWheelWithoutCtrl(object sender, MouseWheelEventArgs e)
         {
-            double scrollValue = 0.05d;
+            decimal scrollValue = 0.05m;
+            //double scroll value if Control is hold
+            if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+                scrollValue *= 2;
             e.Handled = true;
             if (e.Delta < 0)
                 scrollValue *= -1;
 
+            // We use decimal here to have a more precise scaling, so scale from 100 to 106 should be no longer possible
+            decimal newScaleValue = (decimal)GetMainViewModel.GridContentScale + (decimal)scrollValue;
+
             // We Use Math.Max because if scale is negative, the level does flip.
-            GetMainViewModel.GridContentScale = Math.Max(0.1, GetMainViewModel.GridContentScale + scrollValue);
+            GetMainViewModel.GridContentScale = (double)Math.Max(new decimal(0.1), newScaleValue);
         }
 
         /// <summary>
