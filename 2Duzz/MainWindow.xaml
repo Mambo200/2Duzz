@@ -51,6 +51,8 @@
                 <ColumnDefinition Width="200"/>
                 <ColumnDefinition Width="5"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition Width="200"/>
             </Grid.ColumnDefinitions>
 
             <!--Gridsplitter-->
@@ -74,7 +76,7 @@
             </Grid>
             <!--/Image Sprite and Information Grid-->
 
-            <!--Image Grid-->
+            <!--#region Image Grid -->
             <Grid Grid.Column="2">
 
                 <ContentControl>
@@ -106,8 +108,33 @@
                 </ContentControl>
 
             </Grid>
-            <!--/Image Grid-->
+            <!--#endregion-->
 
+            <!--Gridsplitter-->
+            <GridSplitter Grid.Column="3" HorizontalAlignment="Stretch" Focusable="False"/>
+
+            <Grid Grid.Column="4">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!--#region Right Side Buttons -->
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button Grid.Column="0" Content="Add" Margin="5" Command="{Binding ButtonAddLayerClickCommand}"/>
+                    <Button Grid.Column="1" Content="Remove" Margin="5" Command="{Binding ButtonRemoveLayerClickCommand}"/>
+                </Grid>
+                <!--#endregion-->
+
+                <Grid Grid.Row="1">
+                    <ListView x:Name="LayerList" SelectionChanged="LayerList_SelectionChanged"/>
+                </Grid>
+            </Grid>
         </Grid>
 
         <Grid Grid.Row="2" Background="#FFC8FFC8">

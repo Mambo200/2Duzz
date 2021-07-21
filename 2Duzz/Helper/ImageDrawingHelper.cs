@@ -241,9 +241,9 @@ namespace _2Duzz.Helper
 
             ImageLayer.Insert(_layerIndex, img);
 
-            SetRect(_x, _y, _imageSizeX, _imageSizeY, _dGroup);
-
             CurrentPanel.Children.Insert(_layerIndex, img);
+
+            SetRect(_x, _y, _imageSizeX, _imageSizeY, _dGroup);
 
             return img;
         }

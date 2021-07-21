@@ -27,6 +27,11 @@ namespace _2Duzz.Tools
             // Get Position of Mouse
             PointHitTestResult result = ItemAtCursor(e, out Point hit);
 
+            if(result == null)
+            {
+                return;
+            }
+
             // check if Hit was valid
             Image img = result.VisualHit as Image;
             if (img == null)
