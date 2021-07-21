@@ -169,6 +169,37 @@ namespace _2Duzz.ViewModels
             MessageBox.Show(_parameter.ToString());
         }
         #endregion
+
+        #region Button Add Layer Click
+        private ICommand m_ButtonAddLayerClickCommand;
+        /// <summary>
+        /// Button Add Layer Click command
+        /// </summary>
+        public ICommand ButtonAddLayerClickCommand
+        {
+            get => m_ButtonAddLayerClickCommand;
+            set
+            {
+                SetProperty(ref m_ButtonAddLayerClickCommand, value);
+            }
+        }
+        #endregion
+
+        #region Button Remove Layer Click
+        private ICommand m_ButtonRemoveLayerClickCommand;
+        /// <summary>
+        /// Button Add Layer Click command
+        /// </summary>
+        public ICommand ButtonRemoveLayerClickCommand
+        {
+            get => m_ButtonRemoveLayerClickCommand;
+            set
+            {
+                SetProperty(ref m_ButtonRemoveLayerClickCommand, value);
+            }
+        }
+        #endregion
+
         #endregion
 
         #region MouseBinding
