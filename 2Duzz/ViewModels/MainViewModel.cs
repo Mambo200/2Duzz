@@ -24,6 +24,7 @@ namespace _2Duzz.ViewModels
 
             GridContentScale = 1;
             GridContentWidth = 1200;
+            GridContentHeight = 1200;
 
             ImageSizeX = 600;
             ImageSizeY = 600;
@@ -197,6 +198,19 @@ namespace _2Duzz.ViewModels
                 //NotifyOfPropertyChange(nameof([PROPERTY]));
             }
         }
+
+        private double m_GridContentHeight;
+        public double GridContentHeight
+        {
+            get => m_GridContentHeight;
+            set
+            {
+                SetProperty(ref m_GridContentHeight, value);
+                //NotifyOfPropertyChange(nameof([PROPERTY]));
+            }
+        }
+
+        
         #endregion
 
         #region Image Size
