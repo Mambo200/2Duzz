@@ -17,7 +17,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using LevelData;
 
-
 namespace _2Duzz
 {
     /// <summary>
@@ -159,11 +158,54 @@ namespace _2Duzz
             GetMainViewModel.ImageSizeY = CurrentLevel.SpriteSizeY;
 
             ChangeStatusBar("Level Created!");
+
+            // Add Layer to List
+            LayerList.Items.Clear();
+
+            LayerList.Items.Add(0);
+        }
+
+        /// <summary>
+        /// Add Layer Click Execution method
+        /// </summary>
+        /// <param name="_parameter"></param>
+        private void ExecuteAddLayerClick(object _parameter)
+        {
+            if (CurrentLevel == null) return;
+            ImageDrawingHelper.Get.CreateLayer(CurrentLevel.LevelSizeX, CurrentLevel.LevelSizeY, CurrentLevel.SpriteSizeX, CurrentLevel.SpriteSizeY, LayerList.SelectedIndex + 1);
+
+
+            LayerList.Items.Insert(LayerList.SelectedIndex + 1, LayerList.SelectedIndex + 1);
+
+            LayerList.SelectedIndex++;
+            CurrentLayer = LayerList.SelectedIndex;
+
+            ChangeStatusBar($"Current Index: {CurrentLayer}");
+        }
+
+        /// <summary>
+        /// Remove Layer Click Execution method
+        /// </summary>
+        /// <param name="_parameter"></param>
+        private void ExecuteRemoveLayerClick(object _parameter)
+        {
+            if (CurrentLevel == null
+                || LayerList.Items.Count <= 1) return;
+            ImageDrawingHelper.Get.RemoveLayer(LayerList.SelectedIndex);
+
+            int tempIndex = LayerList.SelectedIndex;
+            LayerList.Items.RemoveAt(LayerList.SelectedIndex);
+            LayerList.SelectedIndex = MathHelper.Between(tempIndex, 0, LayerList.Items.Count - 1);
+            CurrentLayer = LayerList.SelectedIndex;
+
+            ChangeStatusBar($"Current Index: {CurrentLayer}");
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             GetMainViewModel.HeaderNewClickCommand = new RelayCommand((r) => ExecuteHeaderNewClick(sender));
+            GetMainViewModel.ButtonAddLayerClickCommand = new RelayCommand((r) => ExecuteAddLayerClick(sender));
+            GetMainViewModel.ButtonRemoveLayerClickCommand = new RelayCommand((r) => ExecuteRemoveLayerClick(sender));
         }
 
         /// <summary>
@@ -281,7 +323,7 @@ namespace _2Duzz
                 CurrentLevel.SpriteSizeY,
                 CurrentLevel.LevelSizeX,
                 CurrentLevel.LevelSizeY,
-                0,
+                CurrentLayer,
                 CurrentSelectedImage.Source.ToString()
                 );
 
@@ -299,9 +341,17 @@ namespace _2Duzz
                 CurrentLevel.SpriteSizeY,
                 CurrentLevel.LevelSizeX,
                 CurrentLevel.LevelSizeY,
-                0,
+                CurrentLayer,
                 CurrentSelectedImage.Source.ToString()
                 );
+        }
+
+
+
+        private void LayerList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            CurrentLayer = LayerList.SelectedIndex;
+            ChangeStatusBar($"Selected Index: {CurrentLayer}");
         }
     }
 }

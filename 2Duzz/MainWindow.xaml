@@ -132,7 +132,7 @@
                 <!--#endregion-->
 
                 <Grid Grid.Row="1">
-                    <ListView x:Name="LayerList"/>
+                    <ListView x:Name="LayerList" SelectionChanged="LayerList_SelectionChanged"/>
                 </Grid>
             </Grid>
         </Grid>
