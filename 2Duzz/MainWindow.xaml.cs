@@ -17,7 +17,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using LevelData;
 
-
 namespace _2Duzz
 {
     /// <summary>
@@ -39,6 +38,7 @@ namespace _2Duzz
             ImageManager.Get.Init(this);
             PanelManager.Get.Init(this, GridContent_Images);
             TabItemManager.Get.Init(this, TabControl_Sprites);
+            ImageDrawingHelper.Get.Init(this, GridContent_Images);
             ScollViewer_Images.MainW = this;
 
             #region Testing Only
@@ -96,27 +96,27 @@ namespace _2Duzz
             }
         }
 
-        private void ImageClick(object sender, MouseButtonEventArgs e)
+        private PointHitTestResult ItemAtCursor(MouseEventArgs _mouseEvent)
         {
-            Point currentPosition = e.GetPosition(this);
-            HitTestResult result = VisualTreeHelper.HitTest(this, currentPosition);
-            object o = result.VisualHit.GetValue(Image.TagProperty);
-            if (o != null)
-            {
-                ChangeStatusBar($"{ DateTime.Now} | {o}");
-            }
-
+            Point currentPosition = _mouseEvent.GetPosition(this);
+            return VisualTreeHelper.HitTest(this, currentPosition) as PointHitTestResult;
         }
 
         private void Zoom_MouseWheelWithoutCtrl(object sender, MouseWheelEventArgs e)
         {
-            double scrollValue = 0.05d;
+            decimal scrollValue = 0.05m;
+            //double scroll value if Control is hold
+            if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+                scrollValue *= 2;
             e.Handled = true;
             if (e.Delta < 0)
                 scrollValue *= -1;
 
+            // We use decimal here to have a more precise scaling, so scale from 100 to 106 should be no longer possible
+            decimal newScaleValue = (decimal)GetMainViewModel.GridContentScale + (decimal)scrollValue;
+
             // We Use Math.Max because if scale is negative, the level does flip.
-            GetMainViewModel.GridContentScale = Math.Max(0.1, GetMainViewModel.GridContentScale + scrollValue);
+            GetMainViewModel.GridContentScale = (double)Math.Max(new decimal(0.1), newScaleValue);
         }
 
         /// <summary>
@@ -146,30 +146,66 @@ namespace _2Duzz
                 );
 
             // Reset Panel
-            PanelManager.Get.ClearPanels();
-            PanelManager.Get.CreatePanel();
+            ImageDrawingHelper.Get.ClearLayer();
+            ImageDrawingHelper.Get.CreateLayer(CurrentLevel.LevelSizeX, CurrentLevel.LevelSizeY, CurrentLevel.SpriteSizeX, CurrentLevel.SpriteSizeY);
 
             // Set grid size
-            PanelManager.Get.SetFieldSize(CurrentLevel.SpriteSizeX, CurrentLevel.SpriteSizeY, CurrentLevel.LevelSizeX, CurrentLevel.LevelSizeY, GetMainViewModel);
+            GetMainViewModel.GridContentWidth = CurrentLevel.LevelSizeX * CurrentLevel.SpriteSizeX;
+            GetMainViewModel.GridContentHeight = CurrentLevel.LevelSizeY * CurrentLevel.SpriteSizeY;
 
             // Set image size
             GetMainViewModel.ImageSizeX = CurrentLevel.SpriteSizeX;
             GetMainViewModel.ImageSizeY = CurrentLevel.SpriteSizeY;
 
-            // Add dummy images
-            for (int x = 0; x < CurrentLevel.LevelSizeX; x++)
-            {
-                for (int y = 0; y < CurrentLevel.LevelSizeY; y++)
-                {
-                    ImageManager.Get.AddImageToPanel(0);
-                }
-            }
             ChangeStatusBar("Level Created!");
+
+            // Add Layer to List
+            LayerList.Items.Clear();
+
+            LayerList.Items.Add(0);
+        }
+
+        /// <summary>
+        /// Add Layer Click Execution method
+        /// </summary>
+        /// <param name="_parameter"></param>
+        private void ExecuteAddLayerClick(object _parameter)
+        {
+            if (CurrentLevel == null) return;
+            ImageDrawingHelper.Get.CreateLayer(CurrentLevel.LevelSizeX, CurrentLevel.LevelSizeY, CurrentLevel.SpriteSizeX, CurrentLevel.SpriteSizeY, LayerList.SelectedIndex + 1);
+
+
+            LayerList.Items.Insert(LayerList.SelectedIndex + 1, LayerList.SelectedIndex + 1);
+
+            LayerList.SelectedIndex++;
+            CurrentLayer = LayerList.SelectedIndex;
+
+            ChangeStatusBar($"Current Index: {CurrentLayer}");
+        }
+
+        /// <summary>
+        /// Remove Layer Click Execution method
+        /// </summary>
+        /// <param name="_parameter"></param>
+        private void ExecuteRemoveLayerClick(object _parameter)
+        {
+            if (CurrentLevel == null
+                || LayerList.Items.Count <= 1) return;
+            ImageDrawingHelper.Get.RemoveLayer(LayerList.SelectedIndex);
+
+            int tempIndex = LayerList.SelectedIndex;
+            LayerList.Items.RemoveAt(LayerList.SelectedIndex);
+            LayerList.SelectedIndex = MathHelper.Between(tempIndex, 0, LayerList.Items.Count - 1);
+            CurrentLayer = LayerList.SelectedIndex;
+
+            ChangeStatusBar($"Current Index: {CurrentLayer}");
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             GetMainViewModel.HeaderNewClickCommand = new RelayCommand((r) => ExecuteHeaderNewClick(sender));
+            GetMainViewModel.ButtonAddLayerClickCommand = new RelayCommand((r) => ExecuteAddLayerClick(sender));
+            GetMainViewModel.ButtonRemoveLayerClickCommand = new RelayCommand((r) => ExecuteRemoveLayerClick(sender));
         }
 
         /// <summary>
@@ -253,6 +289,11 @@ namespace _2Duzz
             ChangeStatusBar($"{tmp.Tag}");
         }
 
+        /// <summary>
+        /// Select an Image with Border. Requires the sender to be an <see cref="Image"/> with a parent of <see cref="Border"/>/>
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Img_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             Image tmp = (Image)sender;
@@ -269,5 +310,48 @@ namespace _2Duzz
             ChangeStatusBar($"Selected Image: {tmp.Tag}");
         }
 
+        private void GridContent_Images_SwitchImage(object sender, MouseEventArgs e, Point oldPosition, Point newPosition)
+        {
+            if (CurrentSelectedImage == null
+                || e.LeftButton != MouseButtonState.Pressed)
+                return;
+
+            ImageDrawingHelper.Get.ReplaceImage(
+                (int)newPosition.X,
+                (int)newPosition.Y,
+                CurrentLevel.SpriteSizeX,
+                CurrentLevel.SpriteSizeY,
+                CurrentLevel.LevelSizeX,
+                CurrentLevel.LevelSizeY,
+                CurrentLayer,
+                CurrentSelectedImage.Source.ToString()
+                );
+
+        }
+
+        private void GridContent_Images_OnClickImage(object sender, MouseEventArgs e, Point imagePosition)
+        {
+            if (CurrentSelectedImage == null)
+                return;
+
+            ImageDrawingHelper.Get.ReplaceImage(
+                (int)imagePosition.X,
+                (int)imagePosition.Y,
+                CurrentLevel.SpriteSizeX,
+                CurrentLevel.SpriteSizeY,
+                CurrentLevel.LevelSizeX,
+                CurrentLevel.LevelSizeY,
+                CurrentLayer,
+                CurrentSelectedImage.Source.ToString()
+                );
+        }
+
+
+
+        private void LayerList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            CurrentLayer = LayerList.SelectedIndex;
+            ChangeStatusBar($"Selected Index: {CurrentLayer}");
+        }
     }
 }

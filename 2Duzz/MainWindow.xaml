@@ -51,6 +51,8 @@
                 <ColumnDefinition Width="200"/>
                 <ColumnDefinition Width="5"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition Width="200"/>
             </Grid.ColumnDefinitions>
 
             <!--Gridsplitter-->
@@ -74,13 +76,13 @@
             </Grid>
             <!--/Image Sprite and Information Grid-->
 
-            <!--Image Grid-->
+            <!--#region Image Grid -->
             <Grid Grid.Column="2">
 
                 <ContentControl>
                     <Tools:WheelControlScollViewer x:Name="ScollViewer_Images" HorizontalScrollBarVisibility="Hidden" DeadZone="30" MoveMultiplicator="0.01" VerticalScrollBarVisibility="Hidden" PreviewMouseWheel="Zoom_MouseWheelWithoutCtrl">
 
-                        <Grid x:Name="GridContent_Images" Width="{Binding GridContentWidth}" MouseLeftButtonDown="ImageClick">
+                        <Tools:HoverOverDifferentImageGrid x:Name="GridContent_Images" Width="{Binding GridContentWidth}" Height="{Binding GridContentHeight}" OnClickImage="GridContent_Images_OnClickImage" SwitchImage="GridContent_Images_SwitchImage">
                             <Grid.LayoutTransform>
                                 <ScaleTransform ScaleX="{Binding GridContentScale}" ScaleY="{Binding GridContentScale}"/>
                             </Grid.LayoutTransform>
@@ -90,20 +92,49 @@
                                 <Image.Source>
                                     <DrawingImage>
                                         <DrawingImage.Drawing>
-                                            <DrawingGroup x:Name="DrawingGoup_Images"/>
+                                            <DrawingGroup x:Name="DrawingGoup_Images">
+                                                <!--<ImageDrawing Rect="0,0,32,32" ImageSource="Ressources/TestImages/Debuf Mode.PNG"/>-->
+                                                <!--<ImageDrawing Rect="0,100,64,64" ImageSource="Ressources/TestImages/Debuf Mode.PNG"/>-->
+                                                <!--<ImageDrawing Rect="0,200,128,128" ImageSource="Ressources/TestImages/Debuf Mode.PNG"/>-->
+                                            </DrawingGroup>
                                         </DrawingImage.Drawing>
                                     </DrawingImage>
                                 </Image.Source>
                             </Image>
                             <!--Panels will be created here cia Code-->
-                        </Grid>
+                        </Tools:HoverOverDifferentImageGrid>
 
                     </Tools:WheelControlScollViewer>
                 </ContentControl>
 
             </Grid>
-            <!--/Image Grid-->
+            <!--#endregion-->
 
+            <!--Gridsplitter-->
+            <GridSplitter Grid.Column="3" HorizontalAlignment="Stretch" Focusable="False"/>
+
+            <Grid Grid.Column="4">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!--#region Right Side Buttons -->
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button Grid.Column="0" Content="Add" Margin="5" Command="{Binding ButtonAddLayerClickCommand}"/>
+                    <Button Grid.Column="1" Content="Remove" Margin="5" Command="{Binding ButtonRemoveLayerClickCommand}"/>
+                </Grid>
+                <!--#endregion-->
+
+                <Grid Grid.Row="1">
+                    <ListView x:Name="LayerList" SelectionChanged="LayerList_SelectionChanged"/>
+                </Grid>
+            </Grid>
         </Grid>
 
         <Grid Grid.Row="2" Background="#FFC8FFC8">
