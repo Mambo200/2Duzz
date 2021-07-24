@@ -106,6 +106,7 @@ namespace _2Duzz.Helper
         {
             ImageDrawing t = new ImageDrawing();
             t.ImageSource = (ImageSource)new ImageSourceConverter().ConvertFromString(ImageManager.PLACEHOLDERPATH);
+            //t.ImageSource = null;
             t.Rect = new System.Windows.Rect(_xPosition * _imageSizeX, _yPosition * _imageSizeY, _imageSizeX, _imageSizeY);
             _dg.Children.Add(t);
 
@@ -396,10 +397,9 @@ namespace _2Duzz.Helper
             Image tr = new Image();
             _dImage = new DrawingImage();
             _dGroup = new DrawingGroup();
-
+            
             _dImage.Drawing = _dGroup;
             tr.Source = _dImage;
-
 
             return tr;
         }

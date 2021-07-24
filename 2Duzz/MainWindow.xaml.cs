@@ -327,6 +327,7 @@ namespace _2Duzz
                 CurrentSelectedImage.Source.ToString()
                 );
 
+            ChangeStatusBar(newPosition);
         }
 
         private void GridContent_Images_OnClickImage(object sender, MouseEventArgs e, Point imagePosition)
