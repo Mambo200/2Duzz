@@ -163,6 +163,9 @@ namespace _2Duzz
             LayerList.Items.Clear();
 
             LayerList.Items.Add(0);
+
+            CurrentLayer = 0;
+            LayerList.SelectedIndex = 0;
         }
 
         /// <summary>

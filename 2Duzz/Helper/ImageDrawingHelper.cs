@@ -212,6 +212,7 @@ namespace _2Duzz.Helper
         /// <returns>Layer as Image</returns>
         public Image CreateLayer(int _x, int _y, int _imageSizeX, int _imageSizeY)
         {
+            CurrentPanel.Children.Add(new Border() { Width = _x * _imageSizeX, Height = _y * _imageSizeY, BorderThickness = new System.Windows.Thickness(5), BorderBrush = Brushes.Black });
             ImagesAtLayer.Add(new Dictionary<int, ImageDrawing>());
 
             Image img = CreateNewImageLayer(out DrawingImage _dImage, out DrawingGroup _dGroup);
@@ -242,7 +243,8 @@ namespace _2Duzz.Helper
 
             ImageLayer.Insert(_layerIndex, img);
 
-            CurrentPanel.Children.Insert(_layerIndex, img);
+            //CurrentPanel.Children.Insert(_layerIndex, img);
+            CurrentPanel.Children.Insert(_layerIndex + 1, img);
 
             SetRect(_x, _y, _imageSizeX, _imageSizeY, _dGroup);
 
@@ -257,7 +259,8 @@ namespace _2Duzz.Helper
         {
             // Remove from Image
             ImageLayer.RemoveAt(_layer);
-            CurrentPanel.Children.RemoveAt(_layer);
+            //CurrentPanel.Children.RemoveAt(_layer);
+            CurrentPanel.Children.RemoveAt(_layer + 1);
 
             // Remove from Dictionary
             ImagesAtLayer.RemoveAt(_layer);
@@ -332,13 +335,19 @@ namespace _2Duzz.Helper
             }
         }
 
+        /// <summary>
+        /// Get Border. This only works if the first Item in <see cref="CurrentPanel"/> is an instance of <see cref="Border"/>.
+        /// </summary>
+        /// <returns>An instance of <see cref="Border"/>. If there is no <see cref="Border"/> return <see cref="null"/></returns>
+        public Border GetBorder() { return CurrentPanel.Children[0] as Border; }
 
         /// <summary>
         /// Get Drawing Image
         /// </summary>
         /// <param name="_layer">Index of Layer</param>
         /// <returns>Drawing Image</returns>
-        public DrawingImage GetDrawingImage(int _layer) { return ((Image)CurrentPanel.Children[_layer]).Source as DrawingImage; }
+        //public DrawingImage GetDrawingImage(int _layer) { return ((Image)CurrentPanel.Children[_layer]).Source as DrawingImage; }
+        public DrawingImage GetDrawingImage(int _layer) { return ((Image)CurrentPanel.Children[_layer + 1]).Source as DrawingImage; }
 
         /// <summary>
         /// Get Drawing Image
@@ -352,7 +361,8 @@ namespace _2Duzz.Helper
         /// </summary>
         /// <param name="_layer">Index of Layer</param>
         /// <returns>Drawing Group</returns>
-        public DrawingGroup GetDrawingGroup(int _layer) { return ((DrawingImage)((Image)CurrentPanel.Children[_layer]).Source).Drawing as DrawingGroup; }
+        //public DrawingGroup GetDrawingGroup(int _layer) { return ((DrawingImage)((Image)CurrentPanel.Children[_layer]).Source).Drawing as DrawingGroup; }
+        public DrawingGroup GetDrawingGroup(int _layer) { return ((DrawingImage)((Image)CurrentPanel.Children[_layer + 1]).Source).Drawing as DrawingGroup; }
 
 
         /// <summary>
