@@ -46,14 +46,15 @@ namespace _2Duzz
             TabItemManager.Get.AddTabItem("Papagei");
             TabItemManager.Get.AddTabItem("Affe");
             TabItemManager.Get.AddTabItem("Urangutan");
-            TabItemManager.Get.AddImageToTabItem(0, new Uri("E:\\Tobias\\Bilder\\ebf5__150_player_emotes_by_kupogames-dbn7dy7\\emo0010.jpg"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(0, new Uri("E:\\Tobias\\Bilder\\ebf5__150_player_emotes_by_kupogames-dbn7dy7\\emo0010.jpg"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(0, new Uri("E:\\Tobias\\Bilder\\ebf5__150_player_emotes_by_kupogames-dbn7dy7\\emo0010.jpg"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(0, new Uri("E:\\Tobias\\Bilder\\ebf5__150_player_emotes_by_kupogames-dbn7dy7\\emo0010.jpg"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(0, new Uri("E:\\Tobias\\Bilder\\ebf5__150_player_emotes_by_kupogames-dbn7dy7\\emo0010.jpg"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(0, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/emo0004.jpg"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(0, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/emo0004.jpg"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(0, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/emo0004.jpg"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(0, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/emo0004.jpg"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(0, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/emo0004.jpg"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
             TabItemManager.Get.AddImageToTabItem(0, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/XTiny.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
             TabItemManager.Get.AddImageToTabItem(0, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/XTiny.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
             TabItemManager.Get.AddImageToTabItem(0, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/XTiny.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(0, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/AlphaDot.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
             TabItemManager.Get.AddImageToTabItem(0, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/XTiny.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
 
             TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
