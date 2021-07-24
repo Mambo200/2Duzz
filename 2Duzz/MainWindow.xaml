@@ -65,7 +65,7 @@
                     <RowDefinition Height="5"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                
+
                 <!--Image Sprites-->
                 <TabControl Grid.Row="0" x:Name="TabControl_Sprites"/>
                 <!--/Image Sprites-->
@@ -81,7 +81,6 @@
 
                 <ContentControl>
                     <Tools:WheelControlScollViewer x:Name="ScollViewer_Images" HorizontalScrollBarVisibility="Hidden" DeadZone="30" MoveMultiplicator="0.01" VerticalScrollBarVisibility="Hidden" PreviewMouseWheel="Zoom_MouseWheelWithoutCtrl">
-
                         <Tools:HoverOverDifferentImageGrid x:Name="GridContent_Images" Width="{Binding GridContentWidth}" Height="{Binding GridContentHeight}" OnClickImage="GridContent_Images_OnClickImage" SwitchImage="GridContent_Images_SwitchImage">
                             <Grid.LayoutTransform>
                                 <ScaleTransform ScaleX="{Binding GridContentScale}" ScaleY="{Binding GridContentScale}"/>
@@ -101,9 +100,9 @@
                                     </DrawingImage>
                                 </Image.Source>
                             </Image>
+
                             <!--Panels will be created here cia Code-->
                         </Tools:HoverOverDifferentImageGrid>
-
                     </Tools:WheelControlScollViewer>
                 </ContentControl>
 
