@@ -101,5 +101,11 @@ namespace LevelData
 
             return true;
         }
+
+        public static Level ReadJSON(string _absolutePath)
+        {
+            // read file into a string and deserialize JSON to a type
+            return JsonConvert.DeserializeObject<Level>(File.ReadAllText(_absolutePath));
+        }
     }
 }
