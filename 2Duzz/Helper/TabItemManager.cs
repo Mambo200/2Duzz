@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.Windows.Input;
 using System.Windows.Media;
+using _2Duzz.Tools;
 
 namespace _2Duzz.Helper
 {
@@ -170,6 +171,7 @@ namespace _2Duzz.Helper
             img.MouseRightButtonDown += _rightButtonDown;
             img.Tag = _path.AbsoluteUri;
             img.EndInit();
+
 
             return img;
         }

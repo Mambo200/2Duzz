@@ -147,6 +147,9 @@ namespace _2Duzz
                 newMap.SpriteSizeY
                 );
 
+            // Set string array for images. We cannot set this yet because the first dimension will be the amount of layer and the second dimension will be the amount of images.
+            CurrentLevel.LevelImages = new int[0, 0];
+
             // Reset Panel
             ImageDrawingHelper.Get.ClearLayer();
             ImageDrawingHelper.Get.CreateLayer(CurrentLevel.LevelSizeX, CurrentLevel.LevelSizeY, CurrentLevel.SpriteSizeX, CurrentLevel.SpriteSizeY);
@@ -158,6 +161,7 @@ namespace _2Duzz
             // Set image size
             GetMainViewModel.ImageSizeX = CurrentLevel.SpriteSizeX;
             GetMainViewModel.ImageSizeY = CurrentLevel.SpriteSizeY;
+
 
             ChangeStatusBar("Level Created!");
 
@@ -177,10 +181,49 @@ namespace _2Duzz
         private void ExecuteSaveClick(object _parameter)
         {
             if (CurrentLevel == null) return;
-            
+
+            SetLevelImagesStringArray();
             const string tempDest = "E:\\Tobias\\Dokumente\\TEST\\Testlevel.json";
 
-            ChangeStatusBar($"File saved: {CurrentLevel.SaveJson(tempDest, false)}");
+            ChangeStatusBar($"File saved: {CurrentLevel.SaveJson(tempDest, true)}");
+        }
+
+        /// <summary>
+        /// Set <see cref="Level.LevelImages"/>
+        /// </summary>
+        public void SetLevelImagesStringArray()
+        {
+            // create string array
+            CurrentLevel.LevelImages = new int
+                [
+                ImageDrawingHelper.Get.ImageLayer.Count,
+                CurrentLevel.LevelSizeX * CurrentLevel.LevelSizeY
+                ];
+
+            List<string> base64Images = new List<string>();
+            // we go here with GetLength(0) because CurrentLevel.LevelImages is a two dimensional array which first dimension stands for the different layer.
+            for (int lyr = 0; lyr < CurrentLevel.LevelImages.GetLength(0); lyr++)
+            {
+                foreach (KeyValuePair<int, ImageDrawing> kv in ImageDrawingHelper.Get.ImagesAtLayer[lyr])
+                {
+                    // save Base64 Value
+                    string currentB64Image = Helper.MyConverter.ToBase64((BitmapSource)kv.Value.ImageSource);
+
+                    // Check if Image was already used.
+                    int index = base64Images.IndexOf(currentB64Image);
+
+                    if(index < 0)
+                    {
+                        // No index found. Add string to list and update index
+                        base64Images.Add(currentB64Image);
+                        index = base64Images.Count - 1;
+                    }
+                    CurrentLevel.LevelImages[lyr, kv.Key] = index;
+                }
+            }
+
+            // save list with Base64 Images to Level data
+            CurrentLevel.LevelImagesData = base64Images.ToArray();
         }
 
         /// <summary>

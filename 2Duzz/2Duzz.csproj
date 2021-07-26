@@ -63,6 +63,7 @@
     <Compile Include="Helper\ImageDrawingHelper.cs" />
     <Compile Include="Helper\ImageManager.cs" />
     <Compile Include="Helper\MathHelper.cs" />
+    <Compile Include="Helper\MyConverter.cs" />
     <Compile Include="Helper\PanelManager.cs" />
     <Compile Include="Helper\TabItemManager.cs" />
     <Compile Include="IStatusBar.cs" />
