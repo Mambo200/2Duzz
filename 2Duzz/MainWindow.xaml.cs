@@ -120,6 +120,7 @@ namespace _2Duzz
             GetMainViewModel.GridContentScale = (double)Math.Max(new decimal(0.1), newScaleValue);
         }
 
+        #region Execute buttons
         /// <summary>
         /// Header New Click Execution method
         /// </summary>
@@ -170,6 +171,19 @@ namespace _2Duzz
         }
 
         /// <summary>
+        /// Header Save Click Execution method
+        /// </summary>
+        /// <param name="_parameter"></param>
+        private void ExecuteSaveClick(object _parameter)
+        {
+            if (CurrentLevel == null) return;
+            
+            const string tempDest = "E:\\Tobias\\Dokumente\\TEST\\Testlevel.json";
+
+            ChangeStatusBar($"File saved: {CurrentLevel.SaveJson(tempDest, false)}");
+        }
+
+        /// <summary>
         /// Add Layer Click Execution method
         /// </summary>
         /// <param name="_parameter"></param>
@@ -204,10 +218,12 @@ namespace _2Duzz
 
             ChangeStatusBar($"Current Index: {CurrentLayer}");
         }
+        #endregion
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             GetMainViewModel.HeaderNewClickCommand = new RelayCommand((r) => ExecuteHeaderNewClick(sender));
+            GetMainViewModel.HeaderSaveClickCommand = new RelayCommand((r) => ExecuteSaveClick(sender));
             GetMainViewModel.ButtonAddLayerClickCommand = new RelayCommand((r) => ExecuteAddLayerClick(sender));
             GetMainViewModel.ButtonRemoveLayerClickCommand = new RelayCommand((r) => ExecuteRemoveLayerClick(sender));
         }
