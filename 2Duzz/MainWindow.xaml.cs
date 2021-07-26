@@ -17,7 +17,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using LevelData;
 
-
 namespace _2Duzz
 {
     /// <summary>
@@ -28,6 +27,8 @@ namespace _2Duzz
         public static string[] Args;
         public MainViewModel GetMainViewModel { get => this.DataContext as MainViewModel; }
         public static Level CurrentLevel { get; set; }
+        public Image CurrentSelectedImage { get; private set; }
+        public int CurrentLayer { get; private set; }
 
         public MainWindow()
         {
@@ -36,7 +37,50 @@ namespace _2Duzz
             BindingHelper.Get.Init(this);
             ImageManager.Get.Init(this);
             PanelManager.Get.Init(this, GridContent_Images);
+            TabItemManager.Get.Init(this, TabControl_Sprites);
+            ImageDrawingHelper.Get.Init(this, GridContent_Images);
             ScollViewer_Images.MainW = this;
+
+            #region Testing Only
+            // TESTING PURPOSES!
+            TabItemManager.Get.AddTabItem("Papagei");
+            TabItemManager.Get.AddTabItem("Affe");
+            TabItemManager.Get.AddTabItem("Urangutan");
+            TabItemManager.Get.AddImageToTabItem(0, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/emo0004.jpg"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(0, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/emo0004.jpg"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(0, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/emo0004.jpg"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(0, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/emo0004.jpg"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(0, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/emo0004.jpg"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(0, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/XTiny.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(0, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/XTiny.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(0, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/XTiny.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(0, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/AlphaDot.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(0, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/XTiny.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+
+            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X2.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X2.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X2.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X2.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X2.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+
+            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Outline.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+            #endregion
+
         }
 
         public void ChangeStatusBar(object _content)
@@ -44,6 +88,7 @@ namespace _2Duzz
             GetMainViewModel.StatusBarContent = _content;
         }
 
+        [Obsolete("We scroll without STRG now")]
         private void Zoom_MouseWheelWithCtrl(object sender, MouseWheelEventArgs e)
         {
             if (Keyboard.IsKeyDown(Key.LeftCtrl))
@@ -52,24 +97,30 @@ namespace _2Duzz
             }
         }
 
-        private void ImageClick(object sender, MouseButtonEventArgs e)
+        private PointHitTestResult ItemAtCursor(MouseEventArgs _mouseEvent)
         {
-            Point currentPosition = e.GetPosition(this);
-            HitTestResult result = VisualTreeHelper.HitTest(this, currentPosition);
-            object o = result.VisualHit.GetValue(Image.TagProperty);
-            if (o != null)
-            {
-                ChangeStatusBar($"{ DateTime.Now} | {o}");
-            }
-
+            Point currentPosition = _mouseEvent.GetPosition(this);
+            return VisualTreeHelper.HitTest(this, currentPosition) as PointHitTestResult;
         }
 
         private void Zoom_MouseWheelWithoutCtrl(object sender, MouseWheelEventArgs e)
         {
+            decimal scrollValue = 0.05m;
+            //double scroll value if Control is hold
+            if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+                scrollValue *= 2;
             e.Handled = true;
-            GetMainViewModel.GridContentScale = Math.Max(0.01, GetMainViewModel.GridContentScale + e.Delta * 0.001);            
+            if (e.Delta < 0)
+                scrollValue *= -1;
+
+            // We use decimal here to have a more precise scaling, so scale from 100 to 106 should be no longer possible
+            decimal newScaleValue = (decimal)GetMainViewModel.GridContentScale + (decimal)scrollValue;
+
+            // We Use Math.Max because if scale is negative, the level does flip.
+            GetMainViewModel.GridContentScale = (double)Math.Max(new decimal(0.1), newScaleValue);
         }
 
+        #region Execute buttons
         /// <summary>
         /// Header New Click Execution method
         /// </summary>
@@ -84,6 +135,9 @@ namespace _2Duzz
             if (newMap.DialogResult != true)
                 return;
 
+
+            ChangeStatusBar("Create Level ...");
+
             // returned true, create new Level
             CurrentLevel = new Level(
                 newMap.LevelName,
@@ -92,6 +146,233 @@ namespace _2Duzz
                 newMap.SpriteSizeX,
                 newMap.SpriteSizeY
                 );
+
+            // Reset Panel
+            ImageDrawingHelper.Get.ClearLayer();
+            ImageDrawingHelper.Get.CreateLayer(CurrentLevel.LevelSizeX, CurrentLevel.LevelSizeY, CurrentLevel.SpriteSizeX, CurrentLevel.SpriteSizeY);
+
+            // Set grid size
+            GetMainViewModel.GridContentWidth = CurrentLevel.LevelSizeX * CurrentLevel.SpriteSizeX;
+            GetMainViewModel.GridContentHeight = CurrentLevel.LevelSizeY * CurrentLevel.SpriteSizeY;
+
+            // Set image size
+            GetMainViewModel.ImageSizeX = CurrentLevel.SpriteSizeX;
+            GetMainViewModel.ImageSizeY = CurrentLevel.SpriteSizeY;
+
+            ChangeStatusBar("Level Created!");
+
+            // Add Layer to List
+            LayerList.Items.Clear();
+
+            LayerList.Items.Add(0);
+
+            CurrentLayer = 0;
+            LayerList.SelectedIndex = 0;
+        }
+
+        /// <summary>
+        /// Header Save Click Execution method
+        /// </summary>
+        /// <param name="_parameter"></param>
+        private void ExecuteSaveClick(object _parameter)
+        {
+            if (CurrentLevel == null) return;
+            
+            const string tempDest = "E:\\Tobias\\Dokumente\\TEST\\Testlevel.json";
+
+            ChangeStatusBar($"File saved: {CurrentLevel.SaveJson(tempDest, false)}");
+        }
+
+        /// <summary>
+        /// Add Layer Click Execution method
+        /// </summary>
+        /// <param name="_parameter"></param>
+        private void ExecuteAddLayerClick(object _parameter)
+        {
+            if (CurrentLevel == null) return;
+            ImageDrawingHelper.Get.CreateLayer(CurrentLevel.LevelSizeX, CurrentLevel.LevelSizeY, CurrentLevel.SpriteSizeX, CurrentLevel.SpriteSizeY, LayerList.SelectedIndex + 1);
+
+
+            LayerList.Items.Insert(LayerList.SelectedIndex + 1, LayerList.SelectedIndex + 1);
+
+            LayerList.SelectedIndex++;
+            CurrentLayer = LayerList.SelectedIndex;
+
+            ChangeStatusBar($"Current Index: {CurrentLayer}");
+        }
+
+        /// <summary>
+        /// Remove Layer Click Execution method
+        /// </summary>
+        /// <param name="_parameter"></param>
+        private void ExecuteRemoveLayerClick(object _parameter)
+        {
+            if (CurrentLevel == null
+                || LayerList.Items.Count <= 1) return;
+            ImageDrawingHelper.Get.RemoveLayer(LayerList.SelectedIndex);
+
+            int tempIndex = LayerList.SelectedIndex;
+            LayerList.Items.RemoveAt(LayerList.SelectedIndex);
+            LayerList.SelectedIndex = MathHelper.Between(tempIndex, 0, LayerList.Items.Count - 1);
+            CurrentLayer = LayerList.SelectedIndex;
+
+            ChangeStatusBar($"Current Index: {CurrentLayer}");
+        }
+        #endregion
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            GetMainViewModel.HeaderNewClickCommand = new RelayCommand((r) => ExecuteHeaderNewClick(sender));
+            GetMainViewModel.HeaderSaveClickCommand = new RelayCommand((r) => ExecuteSaveClick(sender));
+            GetMainViewModel.ButtonAddLayerClickCommand = new RelayCommand((r) => ExecuteAddLayerClick(sender));
+            GetMainViewModel.ButtonRemoveLayerClickCommand = new RelayCommand((r) => ExecuteRemoveLayerClick(sender));
+        }
+
+        /// <summary>
+        /// When Gripsplitter moves, check for min and max values of column above it. PLEASE REWORK LATER!
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void GridSplitter_CheckWidth(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
+        {
+            //Type t = sender.GetType();
+            //Type t2 = typeof(FrameworkElement);
+            // check if Type of Sender is type of FrameworkElement. If Value is null, sender was not a FrameworkElement.
+            if (!(sender is FrameworkElement parent))
+                return;
+
+            // check if Parent is null and if parent is type of Grid
+            // If parent is null, escape loop
+            while (parent != null && parent.Parent.GetType() != typeof(Grid))
+            {
+                parent = parent.Parent as FrameworkElement;
+            }
+
+            if (parent == null)
+                return;
+
+            // We have Grid, now we can check Values
+            Grid g = parent.Parent as Grid;
+            GetMainViewModel.StatusBarContent = g.ColumnDefinitions[Grid.GetColumn((FrameworkElement)sender) - 1].Width.Value;
+
+            if (g.ColumnDefinitions[Grid.GetColumn((FrameworkElement)sender) - 1].Width.Value <= 200)
+            {
+                g.ColumnDefinitions[Grid.GetColumn((FrameworkElement)sender) - 1].Width = new GridLength(200);
+            }
+            else if (g.ColumnDefinitions[Grid.GetColumn((FrameworkElement)sender) - 1].Width.Value >= 1000)
+            {
+                g.ColumnDefinitions[Grid.GetColumn((FrameworkElement)sender) - 1].Width = new GridLength(1000);
+            }
+        }
+
+        /// <summary>
+        /// When Gripsplitter moves, check for min and max values of row above it. PLEASE REWORK LATER!
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void GridSplitter_CheckHeight(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
+        {
+            //Type t = sender.GetType();
+            //Type t2 = typeof(FrameworkElement);
+            // check if Type of Sender is type of FrameworkElement. If Value is null, sender was not a FrameworkElement.
+            if (!(sender is FrameworkElement parent))
+                return;
+
+            // check if Parent is null and if parent is type of Grid
+            // If parent is null, escape loop
+            while (parent != null && parent.Parent.GetType() != typeof(Grid))
+            {
+                parent = parent.Parent as FrameworkElement;
+            }
+
+            if (parent == null)
+                return;
+
+            // We have Grid, now we can check Values
+            Grid g = parent.Parent as Grid;
+            GetMainViewModel.StatusBarContent = g.RowDefinitions[Grid.GetRow((FrameworkElement)sender) - 1].Height.Value;
+
+            if (g.RowDefinitions[Grid.GetRow((FrameworkElement)sender) - 1].Height.Value <= 200)
+            {
+                g.RowDefinitions[Grid.GetRow((FrameworkElement)sender) - 1].Height = new GridLength(200);
+            }
+            else if (g.RowDefinitions[Grid.GetRow((FrameworkElement)sender) - 1].Height.Value >= 1000)
+            {
+                g.RowDefinitions[Grid.GetRow((FrameworkElement)sender) - 1].Height = new GridLength(1000);
+            }
+        }
+
+
+        private void Img_MouseRightButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Image tmp = (Image)sender;
+            ChangeStatusBar($"{tmp.Tag}");
+        }
+
+        /// <summary>
+        /// Select an Image with Border. Requires the sender to be an <see cref="Image"/> with a parent of <see cref="Border"/>/>
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Img_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Image tmp = (Image)sender;
+            Border b = (Border)(tmp.Parent);
+
+            // unhighlight border of current selected image
+            TabItemManager.Get.Unhighlight(CurrentSelectedImage);
+
+            // highlight border of new selected image
+            TabItemManager.Get.Highlight(b);
+
+            // set current selected Image
+            CurrentSelectedImage = tmp;
+            ChangeStatusBar($"Selected Image: {tmp.Tag}");
+        }
+
+        private void GridContent_Images_SwitchImage(object sender, MouseEventArgs e, Point oldPosition, Point newPosition)
+        {
+            if (CurrentSelectedImage == null
+                || e.LeftButton != MouseButtonState.Pressed)
+                return;
+
+            ImageDrawingHelper.Get.ReplaceImage(
+                (int)newPosition.X,
+                (int)newPosition.Y,
+                CurrentLevel.SpriteSizeX,
+                CurrentLevel.SpriteSizeY,
+                CurrentLevel.LevelSizeX,
+                CurrentLevel.LevelSizeY,
+                CurrentLayer,
+                CurrentSelectedImage.Source.ToString()
+                );
+
+            ChangeStatusBar(newPosition);
+        }
+
+        private void GridContent_Images_OnClickImage(object sender, MouseEventArgs e, Point imagePosition)
+        {
+            if (CurrentSelectedImage == null)
+                return;
+
+            ImageDrawingHelper.Get.ReplaceImage(
+                (int)imagePosition.X,
+                (int)imagePosition.Y,
+                CurrentLevel.SpriteSizeX,
+                CurrentLevel.SpriteSizeY,
+                CurrentLevel.LevelSizeX,
+                CurrentLevel.LevelSizeY,
+                CurrentLayer,
+                CurrentSelectedImage.Source.ToString()
+                );
+        }
+
+
+
+        private void LayerList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            CurrentLayer = LayerList.SelectedIndex;
+            ChangeStatusBar($"Selected Index: {CurrentLayer}");
         }
     }
 }

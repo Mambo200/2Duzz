@@ -16,7 +16,7 @@ namespace _2Duzz.ViewModels
         /// </summary>
         public MainViewModel()
         {
-            HeaderNewClickCommand = new RelayCommand((e) => ExecuteHeaderNewClick("MV Constructor New"));
+            //HeaderNewClickCommand = new RelayCommand((e) => ExecuteHeaderNewClick("MV Constructor New"));
             HeaderOpenClickCommand = new RelayCommand((e) => ExecuteHeaderOpenClick("MV Constructor Open"));
             HeaderSaveClickCommand = new RelayCommand((e) => ExecuteHeaderSaveClick("MV Constructor Save"));
             HeaderSaveAsClickCommand = new RelayCommand((e) => ExecuteHeaderSaveAsClick("MV Constructor SaveAs"));
@@ -24,6 +24,7 @@ namespace _2Duzz.ViewModels
 
             GridContentScale = 1;
             GridContentWidth = 1200;
+            GridContentHeight = 1200;
 
             ImageSizeX = 600;
             ImageSizeY = 600;
@@ -57,13 +58,17 @@ namespace _2Duzz.ViewModels
 
         #region KeyBinding
         #region Header New Click
+        private ICommand m_HeaderNewClickCommand;
         /// <summary>
         /// Header New Click command
         /// </summary>
         public ICommand HeaderNewClickCommand
         {
-            get;
-            set;
+            get => m_HeaderNewClickCommand;
+            set
+            {
+                SetProperty(ref m_HeaderNewClickCommand, value);
+            }
         }
 
         /// <summary>
@@ -86,13 +91,17 @@ namespace _2Duzz.ViewModels
         #endregion
 
         #region Header Open Click
+        private ICommand m_HeaderOpenClickCommand;
         /// <summary>
         /// Header Open Click command
         /// </summary>
         public ICommand HeaderOpenClickCommand
         {
-            get;
-            set;
+            get => m_HeaderOpenClickCommand;
+            set
+            {
+                SetProperty(ref m_HeaderOpenClickCommand, value);
+            }
         }
 
         /// <summary>
@@ -106,13 +115,17 @@ namespace _2Duzz.ViewModels
         #endregion
 
         #region Header Save Click
+        private ICommand m_HeaderSaveClickCommand;
         /// <summary>
         /// Header Save Click command
         /// </summary>
         public ICommand HeaderSaveClickCommand
         {
-            get;
-            set;
+            get => m_HeaderSaveClickCommand;
+            set
+            {
+                SetProperty(ref m_HeaderSaveClickCommand, value);
+            }
         }
 
         /// <summary>
@@ -126,14 +139,20 @@ namespace _2Duzz.ViewModels
         #endregion
 
         #region Header SaveAs Click
+        private ICommand m_HeaderSaveAsClickCommand;
         /// <summary>
         /// Header SaveAs Click command
         /// </summary>
         public ICommand HeaderSaveAsClickCommand
         {
-            get;
-            set;
+            get => m_HeaderSaveAsClickCommand;
+            set
+            {
+                SetProperty(ref m_HeaderSaveAsClickCommand, value);
+            }
         }
+
+        
 
         /// <summary>
         /// Header SaveAs Click Execution method
@@ -146,13 +165,17 @@ namespace _2Duzz.ViewModels
         #endregion
 
         #region Header Close Click
+        private ICommand m_HeaderCloseClickCommand;
         /// <summary>
         /// Header Close Click command
         /// </summary>
         public ICommand HeaderCloseClickCommand
         {
-            get;
-            set;
+            get => m_HeaderCloseClickCommand;
+            set
+            {
+                SetProperty(ref m_HeaderCloseClickCommand, value);
+            }
         }
 
         /// <summary>
@@ -164,6 +187,37 @@ namespace _2Duzz.ViewModels
             MessageBox.Show(_parameter.ToString());
         }
         #endregion
+
+        #region Button Add Layer Click
+        private ICommand m_ButtonAddLayerClickCommand;
+        /// <summary>
+        /// Button Add Layer Click command
+        /// </summary>
+        public ICommand ButtonAddLayerClickCommand
+        {
+            get => m_ButtonAddLayerClickCommand;
+            set
+            {
+                SetProperty(ref m_ButtonAddLayerClickCommand, value);
+            }
+        }
+        #endregion
+
+        #region Button Remove Layer Click
+        private ICommand m_ButtonRemoveLayerClickCommand;
+        /// <summary>
+        /// Button Add Layer Click command
+        /// </summary>
+        public ICommand ButtonRemoveLayerClickCommand
+        {
+            get => m_ButtonRemoveLayerClickCommand;
+            set
+            {
+                SetProperty(ref m_ButtonRemoveLayerClickCommand, value);
+            }
+        }
+        #endregion
+
         #endregion
 
         #region MouseBinding
@@ -193,6 +247,19 @@ namespace _2Duzz.ViewModels
                 //NotifyOfPropertyChange(nameof([PROPERTY]));
             }
         }
+
+        private double m_GridContentHeight;
+        public double GridContentHeight
+        {
+            get => m_GridContentHeight;
+            set
+            {
+                SetProperty(ref m_GridContentHeight, value);
+                //NotifyOfPropertyChange(nameof([PROPERTY]));
+            }
+        }
+
+        
         #endregion
 
         #region Image Size

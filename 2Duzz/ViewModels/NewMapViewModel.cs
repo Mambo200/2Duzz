@@ -17,8 +17,8 @@ namespace _2Duzz.ViewModels
 
             LevelNameText = LEVELNAMEDEFAULTVALUE;
 
-            SpriteSizeXText = "128";
-            SpriteSizeYText = "128";
+            SpriteSizeXText = "32";
+            SpriteSizeYText = "32";
 
             LevelSizeXText = "Level Size X";
             LevelSizeYText = "Level Size Y";
@@ -74,20 +74,32 @@ namespace _2Duzz.ViewModels
         {
             get => CanClick();
         }
+
         private bool CanClick()
         {
-            if (!string.IsNullOrWhiteSpace(LevelNameText) 
+
+            if (
+                // Check level name
+                !string.IsNullOrWhiteSpace(LevelNameText) 
                 && LevelNameText != LEVELNAMEDEFAULTVALUE
+
+                // check level size
                 && int.TryParse(LevelSizeXText, out int temp1)
                 && int.TryParse(LevelSizeYText, out int temp2)
+                && temp1 > 0
+                && temp2 > 0
+
+                // check sprite size
                 && int.TryParse(SpriteSizeXText, out int temp3)
-                && int.TryParse(SpriteSizeYText, out int temp4))
+                && int.TryParse(SpriteSizeYText, out int temp4)
+                && temp3 > 0
+                && temp4 > 0
+                )
                 return true;
             else
                 return false;
         }
         #endregion
-
 
         private string m_LevelNameText;
         public string LevelNameText

@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+
+//JSON
+using Newtonsoft.Json;
 
 namespace LevelData
 {
@@ -68,5 +72,26 @@ namespace LevelData
         public int SpriteSizeX { get; set; }
         /// <summary>Height of sprites</summary>
         public int SpriteSizeY { get; set; }
+
+
+        public bool SaveJson(string _absolutePath, bool _overwrite = true)
+        {
+            // check if file already exists. If it exists and overwrite is false, return false
+            if (File.Exists(_absolutePath)
+                && !_overwrite)
+                return false;
+
+            // serialize JSON to a string and then write string to a file
+            File.WriteAllText(_absolutePath, JsonConvert.SerializeObject(this));
+
+            // serialize JSON directly to a file
+            using (StreamWriter file = File.CreateText(_absolutePath))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                serializer.Serialize(file, this);
+            }
+
+            return true;
+        }
     }
 }

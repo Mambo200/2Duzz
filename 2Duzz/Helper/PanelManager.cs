@@ -125,5 +125,34 @@ namespace _2Duzz.Helper
             // Clear Panels list
             Panels.Clear();
         }
+
+        /// <summary>
+        /// Set size of Grid
+        /// </summary>
+        /// <param name="_fieldSizeX">size of width</param>
+        /// <param name="_fieldSizeY">size of height</param>
+        /// <param name="_viewModel">view model</param>
+        public void SetFieldSize(double _fieldSizeX, double _fieldSizeY, ViewModels.MainViewModel _viewModel)
+        {
+            // We do not need to set Height, because height of Grid does not matter to us
+            // EDIT: We need to set Height for Grid to have a set height so it can work with it.
+            _viewModel.GridContentWidth = _fieldSizeX;
+            _viewModel.GridContentHeight = _fieldSizeY;
+
+        }
+
+        /// <summary>
+        /// Set size of grid according to Sprite size and level size
+        /// </summary>
+        /// <param name="_spriteSizeX">width of sprite size</param>
+        /// <param name="_spriteSizeY">width of sprite size</param>
+        /// <param name="_levelSizeX">width of level size</param>
+        /// <param name="_levelSizeY">height of level size</param>
+        /// <param name="_viewModel">view model</param>
+        public void SetFieldSize(double _spriteSizeX, double _spriteSizeY, int _levelSizeX, int _levelSizeY, ViewModels.MainViewModel _viewModel)
+        {
+            _viewModel.GridContentWidth = _spriteSizeX * _levelSizeX;
+            _viewModel.GridContentHeight = _spriteSizeY * _levelSizeY;
+        }
     }
 }
