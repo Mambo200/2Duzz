@@ -73,6 +73,14 @@ namespace LevelData
         /// <summary>Height of sprites</summary>
         public int SpriteSizeY { get; set; }
 
+        /// <summary>Images saved as Base64</summary>
+        public string[] LevelImagesData { get; set; }
+
+        /// <summary>
+        /// Image index of images in level.
+        /// First dimension: amount of layer; Second dimension: amount of images. Value is index in <see cref="LevelImagesData"/>.
+        /// </summary>
+        public int[,] LevelImages { get; set; }
 
         public bool SaveJson(string _absolutePath, bool _overwrite = true)
         {

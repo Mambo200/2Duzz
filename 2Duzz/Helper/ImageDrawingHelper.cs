@@ -469,7 +469,7 @@ namespace _2Duzz.Helper
         /// <param name="_xSize">Count of images in width</param>
         /// <param name="_xPosition">2-Dimensional X-Position</param>
         /// <param name="_yPosition">2-Dimensional Y-Position</param>
-        private void ChangeDimensions(int _position, int _xSize, out int _xPosition, out int _yPosition)
+        public void ChangeDimensions(int _position, int _xSize, out int _xPosition, out int _yPosition)
         {
             _yPosition = _position / _xSize;
             _xPosition = _position % _xSize;
@@ -478,11 +478,11 @@ namespace _2Duzz.Helper
         /// <summary>
         /// Convert a 2-Dimensional Position into a 1-Dimensional Position.
         /// </summary>
-        /// <param name="_xPosition">2-Dimensional X-Position</param>
-        /// <param name="_yPosition">2-Dimensional Y-Position</param>
+        /// <param name="_xPosition">Index of 2-Dimensional X-Position</param>
+        /// <param name="_yPosition">Index of 2-Dimensional Y-Position</param>
         /// <param name="_xSize">Count of images in width</param>
         /// <returns></returns>
-        private int ChangeDimensions(int _xPosition, int _yPosition, int _xSize)
+        public int ChangeDimensions(int _xPosition, int _yPosition, int _xSize)
         {
             int toReturn = _yPosition * _xSize;
             toReturn += _xPosition;
