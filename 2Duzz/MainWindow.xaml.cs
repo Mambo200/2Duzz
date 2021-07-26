@@ -189,6 +189,18 @@ namespace _2Duzz
         }
 
         /// <summary>
+        /// Header Save Click Execution method
+        /// </summary>
+        /// <param name="_parameter"></param>
+        private void ExecuteOpenClick(object _parameter)
+        {
+            const string tempDest = "E:\\Tobias\\Dokumente\\TEST\\Testlevel.json";
+
+            CurrentLevel = Level.ReadJSON(tempDest);
+        }
+
+
+        /// <summary>
         /// Set <see cref="Level.LevelImages"/>
         /// </summary>
         public void SetLevelImagesStringArray()
@@ -267,6 +279,7 @@ namespace _2Duzz
         {
             GetMainViewModel.HeaderNewClickCommand = new RelayCommand((r) => ExecuteHeaderNewClick(sender));
             GetMainViewModel.HeaderSaveClickCommand = new RelayCommand((r) => ExecuteSaveClick(sender));
+            GetMainViewModel.HeaderOpenClickCommand = new RelayCommand((r) => ExecuteOpenClick(sender));
             GetMainViewModel.ButtonAddLayerClickCommand = new RelayCommand((r) => ExecuteAddLayerClick(sender));
             GetMainViewModel.ButtonRemoveLayerClickCommand = new RelayCommand((r) => ExecuteRemoveLayerClick(sender));
         }
