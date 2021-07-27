@@ -60,6 +60,7 @@
     <Compile Include="Helper\BindingHelper.cs" />
     <Compile Include="Converters\DoubleToPercentageStringConverter.cs" />
     <Compile Include="Converters\KeyBindingToStringConverter.cs" />
+    <Compile Include="Helper\FileHelper.cs" />
     <Compile Include="Helper\ImageDrawingHelper.cs" />
     <Compile Include="Helper\ImageManager.cs" />
     <Compile Include="Helper\MathHelper.cs" />

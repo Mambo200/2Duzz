@@ -82,6 +82,12 @@ namespace LevelData
         /// </summary>
         public int[,] LevelImages { get; set; }
 
+        /// <summary>
+        /// Save data as JSON to file
+        /// </summary>
+        /// <param name="_absolutePath">absolute Path of file</param>
+        /// <param name="_overwrite">overwrite old file if it exists</param>
+        /// <returns>If save was successful return true; else false</returns>
         public bool SaveJson(string _absolutePath, bool _overwrite = true)
         {
             // check if file already exists. If it exists and overwrite is false, return false
@@ -102,10 +108,89 @@ namespace LevelData
             return true;
         }
 
+        /// <summary>
+        /// Save data as JSON file
+        /// </summary>
+        /// <param name="_absolutePath">absolute Path of file</param>
+        /// <param name="_exception">Exception if one was thrown</param>
+        /// <param name="_overwrite">overwrite old file if it exists</param>
+        /// <returns>If save was successful return true; else false</returns>
+        public bool SaveJson(string _absolutePath, out Exception _exception, bool _overwrite = true)
+        {
+            _exception = null;
+
+            // check if file already exists. If it exists and overwrite is false, return false
+            if (File.Exists(_absolutePath)
+                && !_overwrite)
+                return false;
+            
+            try
+            {
+                // serialize JSON to a string and then write string to a file
+                File.WriteAllText(_absolutePath, JsonConvert.SerializeObject(this));
+
+                // serialize JSON directly to a file
+                using (StreamWriter file = File.CreateText(_absolutePath))
+                {
+                    JsonSerializer serializer = new JsonSerializer();
+                    serializer.Serialize(file, this);
+                }
+            }
+            catch (Exception ex)
+            {
+                _exception = ex;
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Open a .lvd JSON file
+        /// </summary>
+        /// <param name="_absolutePath">absolute path of file</param>
+        /// <returns></returns>
         public static Level ReadJSON(string _absolutePath)
         {
             // read file into a string and deserialize JSON to a type
-            return JsonConvert.DeserializeObject<Level>(File.ReadAllText(_absolutePath));
+            Level tr = JsonConvert.DeserializeObject<Level>(File.ReadAllText(_absolutePath));
+
+            if (CheckLevel(tr))
+                return tr;
+            else
+                return null;
+        }
+
+        /// <summary>
+        /// Check if all of level data is correct
+        /// </summary>
+        /// <param name="_lvl">level to check</param>
+        /// <returns>true if everything is fine; else false</returns>
+        public static bool CheckLevel(Level _lvl)
+        {
+            if (_lvl == null
+                || _lvl.LevelImagesData == null
+                || _lvl.LevelImages == null)
+                return false;
+
+            if (_lvl.LevelSizeX < 1
+                || _lvl.LevelSizeY < 1)
+                return false;
+
+            if (_lvl.SpriteSizeX < 1
+                || _lvl.SpriteSizeY < 1)
+                return false;
+
+            foreach (string s in _lvl.LevelImagesData)
+            {
+                if (string.IsNullOrEmpty(s))
+                    return false;
+            }
+
+            if (_lvl.LevelImages.GetLength(1) != _lvl.LevelSizeX * _lvl.LevelSizeY)
+                return false;
+
+            return true;
         }
     }
 }

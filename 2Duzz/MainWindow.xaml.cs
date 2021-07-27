@@ -182,11 +182,45 @@ namespace _2Duzz
         {
             if (CurrentLevel == null) return;
 
-            SetLevelImagesStringArray();
-            const string tempDest = "E:\\Tobias\\Dokumente\\TEST\\Testlevel.json";
+            string path = FileHelper.LastValidFile;
 
-            ChangeStatusBar($"File saved: {CurrentLevel.SaveJson(tempDest, true)}");
+            // Check if path is valid
+            if (string.IsNullOrEmpty(path))
+            {
+                // path not valid. Let user decide new path
+                ExecuteSaveAsClick(_parameter);
+
+                // we return here because if Method "ExecuteSaveAsClick(object)" which we use above, the file will be saved there.
+                return;
+            }
+
+            SetLevelImagesStringArray();
+
+            FileHelper.FileDialogSaveStatusText(path, CurrentLevel.SaveJson(path), this);
         }
+
+        /// <summary>
+        /// Header Save Click Execution method
+        /// </summary>
+        /// <param name="_parameter"></param>
+        private void ExecuteSaveAsClick(object _parameter)
+        {
+            if (CurrentLevel == null) return;
+
+            string path = Helper.FileHelper.GetSavePath();
+
+            // Check if string is valid or not
+            if (string.IsNullOrEmpty(path))
+            {
+                ChangeStatusBar($"File save aborted by user");
+                return;
+            }
+
+            SetLevelImagesStringArray();
+
+            FileHelper.FileDialogSaveStatusText(path, CurrentLevel.SaveJson(path), this);
+        }
+
 
         /// <summary>
         /// Header Save Click Execution method
@@ -194,14 +228,23 @@ namespace _2Duzz
         /// <param name="_parameter"></param>
         private void ExecuteOpenClick(object _parameter)
         {
-            const string tempDest = "E:\\Tobias\\Dokumente\\TEST\\Testlevel.json";
+            string path = Helper.FileHelper.GetOpenPath();
 
-            CurrentLevel = Level.ReadJSON(tempDest);
+            // Check if string is valid or not
+            if (string.IsNullOrEmpty(path))
+            {
+                ChangeStatusBar($"File save aborted by user");
+                return;
+            }
+
+            CurrentLevel = Level.ReadJSON(path);
+
+            FileHelper.FileDialogOpenStatusText(path, CurrentLevel != null, this);
         }
 
 
         /// <summary>
-        /// Set <see cref="Level.LevelImages"/>
+        /// Set <see cref="Level.LevelImages"/> and <see cref="Level.LevelImagesData"/>
         /// </summary>
         public void SetLevelImagesStringArray()
         {
@@ -224,7 +267,7 @@ namespace _2Duzz
                     // Check if Image was already used.
                     int index = base64Images.IndexOf(currentB64Image);
 
-                    if(index < 0)
+                    if (index < 0)
                     {
                         // No index found. Add string to list and update index
                         base64Images.Add(currentB64Image);
@@ -277,11 +320,12 @@ namespace _2Duzz
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            GetMainViewModel.HeaderNewClickCommand = new RelayCommand((r) => ExecuteHeaderNewClick(sender));
-            GetMainViewModel.HeaderSaveClickCommand = new RelayCommand((r) => ExecuteSaveClick(sender));
-            GetMainViewModel.HeaderOpenClickCommand = new RelayCommand((r) => ExecuteOpenClick(sender));
-            GetMainViewModel.ButtonAddLayerClickCommand = new RelayCommand((r) => ExecuteAddLayerClick(sender));
-            GetMainViewModel.ButtonRemoveLayerClickCommand = new RelayCommand((r) => ExecuteRemoveLayerClick(sender));
+            GetMainViewModel.HeaderNewClickCommand = new RelayCommand((r) => ExecuteHeaderNewClick(HeaderNew));
+            GetMainViewModel.HeaderOpenClickCommand = new RelayCommand((r) => ExecuteOpenClick(HeaderOpen));
+            GetMainViewModel.HeaderSaveClickCommand = new RelayCommand((r) => ExecuteSaveClick(HeaderSave));
+            GetMainViewModel.HeaderSaveAsClickCommand = new RelayCommand((r) => ExecuteSaveAsClick(HeaderSaveAs));
+            GetMainViewModel.ButtonAddLayerClickCommand = new RelayCommand((r) => ExecuteAddLayerClick(ButtonAddLayer));
+            GetMainViewModel.ButtonRemoveLayerClickCommand = new RelayCommand((r) => ExecuteRemoveLayerClick(ButtonRemoveLayer));
         }
 
         /// <summary>
