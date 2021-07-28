@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -94,6 +95,42 @@ namespace _2Duzz.Helper
         /// <summary>
         /// Add Item to TabItem
         /// </summary>
+        /// <param name="_layer">TabItem</param>
+        /// <param name="_path">Path of Image</param>
+        /// <returns></returns>
+        public Image AddImageToTabItem(TabItem _layer, Uri _path)
+        {
+            WrapPanel wp = GetWrapPanel(_layer);
+
+            Image img = PrepareImage(_path);
+            wp.Children.Add(PrepareBorder(img));
+            //SetTag(img, wp);
+
+            return img;
+        }
+
+        /// <summary>
+        /// Add Item to TabItem
+        /// </summary>
+        /// <param name="_header">Header of TabItem in ItemControl</param>
+        /// <param name="_path">Path of Image</param>
+        /// <returns></returns>
+        public Image AddImageToTabItem(object _header, Uri _path)
+        {
+            WrapPanel wp = GetWrapPanel(GetTabItem(_header));
+
+            Image img = PrepareImage(_path);
+            wp.Children.Add(PrepareBorder(img));
+            //SetTag(img, wp);
+
+            return img;
+        }
+
+
+
+        /// <summary>
+        /// Add Item to TabItem
+        /// </summary>
         /// <param name="_layer">Position of TabItem in ItemControl</param>
         /// <param name="_path">Path of Image</param>
         /// <param name="_leftButtonDown">event called when item is leftclicked</param>
@@ -109,6 +146,45 @@ namespace _2Duzz.Helper
 
             return img;
         }
+
+        /// <summary>
+        /// Add Item to TabItem
+        /// </summary>
+        /// <param name="_layer">TabItem</param>
+        /// <param name="_path">Path of Image</param>
+        /// <param name="_leftButtonDown">event called when item is leftclicked</param>
+        /// <param name="_rightButtonDown">event called when item is rightclicked</param>
+        /// <returns></returns>
+        public Image AddImageToTabItem(TabItem _layer, Uri _path, MouseButtonEventHandler _leftButtonDown, MouseButtonEventHandler _rightButtonDown)
+        {
+            WrapPanel wp = GetWrapPanel(_layer);
+
+            Image img = PrepareImage(_path, _leftButtonDown, _rightButtonDown);
+            //SetTag(img, wp);
+            wp.Children.Add(PrepareBorder(img));
+
+            return img;
+        }
+
+        /// <summary>
+        /// Add Item to TabItem
+        /// </summary>
+        /// <param name="_header">Header of TabItem in ItemControl</param>
+        /// <param name="_path">Path of Image</param>
+        /// <param name="_leftButtonDown">event called when item is leftclicked</param>
+        /// <param name="_rightButtonDown">event called when item is rightclicked</param>
+        /// <returns></returns>
+        public Image AddImageToTabItem(object _header, Uri _path, MouseButtonEventHandler _leftButtonDown, MouseButtonEventHandler _rightButtonDown)
+        {
+            WrapPanel wp = GetWrapPanel(GetTabItem(_header));
+
+            Image img = PrepareImage(_path, _leftButtonDown, _rightButtonDown);
+            //SetTag(img, wp);
+            wp.Children.Add(PrepareBorder(img));
+
+            return img;
+        }
+
 
         [Obsolete("Does not Work with streams so be aware.")]
         /// <summary>
@@ -317,6 +393,14 @@ namespace _2Duzz.Helper
             img.Tag = _panel.Children.Count;
         }
 
+        public Image GetImage(int _layerIndex, int _imageIndex)
+        {
+            WrapPanel wp = GetWrapPanel(GetTabItem(_layerIndex));
+            Border b = wp.Children[_imageIndex] as Border;
+
+            return b.Child as Image;
+        }
+
         #region (un)highlight
         /// <summary>
         /// Unhighlight Border --> Set Border Color
@@ -357,5 +441,6 @@ namespace _2Duzz.Helper
                 ((Border)(_image.Parent)).BorderBrush = HighlightColor;
         }
         #endregion
+
     }
 }

@@ -194,9 +194,12 @@ namespace _2Duzz
                 return;
             }
 
+
             SetLevelImagesStringArray();
 
             FileHelper.FileDialogSaveStatusText(path, CurrentLevel.SaveJson(path), this);
+
+            ImageLoader.SaveLevelImagesFromFileToDirectory(CurrentLevel.LevelImagesData, path);
         }
 
         /// <summary>
@@ -219,6 +222,8 @@ namespace _2Duzz
             SetLevelImagesStringArray();
 
             FileHelper.FileDialogSaveStatusText(path, CurrentLevel.SaveJson(path), this);
+
+            ImageLoader.SaveLevelImagesFromFileToDirectory(CurrentLevel.LevelImagesData, path);
         }
 
 
@@ -238,10 +243,61 @@ namespace _2Duzz
             }
 
             CurrentLevel = Level.ReadJSON(path);
+            ImageLoader.SaveLevelImagesFromFileToDirectory(CurrentLevel.LevelImagesData, path);
+            string[] imagesPaths = ImageLoader.LoadImagesFromFolderToTabItem(path, Img_MouseLeftButtonDown, Img_MouseRightButtonDown, out TabItem addedTo);
+            OpenLevel(CurrentLevel, imagesPaths, addedTo);
+
 
             FileHelper.FileDialogOpenStatusText(path, CurrentLevel != null, this);
         }
 
+        private void OpenLevel(Level _l, string[] _imagePaths, TabItem _tabItem)
+        {
+            // Reset Image Panel
+            ImageDrawingHelper.Get.ClearLayer();
+            int layerCount = _l.LevelImages.GetLength(0);
+            ImageDrawingHelper.Get.CreateLayer(_l.LevelSizeX, _l.LevelSizeY, _l.SpriteSizeX, _l.SpriteSizeY);
+            LayerList.Items.Clear();
+            LayerList.Items.Add(0);
+            CurrentLayer = 0;
+
+            // create layer
+            for (int i = 1; i < layerCount; i++)
+            {
+                ExecuteAddLayerClick(this);
+            }
+
+            // Set grid size
+            GetMainViewModel.GridContentWidth = CurrentLevel.LevelSizeX * CurrentLevel.SpriteSizeX;
+            GetMainViewModel.GridContentHeight = CurrentLevel.LevelSizeY * CurrentLevel.SpriteSizeY;
+
+            // Set image size
+            GetMainViewModel.ImageSizeX = CurrentLevel.SpriteSizeX;
+            GetMainViewModel.ImageSizeY = CurrentLevel.SpriteSizeY;
+
+            // replace images
+            for (int l = 0; l < layerCount; l++)
+            {
+                TabItem currentTabItem = TabItemManager.Get.GetTabItem(l);
+                for (int i = 0; i < _l.LevelSizeX * _l.LevelSizeY; i++)
+                {
+                    Image img = TabItemManager.Get.GetImage(l, _l.LevelImages[l, i]);
+                    ImageDrawingHelper.Get.ReplaceImage(
+                        i,
+                        _l.SpriteSizeX,
+                        _l.SpriteSizeY,
+                        _l.LevelSizeX,
+                        _l.LevelSizeY,
+                        l,
+                        img.Source.ToString()
+                        );
+                }
+            }
+
+            CurrentLayer = 0;
+            LayerList.SelectedIndex = 0;
+            ChangeStatusBar("Level Created!");
+        }
 
         /// <summary>
         /// Set <see cref="Level.LevelImages"/> and <see cref="Level.LevelImagesData"/>
