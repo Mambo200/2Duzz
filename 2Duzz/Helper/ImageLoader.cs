@@ -30,12 +30,13 @@ namespace _2Duzz.Helper
                 System.Drawing.Image img = null;
                 try
                 {
-                    img = MyConverter.FromBase64(_imageData[i]);
-                    img.Save(Path.Combine(sub.FullName, i.ToString(), ".png"), System.Drawing.Imaging.ImageFormat.Png);
+                    img = MyConverter.FromBase64(_imageData[i], out MemoryStream ms);
+                    string path = Path.Combine(sub.FullName, i.ToString() + ".png");
+                    img.Save(path, System.Drawing.Imaging.ImageFormat.Png);
                 }
-                catch (Exception)
+                catch (Exception _ex)
                 {
-
+                    System.Windows.MessageBox.Show(_ex.Message, "Exception!");
                 }
                 finally
                 {
@@ -45,24 +46,28 @@ namespace _2Duzz.Helper
             }
         }
 
-        public static void LoadImagesFromFolderToTabItem(string _levelPath, System.Windows.Input.MouseButtonEventHandler _leftClick, System.Windows.Input.MouseButtonEventHandler _rightClick)
+        public static string[] LoadImagesFromFolderToTabItem(string _levelPath, System.Windows.Input.MouseButtonEventHandler _leftClick, System.Windows.Input.MouseButtonEventHandler _rightClick, out System.Windows.Controls.TabItem _tabItem)
         {
+            _tabItem = null;
+
             // get main image folder
             DirectoryInfo main = FileHelper.GetImageMainFolder(_levelPath);
 
             string imageDirectoryPath = Path.Combine(main.FullName, LEVELIMAGEDIRECTORY);
             // If folder with level images does not exist return immediately
             if (!Directory.Exists(imageDirectoryPath))
-                return;
+                return null;
 
             string[] images = Directory.GetFiles(imageDirectoryPath, "*.png", SearchOption.TopDirectoryOnly);
 
-            var tabItem = TabItemManager.Get.AddTabItem(LEVELIMAGEDIRECTORY);
+            _tabItem = TabItemManager.Get.AddTabItem(LEVELIMAGEDIRECTORY);
 
             for (int i = 0; i < images.Length; i++)
             {
-                TabItemManager.Get.AddImageToTabItem(tabItem, new Uri(images[i]), _leftClick, _rightClick);
+                TabItemManager.Get.AddImageToTabItem(_tabItem, new Uri(images[i]), _leftClick, _rightClick);
             }
+
+            return images;
         }
     }
 }

@@ -393,6 +393,14 @@ namespace _2Duzz.Helper
             img.Tag = _panel.Children.Count;
         }
 
+        public Image GetImage(int _layerIndex, int _imageIndex)
+        {
+            WrapPanel wp = GetWrapPanel(GetTabItem(_layerIndex));
+            Border b = wp.Children[_imageIndex] as Border;
+
+            return b.Child as Image;
+        }
+
         #region (un)highlight
         /// <summary>
         /// Unhighlight Border --> Set Border Color

@@ -173,6 +173,36 @@ namespace _2Duzz.Helper
         /// <summary>
         /// Replace existing Image.
         /// </summary>
+        /// <param name="_position">One dimensional position</param>
+        /// <param name="_imageSizeX">X Size of Sprite</param>
+        /// <param name="_imageSizeY">Y Size of Sprite</param>
+        /// <param name="_imageCountX">Width image count</param>
+        /// <param name="_imageCountY">Height image count</param>
+        /// <param name="_layer">Layer to insert Image</param>
+        /// <param name="_source">source of Image</param>
+        /// <returns></returns>
+        public ImageDrawing ReplaceImage(int _position, double _imageSizeX, double _imageSizeY, int _imageCountX, int _imageCountY, int _layer, string _source)
+        {
+            // Get 2D Position
+            ChangeDimensions(_position, (int)_imageCountX, out int xPosition, out int yPosition);
+
+            // Get DrawingGroup
+            DrawingGroup dg = GetDrawingGroup(_layer);
+
+            // Get index of DrawingGroup
+            int index = dg.Children.IndexOf(ImagesAtLayer[_layer][_position]);
+
+            // Remove ImageDrawing from DrawingGroup and Dictionary
+            dg.Children.RemoveAt(index);
+            RemoveFromDictionary(xPosition, yPosition, (int)_imageCountX, _layer);
+
+            return AddImage(xPosition, yPosition, _imageSizeX, _imageSizeY, _layer, _imageCountX, _imageCountY, _source);
+        }
+
+
+        /// <summary>
+        /// Replace existing Image.
+        /// </summary>
         /// <param name="_xPosition">X-index of Image</param>
         /// <param name="_yPosition">Y-index of Image</param>
         /// <param name="_imageSizeX">X Size of Sprite</param>
@@ -200,6 +230,38 @@ namespace _2Duzz.Helper
 
             return AddImage(_xPosition, _yPosition, _imageSizeX, _imageSizeY, layer, _imageCountX, _imageCountY, _source);
         }
+
+        /// <summary>
+        /// Replace existing Image.
+        /// </summary>
+        /// <param name="_xPosition">X-index of Image</param>
+        /// <param name="_yPosition">Y-index of Image</param>
+        /// <param name="_imageSizeX">X Size of Sprite</param>
+        /// <param name="_imageSizeY">Y Size of Sprite</param>
+        /// <param name="_imageCountX">Width image count</param>
+        /// <param name="_imageCountY">Height image count</param>
+        /// <param name="_dg"><see cref="DrawingGroup"/> to insert image</param>
+        /// <param name="_source"></param>
+        /// <returns></returns>
+        public ImageDrawing ReplaceImage(int _position, double _imageSizeX, double _imageSizeY, int _imageCountX, int _imageCountY, DrawingGroup _dg, string _source)
+        {
+            // Get 1D Position
+            ChangeDimensions(_position, _imageCountX, out int xPosition, out int yPosition);
+
+            // Get layer from DrawingGroup for better performance
+            int layer = GetLayerFromDrawingGroup(_dg);
+
+            // Get index of DrawingGroup
+            int index = _dg.Children.IndexOf(ImagesAtLayer[layer][_position]);
+
+            // Remove ImageDrawing from DrawingGroup and Dictionary
+            _dg.Children.RemoveAt(index);
+            RemoveFromDictionary(xPosition, yPosition, (int)_imageCountX, layer);
+            ImagesAtLayer[layer].Remove(_position);
+
+            return AddImage(xPosition, yPosition, _imageSizeX, _imageSizeY, layer, _imageCountX, _imageCountY, _source);
+        }
+
         #endregion
 
         /// <summary>
