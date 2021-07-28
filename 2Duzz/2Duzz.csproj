@@ -37,6 +37,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -62,6 +63,7 @@
     <Compile Include="Converters\KeyBindingToStringConverter.cs" />
     <Compile Include="Helper\FileHelper.cs" />
     <Compile Include="Helper\ImageDrawingHelper.cs" />
+    <Compile Include="Helper\ImageLoader.cs" />
     <Compile Include="Helper\ImageManager.cs" />
     <Compile Include="Helper\MathHelper.cs" />
     <Compile Include="Helper\MyConverter.cs" />

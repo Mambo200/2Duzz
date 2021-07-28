@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -145,6 +146,36 @@ namespace _2Duzz.Helper
                 preText = "Error: Failed to open file: ";
 
             _statusBar.ChangeStatusBar(preText + $"\"{_path}\".");
+        }
+
+        /// <summary>
+        /// Get main image folder. Create it if it doesn't exist
+        /// </summary>
+        /// <param name="_levelFile">absolute path of level file location</param>
+        /// <param name="_createFolder">true if folder shall be created if it not exists; else false.</param>
+        /// <returns></returns>
+        public static DirectoryInfo GetImageMainFolder(string _levelFile)
+        {
+            string s = RemoveExtension(_levelFile);
+
+                if(Directory.Exists(s))
+                    return new DirectoryInfo(s);
+                else
+                    return Directory.CreateDirectory(s);
+        }
+
+        private static string RemoveExtension(string _file)
+        {
+            // get info
+            FileInfo info = new FileInfo(_file);
+
+            // remove extension
+            string tr = info.FullName.Remove(
+                info.FullName.Length - (info.Extension.Length),
+                info.Extension.Length
+                );
+
+            return tr;
         }
     }
 }

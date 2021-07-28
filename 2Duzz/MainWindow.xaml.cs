@@ -205,6 +205,7 @@ namespace _2Duzz
         /// <param name="_parameter"></param>
         private void ExecuteSaveAsClick(object _parameter)
         {
+            FileHelper.GetImageMainFolder("E:\\Alt\\D\\Microsoft Office 2007 Deutsch + seriennummer.iso");
             if (CurrentLevel == null) return;
 
             string path = Helper.FileHelper.GetSavePath();
