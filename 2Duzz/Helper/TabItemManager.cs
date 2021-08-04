@@ -18,6 +18,8 @@ namespace _2Duzz.Helper
         private static Brush NoHighlightColor { get => Brushes.Black; }
         private static Brush HighlightColor { get => Brushes.Red; }
 
+        private TabItem FromFileTab { get; set; }
+
         #region Constructor
         private static TabItemManager m_Instance;
         public static TabItemManager Get
@@ -60,6 +62,21 @@ namespace _2Duzz.Helper
         }
 
         /// <summary>
+        /// Add <see cref="TabItem"/> to Control
+        /// </summary>
+        /// <param name="_header">Header of TabItem</param>
+        /// <returns></returns>
+        public TabItem AddTabItem(object _header, out int _addedIndex)
+        {
+            TabItem t = PrepareTabItem(_header);
+            AddToItemControl(t);
+
+            _addedIndex = ItemControl.Items.IndexOf(t);
+
+            return t;
+        }
+
+        /// <summary>
         /// Add <see cref="TabItem"/> to Control at Index
         /// </summary>
         /// <param name="_header">Header of <see cref="TabItem"/></param>
@@ -71,6 +88,61 @@ namespace _2Duzz.Helper
             AddToItemControl(t, _layer);
 
             return t;
+        }
+        #endregion
+
+        #region RemoveTabItem
+        /// <summary>
+        /// Remove <see cref="TabItem"/> from TabIndex
+        /// </summary>
+        /// <param name="_header">Header of <see cref="TabItem"/></param>
+        /// <returns>true if item vould be removed; else false</returns>
+        public bool RemoveTabItem(object _header)
+        {
+            int tabIndex = -1;
+            // check for each Tabitem if header can be found
+
+            for (int i = 0; i < ItemControl.Items.Count; i++)
+            {
+                if (ItemControl.Items[i] == _header)
+                {
+                    tabIndex = i;
+                    break;
+                }
+            }
+
+            // if no Header could be found return false
+            if (tabIndex < 0)
+                return false;
+
+            //Remove Item
+            ItemControl.Items.RemoveAt(tabIndex);
+            return true;
+        }
+
+        /// <summary>
+        /// Remove <see cref="TabItem"/> from TabIndex
+        /// </summary>
+        /// <param name="_tabIndex">Index of <see cref="TabItem"/></param>
+        public void RemoveTabItem(int _tabIndex)
+        {
+            ItemControl.Items.RemoveAt(_tabIndex);
+        }
+
+        /// <summary>
+        /// Remove <see cref="TabItem"/> from TabIndex.
+        /// </summary>
+        /// <param name="_tabItem">Item to remove</param>
+        /// <returns></returns>
+        public bool RemoveTabItem(TabItem _tabItem)
+        {
+            int countOld = ItemControl.Items.Count;
+            ItemControl.Items.Remove(_tabItem);
+
+            if (countOld - 1 == ItemControl.Items.Count)
+                return true;
+            else
+                return false;
         }
         #endregion
 
@@ -320,13 +392,23 @@ namespace _2Duzz.Helper
         }
 
         /// <summary>
-        /// Get <see cref="TabItem"/> from ItemControl
+        /// Get <see cref="TabItem"/> from <see cref="ItemControl"/>
         /// </summary>
         /// <param name="_index">Index of item</param>
         /// <returns></returns>
         public TabItem GetTabItem(int _index)
         {
             return ItemControl.Items[_index] as TabItem;
+        }
+
+        /// <summary>
+        /// Get index from <see cref="ItemControl"/>
+        /// </summary>
+        /// <param name="_tabitem"><see cref="TabItem"/> where you want the index of</param>
+        /// <returns>The index of the item in the collection, or -1 if the item does not exist in the collection.</returns>
+        public int GetTabIndex(TabItem _tabitem)
+        {
+            return ItemControl.Items.IndexOf(_tabitem);
         }
 
         /// <summary>
@@ -340,6 +422,7 @@ namespace _2Duzz.Helper
             return GetTabItem(index);
         }
 
+        #region Add Tabitem to Item Control (Private)
         /// <summary>
         /// Add Item to ItemControl at last (on Top)
         /// </summary>
@@ -358,6 +441,7 @@ namespace _2Duzz.Helper
         {
             ItemControl.Items.Insert(_layer, _item);
         }
+        #endregion
 
         private WrapPanel GetWrapPanel(TabItem _item) => ((ScrollViewer)_item.Content).Content as WrapPanel;
         private WrapPanel GetWrapPanel(int _itemIndex)
@@ -393,6 +477,7 @@ namespace _2Duzz.Helper
             img.Tag = _panel.Children.Count;
         }
 
+        #region Get Image
         public Image GetImage(int _tabLayer, int _imageIndex)
         {
             WrapPanel wp = GetWrapPanel(GetTabItem(_tabLayer));
@@ -408,6 +493,7 @@ namespace _2Duzz.Helper
 
             return b.Child as Image;
         }
+        #endregion
 
         #region (un)highlight
         /// <summary>
@@ -425,7 +511,7 @@ namespace _2Duzz.Helper
         /// <param name="_image">Image of which Parent has to be <see cref="Border"/>.</param>
         public void Unhighlight(Image _image)
         {
-            if (_image != null 
+            if (_image != null
                 && _image.Parent.GetType() == typeof(Border))
                 ((Border)(_image.Parent)).BorderBrush = NoHighlightColor;
         }
@@ -450,5 +536,19 @@ namespace _2Duzz.Helper
         }
         #endregion
 
+        #region From File Tab
+        public void DeleteFromFileTab()
+        {
+            if (FromFileTab == null)
+                return;
+
+            _ = RemoveTabItem(FromFileTab);
+        }
+
+        public void AddFromFileTab(TabItem _tabItem)
+        {
+            FromFileTab = _tabItem;
+        }
+        #endregion
     }
 }

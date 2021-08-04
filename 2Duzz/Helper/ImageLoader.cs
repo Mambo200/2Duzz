@@ -60,7 +60,9 @@ namespace _2Duzz.Helper
 
             string[] images = Directory.GetFiles(imageDirectoryPath, "*.png", SearchOption.TopDirectoryOnly);
 
+            TabItemManager.Get.DeleteFromFileTab();
             _tabItem = TabItemManager.Get.AddTabItem(LEVELIMAGEDIRECTORY);
+            TabItemManager.Get.AddFromFileTab(_tabItem);
 
             for (int i = 0; i < images.Length; i++)
             {
