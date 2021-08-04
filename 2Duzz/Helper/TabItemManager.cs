@@ -393,9 +393,17 @@ namespace _2Duzz.Helper
             img.Tag = _panel.Children.Count;
         }
 
-        public Image GetImage(int _layerIndex, int _imageIndex)
+        public Image GetImage(int _tabLayer, int _imageIndex)
         {
-            WrapPanel wp = GetWrapPanel(GetTabItem(_layerIndex));
+            WrapPanel wp = GetWrapPanel(GetTabItem(_tabLayer));
+            Border b = wp.Children[_imageIndex] as Border;
+
+            return b.Child as Image;
+        }
+
+        public Image GetImage(TabItem _tabItem, int _imageIndex)
+        {
+            WrapPanel wp = GetWrapPanel(_tabItem);
             Border b = wp.Children[_imageIndex] as Border;
 
             return b.Child as Image;
