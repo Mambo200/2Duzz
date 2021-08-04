@@ -278,10 +278,9 @@ namespace _2Duzz
             // replace images
             for (int l = 0; l < layerCount; l++)
             {
-                TabItem currentTabItem = TabItemManager.Get.GetTabItem(l);
                 for (int i = 0; i < _l.LevelSizeX * _l.LevelSizeY; i++)
                 {
-                    Image img = TabItemManager.Get.GetImage(l, _l.LevelImages[l, i]);
+                    Image img = TabItemManager.Get.GetImage(_tabItem, _l.LevelImages[l, i]);
                     ImageDrawingHelper.Get.ReplaceImage(
                         i,
                         _l.SpriteSizeX,
