@@ -382,10 +382,14 @@ namespace _2Duzz.Helper
         /// <returns></returns>
         private TabItem PrepareTabItem(object _header)
         {
-            TabItem t = new TabItem();
-            t.Header = _header;
-            ScrollViewer sv = new ScrollViewer();
-            sv.Content = new WrapPanel();
+            TabItem t = new TabItem
+            {
+                Header = _header
+            };
+            ScrollViewer sv = new ScrollViewer
+            {
+                Content = new WrapPanel()
+            };
             t.Content = sv;
 
             return t;
@@ -465,10 +469,12 @@ namespace _2Duzz.Helper
         /// <returns></returns>
         private Border PrepareBorder(Image _img)
         {
-            Border b = new Border();
-            b.BorderBrush = NoHighlightColor;
-            b.BorderThickness = new Thickness(1);
-            b.Child = _img;
+            Border b = new Border
+            {
+                BorderBrush = NoHighlightColor,
+                BorderThickness = new Thickness(1),
+                Child = _img
+            };
             return b;
         }
 
