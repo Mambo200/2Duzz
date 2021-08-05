@@ -148,9 +148,10 @@ namespace _2Duzz.Helper
             };
 
             dialog.Controls.Add(new Microsoft.WindowsAPICodePack.Dialogs.Controls.CommonFileDialogCheckBox("Include subfolders", false));
-            _ = dialog.ShowDialog(_main);
+            // if Dialog was cancelled by user, dialog.FileName throws an exception. this is why we need to save the result and check later
+            CommonFileDialogResult result = dialog.ShowDialog(_main);
             _subfolders = ((Microsoft.WindowsAPICodePack.Dialogs.Controls.CommonFileDialogCheckBox)dialog.Controls[0]).IsChecked;
-            return dialog.FileName;
+            return result == CommonFileDialogResult.Ok ? dialog.FileName : "";
         }
 
 
