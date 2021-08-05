@@ -11,6 +11,8 @@ namespace _2Duzz.Helper
 {
     public class ImageDrawingHelper
     {
+        public const string PLACEHOLDERPATH = "pack://application:,,,/2Duzz;component/Ressources/TestImages/AlphaDot.png";
+
         #region Constructor
         private static ImageDrawingHelper m_Instance;
         public static ImageDrawingHelper Get
@@ -56,9 +58,11 @@ namespace _2Duzz.Helper
         private ImageDrawing AddImage(int _xPosition, int _yPosition, double _imageSizeX, double _imageSizeY, int _layer, int _imageCountX, int _imageCountY)
         {
             DrawingGroup dg = GetDrawingGroup(_layer);
-            ImageDrawing t = new ImageDrawing();
-            t.ImageSource = (ImageSource)new ImageSourceConverter().ConvertFromString(ImageManager.PLACEHOLDERPATH);
-            t.Rect = new System.Windows.Rect(_xPosition * _imageSizeX, _yPosition * _imageSizeY, _imageSizeX, _imageSizeY);
+            ImageDrawing t = new ImageDrawing
+            {
+                ImageSource = (ImageSource)new ImageSourceConverter().ConvertFromString(PLACEHOLDERPATH),
+                Rect = new System.Windows.Rect(_xPosition * _imageSizeX, _yPosition * _imageSizeY, _imageSizeX, _imageSizeY)
+            };
             dg.Children.Add(t);
 
             AddToDictionary(_xPosition, _yPosition, _imageCountX, _layer, t);
@@ -81,9 +85,11 @@ namespace _2Duzz.Helper
         private ImageDrawing AddImage(int _xPosition, int _yPosition, double _imageSizeX, double _imageSizeY, int _layer, int _imageCountX, int _imageCountY, string _source)
         {
             DrawingGroup dg = GetDrawingGroup(_layer);
-            ImageDrawing t = new ImageDrawing();
-            t.ImageSource = (ImageSource)new ImageSourceConverter().ConvertFromString(_source);
-            t.Rect = new System.Windows.Rect(_xPosition * _imageSizeX, _yPosition * _imageSizeY, _imageSizeX, _imageSizeY);
+            ImageDrawing t = new ImageDrawing
+            {
+                ImageSource = (ImageSource)new ImageSourceConverter().ConvertFromString(_source),
+                Rect = new System.Windows.Rect(_xPosition * _imageSizeX, _yPosition * _imageSizeY, _imageSizeX, _imageSizeY)
+            };
             dg.Children.Add(t);
 
             AddToDictionary(_xPosition, _yPosition, _imageCountX, _layer, t);
@@ -104,10 +110,12 @@ namespace _2Duzz.Helper
         /// <returns></returns>
         private ImageDrawing AddImage(int _xPosition, int _yPosition, double _imageSizeX, double _imageSizeY, int _imageCountX, int _imageCountY, DrawingGroup _dg)
         {
-            ImageDrawing t = new ImageDrawing();
-            t.ImageSource = (ImageSource)new ImageSourceConverter().ConvertFromString(ImageManager.PLACEHOLDERPATH);
-            //t.ImageSource = null;
-            t.Rect = new System.Windows.Rect(_xPosition * _imageSizeX, _yPosition * _imageSizeY, _imageSizeX, _imageSizeY);
+            ImageDrawing t = new ImageDrawing
+            {
+                ImageSource = (ImageSource)new ImageSourceConverter().ConvertFromString(ImageDrawingHelper.PLACEHOLDERPATH),
+                //t.ImageSource = null;
+                Rect = new System.Windows.Rect(_xPosition * _imageSizeX, _yPosition * _imageSizeY, _imageSizeX, _imageSizeY)
+            };
             _dg.Children.Add(t);
 
             AddToDictionary(_xPosition, _yPosition, _imageCountX, GetLayerFromDrawingGroup(_dg), t);
@@ -128,9 +136,11 @@ namespace _2Duzz.Helper
         /// <returns></returns>
         private ImageDrawing AddImage(int _xPosition, int _yPosition, double _imageSizeX, double _imageSizeY, DrawingGroup _dg, int _imageCountX, int _imageCountY, string _source)
         {
-            ImageDrawing t = new ImageDrawing();
-            t.ImageSource = (ImageSource)new ImageSourceConverter().ConvertFromString(_source);
-            t.Rect = new System.Windows.Rect(_xPosition * _imageSizeX, _yPosition * _imageSizeY, _imageSizeX, _imageSizeY);
+            ImageDrawing t = new ImageDrawing
+            {
+                ImageSource = (ImageSource)new ImageSourceConverter().ConvertFromString(_source),
+                Rect = new System.Windows.Rect(_xPosition * _imageSizeX, _yPosition * _imageSizeY, _imageSizeX, _imageSizeY)
+            };
             _dg.Children.Add(t);
 
             AddToDictionary(_xPosition, _yPosition, _imageCountX, GetLayerFromDrawingGroup(_dg), t);
@@ -277,7 +287,7 @@ namespace _2Duzz.Helper
             CurrentPanel.Children.Add(new Border() { Width = _x * _imageSizeX, Height = _y * _imageSizeY, BorderThickness = new System.Windows.Thickness(5), BorderBrush = Brushes.Black });
             ImagesAtLayer.Add(new Dictionary<int, ImageDrawing>());
 
-            Image img = CreateNewImageLayer(out DrawingImage _dImage, out DrawingGroup _dGroup);
+            Image img = CreateNewImageLayer(out DrawingImage _, out DrawingGroup _dGroup);
 
             ImageLayer.Add(img);
 
@@ -301,7 +311,7 @@ namespace _2Duzz.Helper
         {
             ImagesAtLayer.Insert(_layerIndex, new Dictionary<int, ImageDrawing>());
 
-            Image img = CreateNewImageLayer(out DrawingImage _dImage, out DrawingGroup _dGroup);
+            Image img = CreateNewImageLayer(out DrawingImage _, out DrawingGroup _dGroup);
 
             ImageLayer.Insert(_layerIndex, img);
 

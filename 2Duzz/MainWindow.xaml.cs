@@ -35,7 +35,6 @@ namespace _2Duzz
             InitializeComponent();
 
             BindingHelper.Get.Init(this);
-            ImageManager.Get.Init(this);
             PanelManager.Get.Init(this, GridContent_Images);
             TabItemManager.Get.Init(this, TabControl_Sprites);
             ImageDrawingHelper.Get.Init(this, GridContent_Images);
@@ -145,10 +144,12 @@ namespace _2Duzz
                 newMap.LevelSizeY,
                 newMap.SpriteSizeX,
                 newMap.SpriteSizeY
-                );
+                )
+            {
 
-            // Set string array for images. We cannot set this yet because the first dimension will be the amount of layer and the second dimension will be the amount of images.
-            CurrentLevel.LevelImages = new int[0, 0];
+                // Set string array for images. We cannot set this yet because the first dimension will be the amount of layer and the second dimension will be the amount of images.
+                LevelImages = new int[0, 0]
+            };
 
             // Reset Panel
             ImageDrawingHelper.Get.ClearLayer();
@@ -245,13 +246,13 @@ namespace _2Duzz
             CurrentLevel = Level.ReadJSON(path);
             ImageLoader.SaveLevelImagesFromFileToDirectory(CurrentLevel.LevelImagesData, path);
             string[] imagesPaths = ImageLoader.LoadImagesFromFolderToTabItem(path, Img_MouseLeftButtonDown, Img_MouseRightButtonDown, out TabItem addedTo);
-            OpenLevel(CurrentLevel, imagesPaths, addedTo);
+            OpenLevel(CurrentLevel, addedTo);
 
 
             FileHelper.FileDialogOpenStatusText(path, CurrentLevel != null, this);
         }
 
-        private void OpenLevel(Level _l, string[] _imagePaths, TabItem _tabItem)
+        private void OpenLevel(Level _l, TabItem _tabItem)
         {
             // Reset Image Panel
             ImageDrawingHelper.Get.ClearLayer();

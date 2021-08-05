@@ -122,7 +122,7 @@ namespace _2Duzz.Helper
         /// <param name="_statusBar">Statusbar</param>
         public static void FileDialogSaveStatusText(string _path, bool _successful, IStatusBar _statusBar)
         {
-            string preText = "";
+            string preText;
             if (_successful)
                 preText = "Saved successfully to ";
             else
@@ -139,7 +139,7 @@ namespace _2Duzz.Helper
         /// <param name="_statusBar">Statusbar</param>
         public static void FileDialogOpenStatusText(string _path, bool _successful, IStatusBar _statusBar)
         {
-            string preText = "";
+            string preText;
             if (_successful)
                 preText = "File successfully opened: ";
             else
