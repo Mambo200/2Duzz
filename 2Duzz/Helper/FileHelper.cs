@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Win32;
+using Microsoft.WindowsAPICodePack.Dialogs;
 
 namespace _2Duzz.Helper
 {
@@ -110,6 +111,99 @@ namespace _2Duzz.Helper
         }
 
         /// <summary>
+        /// Get folder a path the user choses
+        /// </summary>
+        /// <param name="_subfolders">true if checkbox "Include subfolders" was checked; else false</param>
+        /// <returns>selected folder if user choosed one. to check if valid use <see cref="string.IsNullOrEmpty(string)"/></returns>
+        public static string OpenFolderPath(out bool _subfolders)
+        {
+            CommonOpenFileDialog dialog = new CommonOpenFileDialog()
+            {
+                Multiselect = false,
+                IsFolderPicker = true,
+                EnsurePathExists = true,
+                Title = "Open folder...",
+            };
+
+            dialog.Controls.Add(new Microsoft.WindowsAPICodePack.Dialogs.Controls.CommonFileDialogCheckBox("Include subfolders", false));
+            _ = dialog.ShowDialog();
+            _subfolders = ((Microsoft.WindowsAPICodePack.Dialogs.Controls.CommonFileDialogCheckBox)dialog.Controls[0]).IsChecked;
+            return dialog.FileName;
+        }
+
+        /// <summary>
+        /// Get folder a path the user choses
+        /// </summary>
+        /// <param name="_subfolders">true if checkbox "Include subfolders" was checked; else false</param>
+        /// <param name="_main">Top-level WPF window that will own the modal dialog box.</param>
+        /// <returns>selected folder if user choosed one. to check if valid use <see cref="string.IsNullOrEmpty(string)"/></returns>
+        public static string OpenFolderPath(out bool _subfolders, System.Windows.Window _main)
+        {
+            CommonOpenFileDialog dialog = new CommonOpenFileDialog()
+            {
+                Multiselect = false,
+                IsFolderPicker = true,
+                EnsurePathExists = true,
+                Title = "Open folder...",
+            };
+
+            dialog.Controls.Add(new Microsoft.WindowsAPICodePack.Dialogs.Controls.CommonFileDialogCheckBox("Include subfolders", false));
+            // if Dialog was cancelled by user, dialog.FileName throws an exception. this is why we need to save the result and check later
+            CommonFileDialogResult result = dialog.ShowDialog(_main);
+            _subfolders = ((Microsoft.WindowsAPICodePack.Dialogs.Controls.CommonFileDialogCheckBox)dialog.Controls[0]).IsChecked;
+            return result == CommonFileDialogResult.Ok ? dialog.FileName : "";
+        }
+
+
+        /// <summary>
+        /// Get folder a path the user choses
+        /// </summary>
+        /// <param name="_dialog">the <see cref="CommonOpenFileDialog"/></param>
+        /// <param name="_subfolders">true if checkbox "Include subfolders" was checked; else false</param>
+        /// <param name="_main">Top-level WPF window that will own the modal dialog box.</param>
+        /// <returns>true if user choses a folder; else false or null</returns>
+        public static bool? OpenFolderPath(out CommonOpenFileDialog _dialog, out bool _subfolders, System.Windows.Window _main)
+        {
+            _dialog = new CommonOpenFileDialog()
+            {
+                Multiselect = false,
+                IsFolderPicker = true,
+                EnsurePathExists = true,
+                Title = "Open folder...",
+            };
+
+            _dialog.Controls.Add(new Microsoft.WindowsAPICodePack.Dialogs.Controls.CommonFileDialogCheckBox("Include subfolders", false));
+            CommonFileDialogResult result = _dialog.ShowDialog(_main);
+            _subfolders = ((Microsoft.WindowsAPICodePack.Dialogs.Controls.CommonFileDialogCheckBox)_dialog.Controls[0]).IsChecked;
+            return CommonFileDialogResultConverter(result);
+        }
+
+        /// <summary>
+        /// Get folder a path the user choses
+        /// </summary>
+        /// <param name="_dialog">the <see cref="CommonOpenFileDialog"/></param>
+        /// <param name="_subfolders">true if checkbox "Include subfolders" was checked; else false</param>
+        /// <returns>true if user choses a folder; else false or null</returns>
+        public static bool? OpenFolderPath(out CommonOpenFileDialog _dialog, out bool _subfolders)
+        {
+            _dialog = new CommonOpenFileDialog("NAME OF THIS DIALOG!")
+            {
+                Multiselect = false,
+                IsFolderPicker = true,
+                EnsurePathExists = true,
+                Title = "Open folder..."
+            };
+
+            _dialog.Controls.Add(new Microsoft.WindowsAPICodePack.Dialogs.Controls.CommonFileDialogCheckBox("Include subfolders", false));
+            CommonFileDialogResult result = _dialog.ShowDialog();
+            _subfolders = ((Microsoft.WindowsAPICodePack.Dialogs.Controls.CommonFileDialogCheckBox)_dialog.Controls[0]).IsChecked;
+
+            return CommonFileDialogResultConverter(result);
+        }
+
+
+
+        /// <summary>
         /// Reset value of <see cref="LastValidFile"/>
         /// </summary>
         public static void ResetLastValidFile() => LastValidFile = "";
@@ -163,6 +257,33 @@ namespace _2Duzz.Helper
                 else
                     return Directory.CreateDirectory(s);
         }
+
+        private static bool? CommonFileDialogResultConverter(CommonFileDialogResult _result)
+        {
+            switch (_result)
+            {
+                case CommonFileDialogResult.Ok:
+                    return true;
+                case CommonFileDialogResult.Cancel:
+                    return false;
+                default:
+                    return null;
+            }
+        }
+
+        private static CommonFileDialogResult CommonFileDialogResultConverter(bool? _result)
+        {
+            switch (_result)
+            {
+                case true:
+                    return CommonFileDialogResult.Ok;
+                case false:
+                    return CommonFileDialogResult.Cancel;
+                default:
+                    return CommonFileDialogResult.None;
+            }
+        }
+
 
         private static string RemoveExtension(string _file)
         {

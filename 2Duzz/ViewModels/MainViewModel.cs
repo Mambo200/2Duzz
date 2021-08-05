@@ -57,6 +57,8 @@ namespace _2Duzz.ViewModels
 
 
         #region KeyBinding
+
+        #region Header FILE
         #region Header New Click
         private ICommand m_HeaderNewClickCommand;
         /// <summary>
@@ -217,7 +219,23 @@ namespace _2Duzz.ViewModels
             }
         }
         #endregion
+        #endregion
 
+        #region Header IMAGE
+        private ICommand m_HeaderAddImagesCommand;
+        /// <summary>
+        /// Header New Click command
+        /// </summary>
+        public ICommand HeaderAddImagesCommand
+        {
+            get => m_HeaderAddImagesCommand;
+            set
+            {
+                SetProperty(ref m_HeaderAddImagesCommand, value);
+            }
+        }
+
+        #endregion
         #endregion
 
         #region MouseBinding

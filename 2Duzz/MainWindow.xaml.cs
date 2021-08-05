@@ -79,12 +79,11 @@ namespace _2Duzz
             TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
             TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Outline.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
             #endregion
-
         }
 
         public void ChangeStatusBar(object _content)
         {
-            GetMainViewModel.StatusBarContent = _content;
+            GetMainViewModel.StatusBarContent = $"{DateTime.Now.ToString().Split(' ')[1]}  -  {_content}";
         }
 
         [Obsolete("We scroll without STRG now")]
@@ -119,7 +118,7 @@ namespace _2Duzz
             GetMainViewModel.GridContentScale = (double)Math.Max(new decimal(0.1), newScaleValue);
         }
 
-        #region Execute buttons
+        #region Execute Header and Buttons
         /// <summary>
         /// Header New Click Execution method
         /// </summary>
@@ -227,6 +226,73 @@ namespace _2Duzz
             ImageLoader.SaveLevelImagesFromFileToDirectory(CurrentLevel.LevelImagesData, path);
         }
 
+        private void ExecuteAddImagesClick(object _parameter)
+        {
+            // get folder
+            string folder = FileHelper.OpenFolderPath(out bool includeSubfolder, this);
+
+            // check if string is empty ==> user cancelled
+            // We do not need to check if folder exists because "FileHelper.OpenFolderPath" already checks this with the "EnsurePathExists" property.
+            if (string.IsNullOrEmpty(folder))
+            {
+                ChangeStatusBar("Load images cancelled by user.");
+                return;
+            }
+            DirectoryInfo info = new DirectoryInfo(folder);
+
+            // Supported BitmapImage file formats:
+            //Joint Photographic Experts Group (JPEG)
+            //Portable Network Graphics(PNG)
+            //bitmap(BMP)
+            //Graphics Interchange Format(GIF)
+            //Tagged Image File Format(TIFF)
+            //JPEG XR(JXR)
+            //icons(ICO)
+            // Source: https://docs.microsoft.com/en-us/uwp/api/windows.ui.xaml.media.imaging.bitmapimage?view=winrt-20348#remarks
+            SearchOption option = includeSubfolder ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
+            IEnumerable<string> files = Directory.EnumerateFiles(folder, "*.*", option)
+                .Where(s =>
+                    s.ToUpper().EndsWith("JPEG")
+                    || s.ToUpper().EndsWith("JPG")
+                    || s.ToUpper().EndsWith("PNG")
+                    || s.ToUpper().EndsWith("BMP")
+                    || s.ToUpper().EndsWith("GIF")
+                    || s.ToUpper().EndsWith("TIFF")
+                    || s.ToUpper().EndsWith("JXR")
+                    || s.ToUpper().EndsWith("ICO")
+                    );
+
+            // Add Tab
+            TabItem item = TabItemManager.Get.AddTabItem(info.Name);
+
+            // Add Images to Tab
+            Dictionary<string, string> failed = new Dictionary<string, string>();
+            foreach (string file in files)
+            {
+                try
+                {
+                    TabItemManager.Get.AddImageToTabItem(item, new Uri(file), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+                }
+                catch (Exception _ex)
+                {
+                    // save failed image with error message
+                    failed.Add(file, _ex.Message);
+                }
+            }
+
+            // show User failed images (if exist)
+            if(failed.Count > 0)
+            {
+                string caption = "Error";
+                string messageBoxText = "";
+                foreach (KeyValuePair<string, string> f in failed)
+                {
+                    messageBoxText += $"Folder: \"{f.Key}\"\nError: \"{f.Value}\"\n__\n";
+                }
+                messageBoxText = messageBoxText.Remove(messageBoxText.Length - 3);
+                MessageBox.Show(messageBoxText, caption, MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
 
         /// <summary>
         /// Header Save Click Execution method
@@ -245,7 +311,7 @@ namespace _2Duzz
 
             CurrentLevel = Level.ReadJSON(path);
             ImageLoader.SaveLevelImagesFromFileToDirectory(CurrentLevel.LevelImagesData, path);
-            string[] imagesPaths = ImageLoader.LoadImagesFromFolderToTabItem(path, Img_MouseLeftButtonDown, Img_MouseRightButtonDown, out TabItem addedTo);
+            string[] imagesPaths = ImageLoader.LoadImagesFromLevelFolderToTabItem(path, Img_MouseLeftButtonDown, Img_MouseRightButtonDown, out TabItem addedTo);
             OpenLevel(CurrentLevel, addedTo);
 
 
@@ -376,10 +442,16 @@ namespace _2Duzz
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            // Header File
             GetMainViewModel.HeaderNewClickCommand = new RelayCommand((r) => ExecuteHeaderNewClick(HeaderNew));
             GetMainViewModel.HeaderOpenClickCommand = new RelayCommand((r) => ExecuteOpenClick(HeaderOpen));
             GetMainViewModel.HeaderSaveClickCommand = new RelayCommand((r) => ExecuteSaveClick(HeaderSave));
             GetMainViewModel.HeaderSaveAsClickCommand = new RelayCommand((r) => ExecuteSaveAsClick(HeaderSaveAs));
+
+            // Header Image
+            GetMainViewModel.HeaderAddImagesCommand = new RelayCommand((r) => ExecuteAddImagesClick(HeaderAddImage));
+
+            // Buttons
             GetMainViewModel.ButtonAddLayerClickCommand = new RelayCommand((r) => ExecuteAddLayerClick(ButtonAddLayer));
             GetMainViewModel.ButtonRemoveLayerClickCommand = new RelayCommand((r) => ExecuteRemoveLayerClick(ButtonRemoveLayer));
         }
