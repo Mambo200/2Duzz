@@ -46,7 +46,7 @@ namespace _2Duzz.Helper
             }
         }
 
-        public static string[] LoadImagesFromFolderToTabItem(string _levelPath, System.Windows.Input.MouseButtonEventHandler _leftClick, System.Windows.Input.MouseButtonEventHandler _rightClick, out System.Windows.Controls.TabItem _tabItem)
+        public static string[] LoadImagesFromLevelFolderToTabItem(string _levelPath, System.Windows.Input.MouseButtonEventHandler _leftClick, System.Windows.Input.MouseButtonEventHandler _rightClick, out System.Windows.Controls.TabItem _tabItem)
         {
             _tabItem = null;
 
@@ -71,5 +71,32 @@ namespace _2Duzz.Helper
 
             return images;
         }
+
+        public static string[] LoadImagesFromFolderToTabItem(string _folderPath, System.Windows.Input.MouseButtonEventHandler _leftClick, System.Windows.Input.MouseButtonEventHandler _rightClick, out System.Windows.Controls.TabItem _tabItem)
+        {
+            _tabItem = null;
+
+            // get main image folder
+            DirectoryInfo main = FileHelper.GetImageMainFolder(_folderPath);
+
+            string imageDirectoryPath = main.FullName;
+            // If folder with level images does not exist return immediately
+            if (!Directory.Exists(main.FullName))
+                return null;
+
+            string[] images = Directory.GetFiles(main.FullName, "*.png", SearchOption.TopDirectoryOnly);
+
+            TabItemManager.Get.DeleteFromFileTab();
+            _tabItem = TabItemManager.Get.AddTabItem(main.Name);
+            TabItemManager.Get.AddFromFileTab(_tabItem);
+
+            for (int i = 0; i < images.Length; i++)
+            {
+                TabItemManager.Get.AddImageToTabItem(_tabItem, new Uri(images[i]), _leftClick, _rightClick);
+            }
+
+            return images;
+        }
+
     }
 }
