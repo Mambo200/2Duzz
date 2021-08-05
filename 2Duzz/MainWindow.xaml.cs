@@ -80,6 +80,10 @@ namespace _2Duzz
             TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Outline.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
             #endregion
 
+            if(FileHelper.OpenFolderPath(out Microsoft.WindowsAPICodePack.Dialogs.CommonOpenFileDialog dialog, out bool sub, this) == true)
+            {
+                ChangeStatusBar(dialog.FileName);
+            }
         }
 
         public void ChangeStatusBar(object _content)
