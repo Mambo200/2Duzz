@@ -30,6 +30,8 @@ namespace _2Duzz
         public Image CurrentSelectedImage { get; private set; }
         public int CurrentLayer { get; private set; }
 
+        public bool DoSave { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -125,6 +127,15 @@ namespace _2Duzz
         /// <param name="_parameter"></param>
         private void ExecuteHeaderNewClick(object _parameter)
         {
+            // Check if old level exists and if it was saved
+            if (CurrentLevel != null
+                && DoSave)
+            {
+                if (!CheckCurrentLevel())
+                    return;
+            }
+
+
             // Create and open new Window
             WindowsXAML.NewMap newMap = new WindowsXAML.NewMap();
             newMap.ShowDialog();
@@ -172,26 +183,36 @@ namespace _2Duzz
 
             CurrentLayer = 0;
             LayerList.SelectedIndex = 0;
+
+            DoSave = true;
         }
 
+        #region Save
         /// <summary>
         /// Header Save Click Execution method
         /// </summary>
         /// <param name="_parameter"></param>
         private void ExecuteSaveClick(object _parameter)
         {
-            if (CurrentLevel == null) return;
+            _ = SaveFile();
+        }
+
+        /// <summary>
+        /// Save current level (<see cref="Microsoft.Win32.FileDialog"/> included)
+        /// </summary>
+        /// <returns></returns>
+        private bool SaveFile()
+        {
+            if (CurrentLevel == null) return false;
 
             string path = FileHelper.LastValidFile;
 
             // Check if path is valid
             if (string.IsNullOrEmpty(path))
             {
-                // path not valid. Let user decide new path
-                ExecuteSaveAsClick(_parameter);
-
-                // we return here because if Method "ExecuteSaveAsClick(object)" which we use above, the file will be saved there.
-                return;
+                // path not valid. Let user decide new path.
+                // We return here because Method "SaveFileAs()" will be save the file there.
+                return SaveFileAs();
             }
 
 
@@ -200,6 +221,10 @@ namespace _2Duzz
             FileHelper.FileDialogSaveStatusText(path, CurrentLevel.SaveJson(path), this);
 
             ImageLoader.SaveLevelImagesFromFileToDirectory(CurrentLevel.LevelImagesData, path);
+
+            DoSave = false;
+
+            return true;
         }
 
         /// <summary>
@@ -208,7 +233,16 @@ namespace _2Duzz
         /// <param name="_parameter"></param>
         private void ExecuteSaveAsClick(object _parameter)
         {
-            if (CurrentLevel == null) return;
+            _ = SaveFileAs();
+        }
+
+        /// <summary>
+        /// Save current level (<see cref="Microsoft.Win32.FileDialog"/> included)
+        /// </summary>
+        /// <returns></returns>
+        private bool SaveFileAs()
+        {
+            if (CurrentLevel == null) return false;
 
             string path = Helper.FileHelper.GetSavePath();
 
@@ -216,7 +250,7 @@ namespace _2Duzz
             if (string.IsNullOrEmpty(path))
             {
                 ChangeStatusBar($"File save aborted by user");
-                return;
+                return false;
             }
 
             SetLevelImagesStringArray();
@@ -224,7 +258,12 @@ namespace _2Duzz
             FileHelper.FileDialogSaveStatusText(path, CurrentLevel.SaveJson(path), this);
 
             ImageLoader.SaveLevelImagesFromFileToDirectory(CurrentLevel.LevelImagesData, path);
+
+            DoSave = false;
+
+            return true;
         }
+        #endregion
 
         private void ExecuteAddImagesClick(object _parameter)
         {
@@ -281,7 +320,7 @@ namespace _2Duzz
             }
 
             // show User failed images (if exist)
-            if(failed.Count > 0)
+            if (failed.Count > 0)
             {
                 string caption = "Error";
                 string messageBoxText = "";
@@ -300,6 +339,15 @@ namespace _2Duzz
         /// <param name="_parameter"></param>
         private void ExecuteOpenClick(object _parameter)
         {
+            // Check if old level exists and if it was saved
+            if (CurrentLevel != null
+                && DoSave)
+            {
+                if (!CheckCurrentLevel())
+                    return;
+            }
+
+
             string path = Helper.FileHelper.GetOpenPath();
 
             // Check if string is valid or not
@@ -316,6 +364,8 @@ namespace _2Duzz
 
 
             FileHelper.FileDialogOpenStatusText(path, CurrentLevel != null, this);
+
+            DoSave = false;
         }
 
         private void OpenLevel(Level _l, TabItem _tabItem)
@@ -419,6 +469,8 @@ namespace _2Duzz
             CurrentLayer = LayerList.SelectedIndex;
 
             ChangeStatusBar($"Current Index: {CurrentLayer}");
+
+            DoSave = true;
         }
 
         /// <summary>
@@ -437,6 +489,8 @@ namespace _2Duzz
             CurrentLayer = LayerList.SelectedIndex;
 
             ChangeStatusBar($"Current Index: {CurrentLayer}");
+
+            DoSave = true;
         }
         #endregion
 
@@ -576,6 +630,8 @@ namespace _2Duzz
                 );
 
             ChangeStatusBar(newPosition);
+
+            DoSave = true;
         }
 
         private void GridContent_Images_OnClickImage(object sender, MouseEventArgs e, Point imagePosition)
@@ -601,6 +657,42 @@ namespace _2Duzz
         {
             CurrentLayer = LayerList.SelectedIndex;
             ChangeStatusBar($"Selected Index: {CurrentLayer}");
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (CurrentLevel == null
+                || !DoSave) return;
+
+            e.Cancel = !CheckCurrentLevel();
+        }
+
+        /// <summary>
+        /// Check for current level.
+        /// </summary>
+        /// <returns>True if current level was saved or it is okay for user to discard it; else false</returns>
+        public bool CheckCurrentLevel()
+        {
+            MessageBoxResult result = MessageBox.Show(this, "Do you want to save?", "Unsaved changed", MessageBoxButton.YesNoCancel, MessageBoxImage.Question, MessageBoxResult.Cancel);
+
+            switch (result)
+            {
+                // Abort by user
+                case MessageBoxResult.Cancel:
+                    return false;
+
+                // Try to save new level. If saving was successful, return true; else false
+                case MessageBoxResult.Yes:
+                    return !SaveFile();
+
+                // discard everything and return true
+                case MessageBoxResult.No:
+                    return true;
+                
+                // code should not go to here
+                default:
+                    return true;
+            }
         }
     }
 }
