@@ -36,11 +36,11 @@ namespace _2Duzz.Helper
                 }
                 catch (Exception _ex)
                 {
-                    System.Windows.MessageBox.Show(_ex.Message, "Exception!");
+                    //System.Windows.MessageBox.Show(_ex.Message, "Exception!");
                 }
                 finally
                 {
-                    if(img != null)
+                    if (img != null)
                         img.Dispose();
                 }
             }
@@ -70,7 +70,8 @@ namespace _2Duzz.Helper
             string[] images = Directory.GetFiles(imageDirectoryPath, "*.png", SearchOption.TopDirectoryOnly);
 
             TabItemManager.Get.DeleteFromFileTab();
-            _tabItem = TabItemManager.Get.AddTabItem(LEVELIMAGEDIRECTORY);
+            // We do not add the option to remove the "From File" tab because this is managed by code.
+            _tabItem = TabItemManager.Get.AddTabItem(LEVELIMAGEDIRECTORY, false);
             TabItemManager.Get.AddFromFileTab(_tabItem);
 
             for (int i = 0; i < images.Length; i++)
