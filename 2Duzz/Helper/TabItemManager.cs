@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -8,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.Windows.Input;
 using System.Windows.Media;
+using _2Duzz.Tools;
 
 namespace _2Duzz.Helper
 {
@@ -15,6 +17,8 @@ namespace _2Duzz.Helper
     {
         private static Brush NoHighlightColor { get => Brushes.Black; }
         private static Brush HighlightColor { get => Brushes.Red; }
+
+        private TabItem FromFileTab { get; set; }
 
         #region Constructor
         private static TabItemManager m_Instance;
@@ -49,10 +53,29 @@ namespace _2Duzz.Helper
         /// </summary>
         /// <param name="_header">Header of TabItem</param>
         /// <returns></returns>
-        public TabItem AddTabItem(object _header)
+        public TabItem AddTabItem(object _header, bool _addContextMenu = true)
         {
             TabItem t = PrepareTabItem(_header);
+            if (_addContextMenu)
+                PrepareContextMenu(t);
             AddToItemControl(t);
+
+            return t;
+        }
+
+        /// <summary>
+        /// Add <see cref="TabItem"/> to Control
+        /// </summary>
+        /// <param name="_header">Header of TabItem</param>
+        /// <returns></returns>
+        public TabItem AddTabItem(object _header, out int _addedIndex, bool _addContextMenu = true)
+        {
+            TabItem t = PrepareTabItem(_header);
+            if (_addContextMenu)
+                PrepareContextMenu(t);
+            AddToItemControl(t);
+
+            _addedIndex = ItemControl.Items.IndexOf(t);
 
             return t;
         }
@@ -63,12 +86,69 @@ namespace _2Duzz.Helper
         /// <param name="_header">Header of <see cref="TabItem"/></param>
         /// <param name="_layer">Layer of new <see cref="TabItem"/></param>
         /// <returns></returns>
-        public TabItem AddTabItem(object _header, int _layer)
+        public TabItem AddTabItem(object _header, int _layer, bool _addContextMenu = true)
         {
             TabItem t = PrepareTabItem(_header);
+            if (_addContextMenu)
+                PrepareContextMenu(t);
             AddToItemControl(t, _layer);
 
             return t;
+        }
+        #endregion
+
+        #region RemoveTabItem
+        /// <summary>
+        /// Remove <see cref="TabItem"/> from TabIndex
+        /// </summary>
+        /// <param name="_header">Header of <see cref="TabItem"/></param>
+        /// <returns>true if item vould be removed; else false</returns>
+        public bool RemoveTabItem(object _header)
+        {
+            int tabIndex = -1;
+            // check for each Tabitem if header can be found
+
+            for (int i = 0; i < ItemControl.Items.Count; i++)
+            {
+                if (ItemControl.Items[i] == _header)
+                {
+                    tabIndex = i;
+                    break;
+                }
+            }
+
+            // if no Header could be found return false
+            if (tabIndex < 0)
+                return false;
+
+            //Remove Item
+            ItemControl.Items.RemoveAt(tabIndex);
+            return true;
+        }
+
+        /// <summary>
+        /// Remove <see cref="TabItem"/> from TabIndex
+        /// </summary>
+        /// <param name="_tabIndex">Index of <see cref="TabItem"/></param>
+        public void RemoveTabItem(int _tabIndex)
+        {
+            ItemControl.Items.RemoveAt(_tabIndex);
+        }
+
+        /// <summary>
+        /// Remove <see cref="TabItem"/> from TabIndex.
+        /// </summary>
+        /// <param name="_tabItem">Item to remove</param>
+        /// <returns></returns>
+        public bool RemoveTabItem(TabItem _tabItem)
+        {
+            int countOld = ItemControl.Items.Count;
+            ItemControl.Items.Remove(_tabItem);
+
+            if (countOld - 1 == ItemControl.Items.Count)
+                return true;
+            else
+                return false;
         }
         #endregion
 
@@ -93,6 +173,42 @@ namespace _2Duzz.Helper
         /// <summary>
         /// Add Item to TabItem
         /// </summary>
+        /// <param name="_layer">TabItem</param>
+        /// <param name="_path">Path of Image</param>
+        /// <returns></returns>
+        public Image AddImageToTabItem(TabItem _layer, Uri _path)
+        {
+            WrapPanel wp = GetWrapPanel(_layer);
+
+            Image img = PrepareImage(_path);
+            wp.Children.Add(PrepareBorder(img));
+            //SetTag(img, wp);
+
+            return img;
+        }
+
+        /// <summary>
+        /// Add Item to TabItem
+        /// </summary>
+        /// <param name="_header">Header of TabItem in ItemControl</param>
+        /// <param name="_path">Path of Image</param>
+        /// <returns></returns>
+        public Image AddImageToTabItem(object _header, Uri _path)
+        {
+            WrapPanel wp = GetWrapPanel(GetTabItem(_header));
+
+            Image img = PrepareImage(_path);
+            wp.Children.Add(PrepareBorder(img));
+            //SetTag(img, wp);
+
+            return img;
+        }
+
+
+
+        /// <summary>
+        /// Add Item to TabItem
+        /// </summary>
         /// <param name="_layer">Position of TabItem in ItemControl</param>
         /// <param name="_path">Path of Image</param>
         /// <param name="_leftButtonDown">event called when item is leftclicked</param>
@@ -108,6 +224,45 @@ namespace _2Duzz.Helper
 
             return img;
         }
+
+        /// <summary>
+        /// Add Item to TabItem
+        /// </summary>
+        /// <param name="_layer">TabItem</param>
+        /// <param name="_path">Path of Image</param>
+        /// <param name="_leftButtonDown">event called when item is leftclicked</param>
+        /// <param name="_rightButtonDown">event called when item is rightclicked</param>
+        /// <returns></returns>
+        public Image AddImageToTabItem(TabItem _layer, Uri _path, MouseButtonEventHandler _leftButtonDown, MouseButtonEventHandler _rightButtonDown)
+        {
+            WrapPanel wp = GetWrapPanel(_layer);
+
+            Image img = PrepareImage(_path, _leftButtonDown, _rightButtonDown);
+            //SetTag(img, wp);
+            wp.Children.Add(PrepareBorder(img));
+
+            return img;
+        }
+
+        /// <summary>
+        /// Add Item to TabItem
+        /// </summary>
+        /// <param name="_header">Header of TabItem in ItemControl</param>
+        /// <param name="_path">Path of Image</param>
+        /// <param name="_leftButtonDown">event called when item is leftclicked</param>
+        /// <param name="_rightButtonDown">event called when item is rightclicked</param>
+        /// <returns></returns>
+        public Image AddImageToTabItem(object _header, Uri _path, MouseButtonEventHandler _leftButtonDown, MouseButtonEventHandler _rightButtonDown)
+        {
+            WrapPanel wp = GetWrapPanel(GetTabItem(_header));
+
+            Image img = PrepareImage(_path, _leftButtonDown, _rightButtonDown);
+            //SetTag(img, wp);
+            wp.Children.Add(PrepareBorder(img));
+
+            return img;
+        }
+
 
         [Obsolete("Does not Work with streams so be aware.")]
         /// <summary>
@@ -171,6 +326,7 @@ namespace _2Duzz.Helper
             img.Tag = _path.AbsoluteUri;
             img.EndInit();
 
+
             return img;
         }
 
@@ -232,23 +388,37 @@ namespace _2Duzz.Helper
         /// <returns></returns>
         private TabItem PrepareTabItem(object _header)
         {
-            TabItem t = new TabItem();
-            t.Header = _header;
-            ScrollViewer sv = new ScrollViewer();
-            sv.Content = new WrapPanel();
+            TabItem t = new TabItem
+            {
+                Header = _header
+            };
+            ScrollViewer sv = new ScrollViewer
+            {
+                Content = new WrapPanel()
+            };
             t.Content = sv;
 
             return t;
         }
 
         /// <summary>
-        /// Get <see cref="TabItem"/> from ItemControl
+        /// Get <see cref="TabItem"/> from <see cref="ItemControl"/>
         /// </summary>
         /// <param name="_index">Index of item</param>
         /// <returns></returns>
         public TabItem GetTabItem(int _index)
         {
             return ItemControl.Items[_index] as TabItem;
+        }
+
+        /// <summary>
+        /// Get index from <see cref="ItemControl"/>
+        /// </summary>
+        /// <param name="_tabitem"><see cref="TabItem"/> where you want the index of</param>
+        /// <returns>The index of the item in the collection, or -1 if the item does not exist in the collection.</returns>
+        public int GetTabIndex(TabItem _tabitem)
+        {
+            return ItemControl.Items.IndexOf(_tabitem);
         }
 
         /// <summary>
@@ -262,6 +432,7 @@ namespace _2Duzz.Helper
             return GetTabItem(index);
         }
 
+        #region Add Tabitem to Item Control (Private)
         /// <summary>
         /// Add Item to ItemControl at last (on Top)
         /// </summary>
@@ -280,6 +451,7 @@ namespace _2Duzz.Helper
         {
             ItemControl.Items.Insert(_layer, _item);
         }
+        #endregion
 
         private WrapPanel GetWrapPanel(TabItem _item) => ((ScrollViewer)_item.Content).Content as WrapPanel;
         private WrapPanel GetWrapPanel(int _itemIndex)
@@ -303,10 +475,12 @@ namespace _2Duzz.Helper
         /// <returns></returns>
         private Border PrepareBorder(Image _img)
         {
-            Border b = new Border();
-            b.BorderBrush = NoHighlightColor;
-            b.BorderThickness = new Thickness(1);
-            b.Child = _img;
+            Border b = new Border
+            {
+                BorderBrush = NoHighlightColor,
+                BorderThickness = new Thickness(1),
+                Child = _img
+            };
             return b;
         }
 
@@ -314,6 +488,24 @@ namespace _2Duzz.Helper
         {
             img.Tag = _panel.Children.Count;
         }
+
+        #region Get Image
+        public Image GetImage(int _tabLayer, int _imageIndex)
+        {
+            WrapPanel wp = GetWrapPanel(GetTabItem(_tabLayer));
+            Border b = wp.Children[_imageIndex] as Border;
+
+            return b.Child as Image;
+        }
+
+        public Image GetImage(TabItem _tabItem, int _imageIndex)
+        {
+            WrapPanel wp = GetWrapPanel(_tabItem);
+            Border b = wp.Children[_imageIndex] as Border;
+
+            return b.Child as Image;
+        }
+        #endregion
 
         #region (un)highlight
         /// <summary>
@@ -331,7 +523,7 @@ namespace _2Duzz.Helper
         /// <param name="_image">Image of which Parent has to be <see cref="Border"/>.</param>
         public void Unhighlight(Image _image)
         {
-            if (_image != null 
+            if (_image != null
                 && _image.Parent.GetType() == typeof(Border))
                 ((Border)(_image.Parent)).BorderBrush = NoHighlightColor;
         }
@@ -355,5 +547,62 @@ namespace _2Duzz.Helper
                 ((Border)(_image.Parent)).BorderBrush = HighlightColor;
         }
         #endregion
+
+        #region From File Tab
+        public void DeleteFromFileTab()
+        {
+            if (FromFileTab == null)
+                return;
+
+            _ = RemoveTabItem(FromFileTab);
+        }
+
+        public void AddFromFileTab(TabItem _tabItem)
+        {
+            FromFileTab = _tabItem;
+        }
+        #endregion
+
+        private void PrepareContextMenu(TabItem _tab)
+        {
+            // We have to define a new ContextMenu because on creation, TabItem.ContextMenu is null.
+            _tab.ContextMenu = new ContextMenu();
+
+            // Items of ContextMenu can be anything, but to keep the old style we take the classic MenuItem
+            MenuItem c = new MenuItem();
+
+            // Define a header and a click event so we can actually close it
+            c.Header = "Close " + _tab.Header;
+            c.Click += MenuItemClose_Click;
+
+            // We cannot access the original TabItem from "sender" from "MenuItemClose_Click", but we get the MenuItem.
+            // To close it, we need a reference to the TabItem which we save to MenuItem.Tag
+            c.Tag = _tab;
+
+            // Finally adding MenuItem to ContextMenu
+            _tab.ContextMenu.Items.Add(c);
+        }
+
+        /// <summary>
+        /// What happens if user click on ContextMenuItem of MenuItem
+        /// </summary>
+        /// <param name="sender">original source</param>
+        /// <param name="e"></param>
+        private void MenuItemClose_Click(object sender, RoutedEventArgs e)
+        {
+            TabItem tab = GetTabItemFromElement((MenuItem)sender);
+
+            RemoveTabItem(tab);
+        }
+
+        /// <summary>
+        /// Get <see cref="TabItem"/> from <see cref="MenuItem"/> by returning <see cref="FrameworkElement.Tag"/> as <see cref="TabItem"/>.
+        /// </summary>
+        /// <param name="_item"><see cref="MenuItem"/></param>
+        /// <returns><see cref="TabItem"/> from <see cref="FrameworkElement.Tag"/></returns>
+        private TabItem GetTabItemFromElement(MenuItem _item)
+        {
+            return _item.Tag as TabItem;
+        }
     }
 }
