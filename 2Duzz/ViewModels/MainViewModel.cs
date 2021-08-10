@@ -186,7 +186,8 @@ namespace _2Duzz.ViewModels
         /// <param name="_parameter"></param>
         private void ExecuteHeaderCloseClick(object _parameter)
         {
-            MessageBox.Show(_parameter.ToString());
+            // We cannot call "Application.Current.Shutdown();" because this would kill the application even though we cancelled it
+            Application.Current.MainWindow.Close();
         }
         #endregion
 
