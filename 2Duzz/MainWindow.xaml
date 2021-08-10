@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:_2Duzz"
         xmlns:mvvm="clr-namespace:_2Duzz.ViewModels" xmlns:converters="clr-namespace:_2Duzz.Converters"
+        xmlns:Tools="clr-namespace:_2Duzz.Tools"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800" Background="#FFE7E6FF" Loaded="Window_Loaded" Closing="Window_Closing">
     <Window.DataContext>
         <mvvm:MainViewModel/>
     </Window.DataContext>
@@ -15,6 +16,7 @@
     </Window.TaskbarItemInfo>
     <Window.Resources>
         <converters:KeyBindingToStringConverter x:Key="kgsCon"/>
+        <converters:DoubleToPercentageStringConverter x:Key="dpsCon"/>
     </Window.Resources>
 
     <Window.InputBindings>
@@ -22,25 +24,130 @@
         <KeyBinding x:Name="KeyBinding_OpenClickCommand" Command="{Binding HeaderOpenClickCommand}" Key="O" Modifiers="Ctrl"></KeyBinding>
         <KeyBinding x:Name="KeyBinding_SaveClickCommand" Command="{Binding HeaderSaveClickCommand}" Key="S" Modifiers="Ctrl"></KeyBinding>
         <KeyBinding x:Name="KeyBinding_SaveAsClickCommand" Command="{Binding HeaderSaveAsClickCommand}" Key="S" Modifiers="Ctrl+Shift"></KeyBinding>
+
+        <KeyBinding x:Name="KeyBinding_OpenImagesClickCommand" Command="{Binding HeaderAddImagesCommand}" Key="I" Modifiers="Alt"></KeyBinding>
     </Window.InputBindings>
 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="20"/>
+            <RowDefinition Height="25"/>
         </Grid.RowDefinitions>
 
         <Menu Grid.Row="0">
             <MenuItem Header="_File">
-                <MenuItem Header="_New" Command="{Binding HeaderNewClickCommand}" InputGestureText="{Binding ElementName=KeyBinding_NewClickCommand, Converter={StaticResource kgsCon}}"/>
-                <MenuItem Header="_Open..." Command="{Binding HeaderOpenClickCommand}" InputGestureText="{Binding ElementName=KeyBinding_OpenClickCommand, Converter={StaticResource kgsCon}}"/>
+                <MenuItem x:Name="HeaderNew" Header="_New" Command="{Binding HeaderNewClickCommand}" InputGestureText="{Binding ElementName=KeyBinding_NewClickCommand, Converter={StaticResource kgsCon}}"/>
+                <MenuItem x:Name="HeaderOpen" Header="_Open..." Command="{Binding HeaderOpenClickCommand}" InputGestureText="{Binding ElementName=KeyBinding_OpenClickCommand, Converter={StaticResource kgsCon}}"/>
                 <Separator/>
-                <MenuItem Header="_Save" Command="{Binding HeaderSaveClickCommand}" InputGestureText="{Binding ElementName=KeyBinding_SaveClickCommand, Converter={StaticResource kgsCon}}"/>
-                <MenuItem Header="Save _as..." Command="{Binding HeaderSaveAsClickCommand}" InputGestureText="{Binding ElementName=KeyBinding_SaveAsClickCommand, Converter={StaticResource kgsCon}}"/>
+                <MenuItem x:Name="HeaderSave" Header="_Save" Command="{Binding HeaderSaveClickCommand}" InputGestureText="{Binding ElementName=KeyBinding_SaveClickCommand, Converter={StaticResource kgsCon}}"/>
+                <MenuItem x:Name="HeaderSaveAs" Header="Save _as..." Command="{Binding HeaderSaveAsClickCommand}" InputGestureText="{Binding ElementName=KeyBinding_SaveAsClickCommand, Converter={StaticResource kgsCon}}"/>
                 <Separator/>
-                <MenuItem Header="Close" Command="{Binding HeaderCloseClickCommand}"/>
+                <MenuItem x:Name="HeaderClose" Header="Close" Command="{Binding HeaderCloseClickCommand}"/>
+            </MenuItem>
+            <MenuItem Header="Image">
+                <MenuItem x:Name="HeaderAddImage" Header="Add Images..." Command="{Binding HeaderAddImagesCommand}" InputGestureText="{Binding ElementName=KeyBinding_OpenImagesClickCommand, Converter={StaticResource kgsCon}}"/>
             </MenuItem>
         </Menu>
+
+        <!--Content Middle-->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition Width="200"/>
+            </Grid.ColumnDefinitions>
+
+            <!--Gridsplitter-->
+            <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" Focusable="False" DragDelta="GridSplitter_CheckWidth"/>
+
+            <!--Image Sprite and Information Grid-->
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="200"/>
+                    <RowDefinition Height="5"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!--Image Sprites-->
+                <TabControl Grid.Row="0" x:Name="TabControl_Sprites"/>
+                <!--/Image Sprites-->
+
+                <!--Gridsplitter-->
+                <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" Focusable="False" DragDelta="GridSplitter_CheckHeight"/>
+
+            </Grid>
+            <!--/Image Sprite and Information Grid-->
+
+            <!--#region Image Grid -->
+            <Grid Grid.Column="2">
+
+                <ContentControl>
+                    <Tools:WheelControlScollViewer x:Name="ScollViewer_Images" HorizontalScrollBarVisibility="Hidden" DeadZone="30" MoveMultiplicator="0.01" VerticalScrollBarVisibility="Hidden" PreviewMouseWheel="Zoom_MouseWheelWithoutCtrl">
+                        <Tools:HoverOverDifferentImageGrid x:Name="GridContent_Images" Width="{Binding GridContentWidth}" Height="{Binding GridContentHeight}" OnClickImage="GridContent_Images_OnClickImage" SwitchImage="GridContent_Images_SwitchImage">
+                            <Grid.LayoutTransform>
+                                <ScaleTransform ScaleX="{Binding GridContentScale}" ScaleY="{Binding GridContentScale}"/>
+                            </Grid.LayoutTransform>
+
+
+                            <Image Stretch="None">
+                                <Image.Source>
+                                    <DrawingImage>
+                                        <DrawingImage.Drawing>
+                                            <DrawingGroup x:Name="DrawingGoup_Images">
+                                                <!--<ImageDrawing Rect="0,0,32,32" ImageSource="Ressources/TestImages/Debuf Mode.PNG"/>-->
+                                                <!--<ImageDrawing Rect="0,100,64,64" ImageSource="Ressources/TestImages/Debuf Mode.PNG"/>-->
+                                                <!--<ImageDrawing Rect="0,200,128,128" ImageSource="Ressources/TestImages/Debuf Mode.PNG"/>-->
+                                            </DrawingGroup>
+                                        </DrawingImage.Drawing>
+                                    </DrawingImage>
+                                </Image.Source>
+                            </Image>
+
+                            <!--Panels will be created here cia Code-->
+                        </Tools:HoverOverDifferentImageGrid>
+                    </Tools:WheelControlScollViewer>
+                </ContentControl>
+
+            </Grid>
+            <!--#endregion-->
+
+            <!--Gridsplitter-->
+            <GridSplitter Grid.Column="3" HorizontalAlignment="Stretch" Focusable="False"/>
+
+            <Grid Grid.Column="4">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!--#region Right Side Buttons -->
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button x:Name="ButtonAddLayer" Grid.Column="0" Content="Add" Margin="5" Command="{Binding ButtonAddLayerClickCommand}"/>
+                    <Button x:Name="ButtonRemoveLayer" Grid.Column="1" Content="Remove" Margin="5" Command="{Binding ButtonRemoveLayerClickCommand}"/>
+                </Grid>
+                <!--#endregion-->
+
+                <Grid Grid.Row="1">
+                    <ListView x:Name="LayerList" SelectionChanged="LayerList_SelectionChanged"/>
+                </Grid>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Row="2" Background="#FFC8FFC8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="75"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Content="{Binding StatusBarContent}"/>
+            <Label Grid.Column="1" Content="{Binding StatusBarScale, Converter={StaticResource dpsCon}}"/>
+        </Grid>
     </Grid>
 </Window>

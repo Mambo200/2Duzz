@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.31112.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2Duzz", "2Duzz\2Duzz.csproj", "{1BFE5CE9-E0F4-44DB-9AFA-9185B5BDEDC8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LevelData", "LevelData\LevelData.csproj", "{652C1F05-85F2-4C6A-A875-458665D76477}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{1BFE5CE9-E0F4-44DB-9AFA-9185B5BDEDC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1BFE5CE9-E0F4-44DB-9AFA-9185B5BDEDC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1BFE5CE9-E0F4-44DB-9AFA-9185B5BDEDC8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{652C1F05-85F2-4C6A-A875-458665D76477}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{652C1F05-85F2-4C6A-A875-458665D76477}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{652C1F05-85F2-4C6A-A875-458665D76477}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{652C1F05-85F2-4C6A-A875-458665D76477}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
