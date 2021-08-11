@@ -446,8 +446,7 @@ namespace _2Duzz
             if (string.IsNullOrEmpty(path))
                 return;
 
-            Images.SplitPicWindow splitWindow = new Images.SplitPicWindow();
-            splitWindow.ApplyImage(new Uri(path));
+            Images.SplitPicWindow splitWindow = new Images.SplitPicWindow(new Uri(path));
             splitWindow.ShowDialog();
         }
         #endregion

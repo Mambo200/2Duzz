@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:_2Duzz.Images"
         xmlns:Tools="clr-namespace:_2Duzz.Tools"
         mc:Ignorable="d"
-        Title="SplitPicWindow" Height="450" Width="800" Loaded="Window_Loaded" Closed="Window_Closed">
+        Title="SplitPicWindow" Height="450" Width="800">
     <Window.DataContext>
         <mvvm:SplitPicViewModel/>
     </Window.DataContext>
@@ -28,7 +28,7 @@
             </Grid.ColumnDefinitions>
 
             <!--#region Image Field -->
-            <Tools:WheelControlScollViewer>
+            <Tools:WheelControlScollViewer DeadZone="30" MoveMultiplicator="0.01" HorizontalScrollBarVisibility="Visible">
                 <Grid Grid.Column="0">
                     <Image x:Name="ImageShow" Source="{Binding SelectedImageSource}" Stretch="None" />
                     <Grid x:Name="GridLines" ShowGridLines="True">

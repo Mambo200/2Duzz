@@ -22,25 +22,24 @@ namespace _2Duzz.Images
     {
         public SplitPicViewModel GetMainViewModel { get => this.DataContext as SplitPicViewModel; }
 
-        public SplitPicWindow()
+        /// <summary>
+        /// Initialized the <see cref="SplitPicWindow"/>.
+        /// </summary>
+        /// <param name="_source">Source of image</param>
+        public SplitPicWindow(Uri _source)
         {
             InitializeComponent();
+            ApplyImage(_source);
         }
 
-        public void ApplyImage(Uri _source)
+        /// <summary>
+        /// This has to be called before the window gets opened
+        /// </summary>
+        /// <param name="_source">source of Image</param>
+        private void ApplyImage(Uri _source)
         {
             ImageSource source = new BitmapImage(_source);
             GetMainViewModel.SelectedImageSource = source;
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            BitmapSource bs = ImageShow.Source as BitmapSource;
-        }
-
-        private void Window_Closed(object sender, EventArgs e)
-        {
-
         }
     }
 }
