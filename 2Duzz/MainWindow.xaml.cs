@@ -442,6 +442,13 @@ namespace _2Duzz
                  "All Image Files|*.jpeg;*.jpg;*.jpe;*.jfif;*.png;*.bmp;*.gif;*.tiff;*.tif;*.jxr;*.ico|" +
                  "All Files|*";
             string path = Helper.FileHelper.OpenFilePath(filter, this);
+
+            if (string.IsNullOrEmpty(path))
+                return;
+
+            Images.SplitPicWindow splitWindow = new Images.SplitPicWindow();
+            splitWindow.ApplyImage(new Uri(path));
+            splitWindow.ShowDialog();
         }
         #endregion
 

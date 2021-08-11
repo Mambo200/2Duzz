@@ -80,14 +80,22 @@
     <Compile Include="Helper\PanelManager.cs" />
     <Compile Include="Helper\TabItemManager.cs" />
     <Compile Include="Images\SplitPic.cs" />
+    <Compile Include="Images\SplitPicWindow.xaml.cs">
+      <DependentUpon>SplitPicWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="IStatusBar.cs" />
     <Compile Include="Tools\HoverOverDifferentImageGrid.cs" />
     <Compile Include="Tools\WheelControlScollViewer.cs" />
     <Compile Include="ViewModels\RelayCommand.cs" />
+    <Compile Include="ViewModels\SplitPicViewModel.cs" />
     <Compile Include="WindowsXAML\NewMap.xaml.cs">
       <DependentUpon>NewMap.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\NewMapViewModel.cs" />
+    <Page Include="Images\SplitPicWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -1,0 +1,84 @@
+﻿<Window x:Class="_2Duzz.Images.SplitPicWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:mvvm="clr-namespace:_2Duzz.ViewModels" xmlns:converters="clr-namespace:_2Duzz.Converters"
+        xmlns:local="clr-namespace:_2Duzz.Images"
+        xmlns:Tools="clr-namespace:_2Duzz.Tools"
+        mc:Ignorable="d"
+        Title="SplitPicWindow" Height="450" Width="800" Loaded="Window_Loaded">
+    <Window.DataContext>
+        <mvvm:SplitPicViewModel/>
+    </Window.DataContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="10"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition Width="200"/>
+            </Grid.ColumnDefinitions>
+
+            <!--#region Image Field -->
+            <Tools:WheelControlScollViewer>
+                <Grid Grid.Column="0">
+                    <Image x:Name="ImageShow" Source="{Binding SelectedImageSource}" Stretch="None" />
+                    <Grid x:Name="GridLines" ShowGridLines="True">
+                        <Grid.RowDefinitions/>
+                        <Grid.ColumnDefinitions/>
+                    </Grid>
+                </Grid>
+            </Tools:WheelControlScollViewer>
+            <!--#endregion Image Field-->
+
+            <GridSplitter Grid.Column="1" Background="Black" Foreground="Black"/>
+
+            <!--#region Info Box -->
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!--#region Image Info -->
+                <GroupBox Header="Image Information">
+                    <WrapPanel>
+                        <TextBlock Text="Width" Width="50" Margin="0,5,0,0"/>
+                        <TextBox Text="{Binding Source.Width, ElementName=ImageShow, Mode=OneWay}" Width="130" Margin="0,5,0,0" IsEnabled="False"/>
+                        <TextBlock Text="Height" Width="50" Margin="0,5,0,0"/>
+                        <TextBox Text="{Binding Source.Height, ElementName=ImageShow, Mode=OneWay}" Width="130" Margin="0,5,0,0" IsEnabled="False"/>
+                    </WrapPanel>
+                </GroupBox>
+                <!--#endregion-->
+
+                <!--#region Split Info -->
+                <GroupBox Grid.Row="1" Header="Split Information">
+                    <WrapPanel>
+                        <TextBlock Text="Width" Width="50" Margin="0,5,0,0"/>
+                        <TextBox x:Name="SplitWidth" Text="1" Width="130" Margin="0,5,0,0"/>
+                        <TextBlock Text="Height" Width="50" Margin="0,5,0,0"/>
+                        <TextBox x:Name="SplitHeight" Text="1" Width="130" Margin="0,5,0,0"/>
+
+                        <Separator Width="180" Margin="0,5,0,0"/>
+
+                        <TextBlock Text="Count W" Width="50" Margin="0,5,0,0"/>
+                        <TextBox x:Name="SplitCountWidth" Text="{Binding ActualHeight, ElementName=ImageShow, Mode=OneWay}" Width="130" Margin="0,5,0,0" IsEnabled="False"/>
+                        <TextBlock Text="Count H" Width="50" Margin="0,5,0,0"/>
+                        <TextBox x:Name="SplitCountHeight" Text="{Binding ActualWidth, ElementName=ImageShow, Mode=OneWay}" Width="130" Margin="0,5,0,0" IsEnabled="False"/>
+                    </WrapPanel>
+                </GroupBox>
+                <!--#endregion-->
+
+            </Grid>
+            <!--#endregion Info Box-->
+
+        </Grid>
+    </Grid>
+</Window>
