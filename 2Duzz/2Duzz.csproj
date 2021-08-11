@@ -67,6 +67,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\PixelConverter\ImageSourceToPixelConverterHeight.cs" />
+    <Compile Include="Converters\PixelConverter\ImageSourceToPixelConverter.cs" />
+    <Compile Include="Converters\PixelConverter\ImageSourceToPixelConverterWidth.cs" />
     <Compile Include="Delegates\OnClickImageEventHandler.cs" />
     <Compile Include="Delegates\SwitchImagesEventHandler.cs" />
     <Compile Include="Helper\BindingHelper.cs" />
