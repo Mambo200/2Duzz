@@ -236,6 +236,18 @@ namespace _2Duzz.ViewModels
             }
         }
 
+        private ICommand m_HeaderSplitImagesCommand;
+        /// <summary>
+        /// Header New Click command
+        /// </summary>
+        public ICommand HeaderSplitImagesCommand
+        {
+            get => m_HeaderSplitImagesCommand;
+            set
+            {
+                SetProperty(ref m_HeaderSplitImagesCommand, value);
+            }
+        }
         #endregion
         #endregion
 
