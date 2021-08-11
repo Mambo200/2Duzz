@@ -8,12 +8,13 @@ using System.Threading.Tasks;
 
 namespace _2Duzz.Images
 {
-    public class SplitPic :IDisposable
+    public class SplitPic : IDisposable
     {
         private SplitPic() { }
 
         /// <summary>Current Image</summary>
         public Bitmap ImageData { get; private set; }
+        private Stream m_imageStream;
 
         #region Constructor
         /// <summary>
@@ -22,7 +23,8 @@ namespace _2Duzz.Images
         /// <param name="_path">Path of file</param>
         public SplitPic(string _path)
         {
-            ImageData = new Bitmap(_path);
+            m_imageStream = new StreamReader(_path).BaseStream;
+            ImageData = new Bitmap(m_imageStream);
         }
 
         /// <summary>
@@ -40,7 +42,8 @@ namespace _2Duzz.Images
         /// <param name="_stream">Stream of image</param>
         public SplitPic(Stream _stream)
         {
-            ImageData = new Bitmap(_stream);
+            m_imageStream = _stream;
+            ImageData = new Bitmap(m_imageStream);
         }
         #endregion
 
@@ -108,10 +111,27 @@ namespace _2Duzz.Images
             return (xLeft == 0 && yLeft == 0);
         }
 
+        /// <summary>
+        /// Check if image can be splitted by its width
+        /// </summary>
+        /// <param name="_width">width</param>
+        /// <returns></returns>
+        public bool CanSplitWidth(int _width)
+        {
+            return ImageData.Width % _width == 0;
+        }
+
+        public bool CanSplitHeight(int _height)
+        {
+            return ImageData.Height % _height == 0;
+        }
+
         public void Dispose()
         {
+            if (m_imageStream != null)
+                m_imageStream.Dispose();
+
             ImageData.Dispose();
         }
     }
-
 }

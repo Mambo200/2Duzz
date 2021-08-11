@@ -7,14 +7,10 @@
         xmlns:local="clr-namespace:_2Duzz.Images"
         xmlns:Tools="clr-namespace:_2Duzz.Tools"
         mc:Ignorable="d"
-        Title="SplitPicWindow" Height="450" Width="800" Loaded="Window_Loaded">
+        Title="SplitPicWindow" Height="450" Width="800" Loaded="Window_Loaded" Closed="Window_Closed">
     <Window.DataContext>
         <mvvm:SplitPicViewModel/>
     </Window.DataContext>
-    <Window.Resources>
-        <converters:ImageSourceToPixelConverterWidth x:Key="imgConW"/>
-        <converters:ImageSourceToPixelConverterHeight x:Key="imgConH"/>
-    </Window.Resources>
 
 
 
@@ -57,9 +53,10 @@
                 <GroupBox Header="Image Information">
                     <WrapPanel>
                         <TextBlock Text="Width" Width="50" Margin="0,5,0,0"/>
-                        <TextBox Text="{Binding Source, ElementName=ImageShow, Mode=OneWay, Converter={StaticResource imgConW}}" Width="130" Margin="0,5,0,0" IsEnabled="False"/>
+                        <!--<TextBox Text="{Binding Source, ElementName=ImageShow, Mode=OneWay, Converter={StaticResource imgConW}}" Width="130" Margin="0,5,0,0" IsEnabled="False"/>-->
+                        <TextBox Text="{Binding Split.ImageData.Width, Mode=OneWay}" Width="130" Margin="0,5,0,0" IsEnabled="False"/>
                         <TextBlock Text="Height" Width="50" Margin="0,5,0,0"/>
-                        <TextBox Text="{Binding Source, ElementName=ImageShow, Mode=OneWay, Converter={StaticResource imgConH}}" Width="130" Margin="0,5,0,0" IsEnabled="False"/>
+                        <TextBox Text="{Binding Split.ImageData.Height, Mode=OneWay}" Width="130" Margin="0,5,0,0" IsEnabled="False"/>
                     </WrapPanel>
                 </GroupBox>
                 <!--#endregion-->
@@ -68,16 +65,16 @@
                 <GroupBox Grid.Row="1" Header="Split Information">
                     <WrapPanel>
                         <TextBlock Text="Width" Width="50" Margin="0,5,0,0"/>
-                        <TextBox x:Name="SplitWidth" Text="1" Width="130" Margin="0,5,0,0"/>
+                        <TextBox x:Name="SplitWidth" Text="{Binding SplitPixelWidthText, UpdateSourceTrigger=PropertyChanged}" Width="130" Margin="0,5,0,0" />
                         <TextBlock Text="Height" Width="50" Margin="0,5,0,0"/>
-                        <TextBox x:Name="SplitHeight" Text="1" Width="130" Margin="0,5,0,0"/>
+                        <TextBox x:Name="SplitHeight" Text="{Binding SplitPixelHeightText, UpdateSourceTrigger=PropertyChanged}" Width="130" Margin="0,5,0,0"/>
 
                         <Separator Width="180" Margin="0,5,0,0"/>
 
                         <TextBlock Text="Count W" Width="50" Margin="0,5,0,0"/>
-                        <TextBox x:Name="SplitCountWidth" Text="{Binding ActualHeight, ElementName=ImageShow, Mode=OneWay}" Width="130" Margin="0,5,0,0" IsEnabled="False"/>
+                        <TextBox x:Name="SplitCountWidth" Text="{Binding CountW, Mode=OneWay}" Width="130" Margin="0,5,0,0" IsEnabled="False"/>
                         <TextBlock Text="Count H" Width="50" Margin="0,5,0,0"/>
-                        <TextBox x:Name="SplitCountHeight" Text="{Binding ActualWidth, ElementName=ImageShow, Mode=OneWay}" Width="130" Margin="0,5,0,0" IsEnabled="False"/>
+                        <TextBox x:Name="SplitCountHeight" Text="{Binding CountH, Mode=OneWay}" Width="130" Margin="0,5,0,0" IsEnabled="False"/>
                     </WrapPanel>
                 </GroupBox>
                 <!--#endregion-->

@@ -37,5 +37,10 @@ namespace _2Duzz.Images
         {
             BitmapSource bs = ImageShow.Source as BitmapSource;
         }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+
+        }
     }
 }
