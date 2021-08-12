@@ -19,7 +19,7 @@ namespace _2Duzz.ViewModels
 
         public SplitPicViewModel()
         {
-
+            PercentageText = "Start Converting";
         }
 
         ~SplitPicViewModel()
@@ -127,6 +127,15 @@ namespace _2Duzz.ViewModels
         }
         #endregion
 
+        private string m_PercentageText;
+        public string PercentageText
+        {
+            get => m_PercentageText;
+            set
+            {
+                SetProperty(ref m_PercentageText, value);
+            }
+        }
 
         public string RemoveFileAtBeginning(string _text)
         {
