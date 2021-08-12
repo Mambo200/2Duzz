@@ -1,6 +1,7 @@
 ﻿using _2Duzz.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -41,5 +42,61 @@ namespace _2Duzz.Images
             ImageSource source = new BitmapImage(_source);
             GetMainViewModel.SelectedImageSource = source;
         }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            GetMainViewModel.ConvertButtonPressedCommand = new RelayCommand((r) => ConvertCommand(Button_Convert));
+        }
+
+        private void ConvertCommand(object obj)
+        {
+            m_splitCountWidth = GetMainViewModel.CountW;
+            m_splitCountHeight = GetMainViewModel.CountH;
+            
+            m_splitWorker = new BackgroundWorker();
+            m_splitWorker.WorkerReportsProgress = true;
+            m_splitWorker.DoWork += BackgroundWorker_SplitImage_DoWork;
+            m_splitWorker.ProgressChanged += BackgroundWorker_SplitImage_ProgressChaned;
+            SplitImageProgress.Value = SplitImageProgress.Minimum;
+            m_splitWorker.RunWorkerAsync(
+                new object[]
+                { 
+                    GetMainViewModel.Split, 
+                    int.Parse(GetMainViewModel.SplitPixelWidthText), 
+                    int.Parse(GetMainViewModel.SplitPixelHeightText) 
+                }
+                );
+        }
+
+        #region BackgroundWorker
+        private BackgroundWorker m_splitWorker;
+        private System.Drawing.Bitmap[,] m_splittedImages;
+        private int m_splitCountWidth = 0;
+        private int m_splitCountHeight = 0;
+        private void BackgroundWorker_SplitImage_DoWork(object sender, DoWorkEventArgs e)
+        {
+            object[] args = e.Argument as object[];
+            SplitPic pic = args[0] as SplitPic;
+            int w = (int)args[1];
+            int h = (int)args[2];
+
+            m_splittedImages = pic.SplitImage(
+                w,
+                h,
+                sender as BackgroundWorker
+                );
+        }
+
+        private void BackgroundWorker_SplitImage_ProgressChaned(object sender, ProgressChangedEventArgs e)
+        {
+            
+            int currentImageCount = e.ProgressPercentage;
+            int maximumImageCount = m_splitCountWidth * m_splitCountHeight;
+
+            double percentage = ((double)currentImageCount / (double)maximumImageCount) * SplitImageProgress.Maximum;
+
+            SplitImageProgress.Value = percentage;
+        }
+        #endregion
     }
 }

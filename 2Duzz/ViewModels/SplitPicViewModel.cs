@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -100,6 +101,30 @@ namespace _2Duzz.ViewModels
             return Split.ImageData.Height / number;
         }
         #endregion
+
+        #region Convert Button
+        private ICommand m_ConvertButtonPressedCommand;
+        public ICommand ConvertButtonPressedCommand
+        {
+            get => m_ConvertButtonPressedCommand;
+            set
+            {
+                SetProperty(ref m_ConvertButtonPressedCommand, value);
+            }
+        }
+
+        public bool CanPressConvertButton
+        {
+            get
+            {
+                return SplitPixelHeightText != "-1"
+                    && SplitPixelWidthText != "-1"
+                    && CountW <= 0
+                    && CountH <= 0;
+            }
+        }
+        #endregion
+
 
         private string RemoveFileAtBeginning(string _text)
         {

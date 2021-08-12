@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:_2Duzz.Images"
         xmlns:Tools="clr-namespace:_2Duzz.Tools"
         mc:Ignorable="d"
-        Title="SplitPicWindow" Height="450" Width="800">
+        Title="SplitPicWindow" Height="450" Width="800" Loaded="Window_Loaded">
     <Window.DataContext>
         <mvvm:SplitPicViewModel/>
     </Window.DataContext>
@@ -47,6 +47,7 @@
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="50"/>
                 </Grid.RowDefinitions>
 
                 <!--#region Image Info -->
@@ -79,9 +80,15 @@
                 </GroupBox>
                 <!--#endregion-->
 
+                <!--#region Apply Button -->
+                <Button x:Name="Button_Convert" Grid.Row="3" Margin="5" Content="Convert" Command="{Binding ConvertButtonPressedCommand}" IsEnabled="{Binding CanPressConvertButton}"/>
+                <!--#endregion-->
             </Grid>
             <!--#endregion Info Box-->
-
         </Grid>
+
+        <!--#region ProgressBar -->
+        <ProgressBar x:Name="SplitImageProgress" Grid.Row="1" Value="0" Foreground="#FF0634B0" />
+        <!--#endregion-->
     </Grid>
 </Window>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -54,7 +55,7 @@ namespace _2Duzz.Images
         /// <param name="_height">Height of split size</param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"/>
-        public Bitmap[,] SplitImage(int _width, int _height)
+        public Bitmap[,] SplitImage(int _width, int _height, BackgroundWorker _worker = null)
         {
             if (!CanSplit(_width, _height))
                 throw new NotImplementedException("You tried to split an image, but the split size cannot be used for splitting.");
@@ -64,6 +65,7 @@ namespace _2Duzz.Images
             int yPictureCount = ImageData.Height / _height;
 
             // create stream array
+            int imgCount = 0;
             Bitmap[,] toReturn = new Bitmap[xPictureCount, yPictureCount];
 
             for (int streamX = 0; streamX < xPictureCount; streamX++)
@@ -77,6 +79,13 @@ namespace _2Duzz.Images
                         for (int imageY = streamY * _height; imageY < _height * (streamY + 1); imageY++)
                         {
                             toReturn[streamX, streamY].SetPixel(imageX % _width, imageY % _height, ImageData.GetPixel(imageX, imageY));
+                            if (_worker != null)
+                            {
+                                _worker.ReportProgress(++imgCount);
+
+                                // We need to sleep here for the main window to react.
+                                System.Threading.Thread.Sleep(1);
+                            }
                         }
                     }
                 }
@@ -118,11 +127,15 @@ namespace _2Duzz.Images
         /// <returns></returns>
         public bool CanSplitWidth(int _width)
         {
+            if (_width <= 0)
+                return false;
             return ImageData.Width % _width == 0;
         }
 
         public bool CanSplitHeight(int _height)
         {
+            if (_height <= 0)
+                return false;
             return ImageData.Height % _height == 0;
         }
 
