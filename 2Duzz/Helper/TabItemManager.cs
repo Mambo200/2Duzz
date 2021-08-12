@@ -53,9 +53,11 @@ namespace _2Duzz.Helper
         /// </summary>
         /// <param name="_header">Header of TabItem</param>
         /// <returns></returns>
-        public TabItem AddTabItem(object _header)
+        public TabItem AddTabItem(object _header, bool _addContextMenu = true)
         {
             TabItem t = PrepareTabItem(_header);
+            if (_addContextMenu)
+                PrepareContextMenu(t);
             AddToItemControl(t);
 
             return t;
@@ -66,9 +68,11 @@ namespace _2Duzz.Helper
         /// </summary>
         /// <param name="_header">Header of TabItem</param>
         /// <returns></returns>
-        public TabItem AddTabItem(object _header, out int _addedIndex)
+        public TabItem AddTabItem(object _header, out int _addedIndex, bool _addContextMenu = true)
         {
             TabItem t = PrepareTabItem(_header);
+            if (_addContextMenu)
+                PrepareContextMenu(t);
             AddToItemControl(t);
 
             _addedIndex = ItemControl.Items.IndexOf(t);
@@ -82,9 +86,11 @@ namespace _2Duzz.Helper
         /// <param name="_header">Header of <see cref="TabItem"/></param>
         /// <param name="_layer">Layer of new <see cref="TabItem"/></param>
         /// <returns></returns>
-        public TabItem AddTabItem(object _header, int _layer)
+        public TabItem AddTabItem(object _header, int _layer, bool _addContextMenu = true)
         {
             TabItem t = PrepareTabItem(_header);
+            if (_addContextMenu)
+                PrepareContextMenu(t);
             AddToItemControl(t, _layer);
 
             return t;
@@ -382,10 +388,14 @@ namespace _2Duzz.Helper
         /// <returns></returns>
         private TabItem PrepareTabItem(object _header)
         {
-            TabItem t = new TabItem();
-            t.Header = _header;
-            ScrollViewer sv = new ScrollViewer();
-            sv.Content = new WrapPanel();
+            TabItem t = new TabItem
+            {
+                Header = _header
+            };
+            ScrollViewer sv = new ScrollViewer
+            {
+                Content = new WrapPanel()
+            };
             t.Content = sv;
 
             return t;
@@ -465,10 +475,12 @@ namespace _2Duzz.Helper
         /// <returns></returns>
         private Border PrepareBorder(Image _img)
         {
-            Border b = new Border();
-            b.BorderBrush = NoHighlightColor;
-            b.BorderThickness = new Thickness(1);
-            b.Child = _img;
+            Border b = new Border
+            {
+                BorderBrush = NoHighlightColor,
+                BorderThickness = new Thickness(1),
+                Child = _img
+            };
             return b;
         }
 
@@ -550,5 +562,47 @@ namespace _2Duzz.Helper
             FromFileTab = _tabItem;
         }
         #endregion
+
+        private void PrepareContextMenu(TabItem _tab)
+        {
+            // We have to define a new ContextMenu because on creation, TabItem.ContextMenu is null.
+            _tab.ContextMenu = new ContextMenu();
+
+            // Items of ContextMenu can be anything, but to keep the old style we take the classic MenuItem
+            MenuItem c = new MenuItem();
+
+            // Define a header and a click event so we can actually close it
+            c.Header = "Close " + _tab.Header;
+            c.Click += MenuItemClose_Click;
+
+            // We cannot access the original TabItem from "sender" from "MenuItemClose_Click", but we get the MenuItem.
+            // To close it, we need a reference to the TabItem which we save to MenuItem.Tag
+            c.Tag = _tab;
+
+            // Finally adding MenuItem to ContextMenu
+            _tab.ContextMenu.Items.Add(c);
+        }
+
+        /// <summary>
+        /// What happens if user click on ContextMenuItem of MenuItem
+        /// </summary>
+        /// <param name="sender">original source</param>
+        /// <param name="e"></param>
+        private void MenuItemClose_Click(object sender, RoutedEventArgs e)
+        {
+            TabItem tab = GetTabItemFromElement((MenuItem)sender);
+
+            RemoveTabItem(tab);
+        }
+
+        /// <summary>
+        /// Get <see cref="TabItem"/> from <see cref="MenuItem"/> by returning <see cref="FrameworkElement.Tag"/> as <see cref="TabItem"/>.
+        /// </summary>
+        /// <param name="_item"><see cref="MenuItem"/></param>
+        /// <returns><see cref="TabItem"/> from <see cref="FrameworkElement.Tag"/></returns>
+        private TabItem GetTabItemFromElement(MenuItem _item)
+        {
+            return _item.Tag as TabItem;
+        }
     }
 }

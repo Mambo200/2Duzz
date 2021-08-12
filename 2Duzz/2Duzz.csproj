@@ -24,6 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -33,11 +34,20 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CustomMarshalers" />
+    <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.4.0, Culture=neutral, PublicKeyToken=8985beaab7ea3f04, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft-WindowsAPICodePack-Core.1.1.4\lib\net48\Microsoft.WindowsAPICodePack.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAPICodePack.Shell, Version=1.1.4.0, Culture=neutral, PublicKeyToken=8985beaab7ea3f04, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft-WindowsAPICodePack-Shell.1.1.4\lib\net48\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -50,12 +60,16 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\PixelConverter\ImageSourceToPixelConverterHeight.cs" />
+    <Compile Include="Converters\PixelConverter\ImageSourceToPixelConverter.cs" />
+    <Compile Include="Converters\PixelConverter\ImageSourceToPixelConverterWidth.cs" />
     <Compile Include="Delegates\OnClickImageEventHandler.cs" />
     <Compile Include="Delegates\SwitchImagesEventHandler.cs" />
     <Compile Include="Helper\BindingHelper.cs" />
@@ -64,19 +78,27 @@
     <Compile Include="Helper\FileHelper.cs" />
     <Compile Include="Helper\ImageDrawingHelper.cs" />
     <Compile Include="Helper\ImageLoader.cs" />
-    <Compile Include="Helper\ImageManager.cs" />
     <Compile Include="Helper\MathHelper.cs" />
     <Compile Include="Helper\MyConverter.cs" />
     <Compile Include="Helper\PanelManager.cs" />
     <Compile Include="Helper\TabItemManager.cs" />
+    <Compile Include="Images\SplitPic.cs" />
+    <Compile Include="Images\SplitPicWindow.xaml.cs">
+      <DependentUpon>SplitPicWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="IStatusBar.cs" />
     <Compile Include="Tools\HoverOverDifferentImageGrid.cs" />
     <Compile Include="Tools\WheelControlScollViewer.cs" />
     <Compile Include="ViewModels\RelayCommand.cs" />
+    <Compile Include="ViewModels\SplitPicViewModel.cs" />
     <Compile Include="WindowsXAML\NewMap.xaml.cs">
       <DependentUpon>NewMap.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\NewMapViewModel.cs" />
+    <Page Include="Images\SplitPicWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -114,6 +136,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

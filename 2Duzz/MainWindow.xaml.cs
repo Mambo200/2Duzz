@@ -30,12 +30,13 @@ namespace _2Duzz
         public Image CurrentSelectedImage { get; private set; }
         public int CurrentLayer { get; private set; }
 
+        public bool DoSave { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
 
             BindingHelper.Get.Init(this);
-            ImageManager.Get.Init(this);
             PanelManager.Get.Init(this, GridContent_Images);
             TabItemManager.Get.Init(this, TabControl_Sprites);
             ImageDrawingHelper.Get.Init(this, GridContent_Images);
@@ -80,12 +81,11 @@ namespace _2Duzz
             TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
             TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Outline.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
             #endregion
-
         }
 
         public void ChangeStatusBar(object _content)
         {
-            GetMainViewModel.StatusBarContent = _content;
+            GetMainViewModel.StatusBarContent = $"{DateTime.Now.ToString().Split(' ')[1]}  -  {_content}";
         }
 
         [Obsolete("We scroll without STRG now")]
@@ -120,13 +120,24 @@ namespace _2Duzz
             GetMainViewModel.GridContentScale = (double)Math.Max(new decimal(0.1), newScaleValue);
         }
 
-        #region Execute buttons
+        #region Execute Header and Buttons
+
+        #region File Header
         /// <summary>
         /// Header New Click Execution method
         /// </summary>
         /// <param name="_parameter"></param>
         private void ExecuteHeaderNewClick(object _parameter)
         {
+            // Check if old level exists and if it was saved
+            if (CurrentLevel != null
+                && DoSave)
+            {
+                if (!CheckCurrentLevel())
+                    return;
+            }
+
+
             // Create and open new Window
             WindowsXAML.NewMap newMap = new WindowsXAML.NewMap();
             newMap.ShowDialog();
@@ -145,10 +156,12 @@ namespace _2Duzz
                 newMap.LevelSizeY,
                 newMap.SpriteSizeX,
                 newMap.SpriteSizeY
-                );
+                )
+            {
 
-            // Set string array for images. We cannot set this yet because the first dimension will be the amount of layer and the second dimension will be the amount of images.
-            CurrentLevel.LevelImages = new int[0, 0];
+                // Set string array for images. We cannot set this yet because the first dimension will be the amount of layer and the second dimension will be the amount of images.
+                LevelImages = new int[0, 0]
+            };
 
             // Reset Panel
             ImageDrawingHelper.Get.ClearLayer();
@@ -172,26 +185,36 @@ namespace _2Duzz
 
             CurrentLayer = 0;
             LayerList.SelectedIndex = 0;
+
+            DoSave = true;
         }
 
+        #region Save
         /// <summary>
         /// Header Save Click Execution method
         /// </summary>
         /// <param name="_parameter"></param>
         private void ExecuteSaveClick(object _parameter)
         {
-            if (CurrentLevel == null) return;
+            _ = SaveFile();
+        }
+
+        /// <summary>
+        /// Save current level (<see cref="Microsoft.Win32.FileDialog"/> included)
+        /// </summary>
+        /// <returns></returns>
+        private bool SaveFile()
+        {
+            if (CurrentLevel == null) return false;
 
             string path = FileHelper.LastValidFile;
 
             // Check if path is valid
             if (string.IsNullOrEmpty(path))
             {
-                // path not valid. Let user decide new path
-                ExecuteSaveAsClick(_parameter);
-
-                // we return here because if Method "ExecuteSaveAsClick(object)" which we use above, the file will be saved there.
-                return;
+                // path not valid. Let user decide new path.
+                // We return here because Method "SaveFileAs()" will be save the file there.
+                return SaveFileAs();
             }
 
 
@@ -200,6 +223,10 @@ namespace _2Duzz
             FileHelper.FileDialogSaveStatusText(path, CurrentLevel.SaveJson(path), this);
 
             ImageLoader.SaveLevelImagesFromFileToDirectory(CurrentLevel.LevelImagesData, path);
+
+            DoSave = false;
+
+            return true;
         }
 
         /// <summary>
@@ -208,7 +235,16 @@ namespace _2Duzz
         /// <param name="_parameter"></param>
         private void ExecuteSaveAsClick(object _parameter)
         {
-            if (CurrentLevel == null) return;
+            _ = SaveFileAs();
+        }
+
+        /// <summary>
+        /// Save current level (<see cref="Microsoft.Win32.FileDialog"/> included)
+        /// </summary>
+        /// <returns></returns>
+        private bool SaveFileAs()
+        {
+            if (CurrentLevel == null) return false;
 
             string path = Helper.FileHelper.GetSavePath();
 
@@ -216,7 +252,7 @@ namespace _2Duzz
             if (string.IsNullOrEmpty(path))
             {
                 ChangeStatusBar($"File save aborted by user");
-                return;
+                return false;
             }
 
             SetLevelImagesStringArray();
@@ -224,7 +260,12 @@ namespace _2Duzz
             FileHelper.FileDialogSaveStatusText(path, CurrentLevel.SaveJson(path), this);
 
             ImageLoader.SaveLevelImagesFromFileToDirectory(CurrentLevel.LevelImagesData, path);
+
+            DoSave = false;
+
+            return true;
         }
+        #endregion
 
 
         /// <summary>
@@ -233,6 +274,15 @@ namespace _2Duzz
         /// <param name="_parameter"></param>
         private void ExecuteOpenClick(object _parameter)
         {
+            // Check if old level exists and if it was saved
+            if (CurrentLevel != null
+                && DoSave)
+            {
+                if (!CheckCurrentLevel())
+                    return;
+            }
+
+
             string path = Helper.FileHelper.GetOpenPath();
 
             // Check if string is valid or not
@@ -244,14 +294,183 @@ namespace _2Duzz
 
             CurrentLevel = Level.ReadJSON(path);
             ImageLoader.SaveLevelImagesFromFileToDirectory(CurrentLevel.LevelImagesData, path);
-            string[] imagesPaths = ImageLoader.LoadImagesFromFolderToTabItem(path, Img_MouseLeftButtonDown, Img_MouseRightButtonDown, out TabItem addedTo);
-            OpenLevel(CurrentLevel, imagesPaths, addedTo);
+            string[] imagesPaths = ImageLoader.LoadImagesFromLevelFolderToTabItem(path, Img_MouseLeftButtonDown, Img_MouseRightButtonDown, out TabItem addedTo);
+            OpenLevel(CurrentLevel, addedTo);
 
 
             FileHelper.FileDialogOpenStatusText(path, CurrentLevel != null, this);
+
+            DoSave = false;
+        }
+        #endregion
+
+
+        #region Buttons
+        /// <summary>
+        /// Add Layer Click Execution method
+        /// </summary>
+        /// <param name="_parameter"></param>
+        private void ExecuteAddLayerClick(object _parameter)
+        {
+            if (CurrentLevel == null) return;
+            ImageDrawingHelper.Get.CreateLayer(CurrentLevel.LevelSizeX, CurrentLevel.LevelSizeY, CurrentLevel.SpriteSizeX, CurrentLevel.SpriteSizeY, LayerList.SelectedIndex + 1);
+
+
+            LayerList.Items.Insert(LayerList.SelectedIndex + 1, LayerList.SelectedIndex + 1);
+
+            LayerList.SelectedIndex++;
+            CurrentLayer = LayerList.SelectedIndex;
+
+            ChangeStatusBar($"Current Index: {CurrentLayer}");
+
+            DoSave = true;
         }
 
-        private void OpenLevel(Level _l, string[] _imagePaths, TabItem _tabItem)
+        /// <summary>
+        /// Remove Layer Click Execution method
+        /// </summary>
+        /// <param name="_parameter"></param>
+        private void ExecuteRemoveLayerClick(object _parameter)
+        {
+            if (CurrentLevel == null
+                || LayerList.Items.Count <= 1) return;
+            ImageDrawingHelper.Get.RemoveLayer(LayerList.SelectedIndex);
+
+            int tempIndex = LayerList.SelectedIndex;
+            LayerList.Items.RemoveAt(LayerList.SelectedIndex);
+            LayerList.SelectedIndex = MathHelper.Between(tempIndex, 0, LayerList.Items.Count - 1);
+            CurrentLayer = LayerList.SelectedIndex;
+
+            ChangeStatusBar($"Current Index: {CurrentLayer}");
+
+            DoSave = true;
+        }
+        #endregion
+
+
+        #region Image Header
+        private void ExecuteAddImagesClick(object _parameter)
+        {
+            // get folder
+            string folder = FileHelper.OpenFolderPath(out bool includeSubfolder, this);
+
+            // check if string is empty ==> user cancelled
+            // We do not need to check if folder exists because "FileHelper.OpenFolderPath" already checks this with the "EnsurePathExists" property.
+            if (string.IsNullOrEmpty(folder))
+            {
+                ChangeStatusBar("Load images cancelled by user.");
+                return;
+            }
+            DirectoryInfo info = new DirectoryInfo(folder);
+
+            // Supported BitmapImage file formats:
+            //Joint Photographic Experts Group (JPEG, JPG, JPE, JFIF)
+            //Portable Network Graphics(PNG)
+            //bitmap(BMP)
+            //Graphics Interchange Format(GIF)
+            //Tagged Image File Format(TIFF)
+            //JPEG XR(JXR)
+            //icons(ICO)
+            // Source: https://docs.microsoft.com/en-us/uwp/api/windows.ui.xaml.media.imaging.bitmapimage?view=winrt-20348#remarks
+            SearchOption option = includeSubfolder ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
+            IEnumerable<string> files = Directory.EnumerateFiles(folder, "*.*", option)
+                .Where(s =>
+                    s.ToUpper().EndsWith("JPEG")
+                    || s.ToUpper().EndsWith("JPG")
+                    || s.ToUpper().EndsWith("JPE")
+                    || s.ToUpper().EndsWith("JFIF")
+                    || s.ToUpper().EndsWith("PNG")
+                    || s.ToUpper().EndsWith("BMP")
+                    || s.ToUpper().EndsWith("GIF")
+                    || s.ToUpper().EndsWith("TIFF")
+                    || s.ToUpper().EndsWith("TIF")
+                    || s.ToUpper().EndsWith("JXR")
+                    || s.ToUpper().EndsWith("ICO")
+                    );
+
+            // Add Tab
+            TabItem item = TabItemManager.Get.AddTabItem(info.Name);
+
+            // Add Images to Tab
+            Dictionary<string, string> failed = new Dictionary<string, string>();
+            foreach (string file in files)
+            {
+                try
+                {
+                    TabItemManager.Get.AddImageToTabItem(item, new Uri(file), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+                }
+                catch (Exception _ex)
+                {
+                    // save failed image with error message
+                    failed.Add(file, _ex.Message);
+                }
+            }
+
+            // show User failed images (if exist)
+            if (failed.Count > 0)
+            {
+                string caption = "Error";
+                string messageBoxText = "";
+                foreach (KeyValuePair<string, string> f in failed)
+                {
+                    messageBoxText += $"Folder: \"{f.Key}\"\nError: \"{f.Value}\"\n__\n";
+                }
+                messageBoxText = messageBoxText.Remove(messageBoxText.Length - 3);
+                MessageBox.Show(messageBoxText, caption, MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+
+        private void ExecuteSplitImageClick(object _parameter)
+        {
+            // Supported BitmapImage file formats:
+            //Joint Photographic Experts Group (JPEG, JPG, JPE, JFIF)
+            //Portable Network Graphics(PNG)
+            //bitmap(BMP)
+            //Graphics Interchange Format(GIF)
+            //Tagged Image File Format(TIFF, TIF)
+            //JPEG XR(JXR)
+            //icons(ICO)
+            // Source: https://docs.microsoft.com/en-us/uwp/api/windows.ui.xaml.media.imaging.bitmapimage?view=winrt-20348#remarks
+            const string filter =
+                 "JPEG|*.jpeg;*.jpg;*.jpe;*.jfif|" +
+                 "PNG|*.png|" +
+                 "BMP|*.bmp|" +
+                 "GIF|*.gif|" +
+                 "TIFF|*.tiff;*.tif|" +
+                 "JXR|*.jxr|" +
+                 "ICO|*.ico|" +
+                 "All Image Files|*.jpeg;*.jpg;*.jpe;*.jfif;*.png;*.bmp;*.gif;*.tiff;*.tif;*.jxr;*.ico|" +
+                 "All Files|*";
+            string path = Helper.FileHelper.OpenFilePath(filter, this);
+
+            if (string.IsNullOrEmpty(path))
+                return;
+
+            Images.SplitPicWindow splitWindow = new Images.SplitPicWindow(new Uri(path));
+            splitWindow.ShowDialog();
+        }
+        #endregion
+
+        #endregion
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            // Header File
+            GetMainViewModel.HeaderNewClickCommand = new RelayCommand((r) => ExecuteHeaderNewClick(HeaderNew));
+            GetMainViewModel.HeaderOpenClickCommand = new RelayCommand((r) => ExecuteOpenClick(HeaderOpen));
+            GetMainViewModel.HeaderSaveClickCommand = new RelayCommand((r) => ExecuteSaveClick(HeaderSave));
+            GetMainViewModel.HeaderSaveAsClickCommand = new RelayCommand((r) => ExecuteSaveAsClick(HeaderSaveAs));
+
+            // Header Image
+            GetMainViewModel.HeaderAddImagesCommand = new RelayCommand((r) => ExecuteAddImagesClick(HeaderAddImage));
+            GetMainViewModel.HeaderSplitImagesCommand = new RelayCommand((r) => ExecuteSplitImageClick(HeaderSplitImage));
+
+            // Buttons
+            GetMainViewModel.ButtonAddLayerClickCommand = new RelayCommand((r) => ExecuteAddLayerClick(ButtonAddLayer));
+            GetMainViewModel.ButtonRemoveLayerClickCommand = new RelayCommand((r) => ExecuteRemoveLayerClick(ButtonRemoveLayer));
+        }
+
+        private void OpenLevel(Level _l, TabItem _tabItem)
         {
             // Reset Image Panel
             ImageDrawingHelper.Get.ClearLayer();
@@ -334,53 +553,6 @@ namespace _2Duzz
 
             // save list with Base64 Images to Level data
             CurrentLevel.LevelImagesData = base64Images.ToArray();
-        }
-
-        /// <summary>
-        /// Add Layer Click Execution method
-        /// </summary>
-        /// <param name="_parameter"></param>
-        private void ExecuteAddLayerClick(object _parameter)
-        {
-            if (CurrentLevel == null) return;
-            ImageDrawingHelper.Get.CreateLayer(CurrentLevel.LevelSizeX, CurrentLevel.LevelSizeY, CurrentLevel.SpriteSizeX, CurrentLevel.SpriteSizeY, LayerList.SelectedIndex + 1);
-
-
-            LayerList.Items.Insert(LayerList.SelectedIndex + 1, LayerList.SelectedIndex + 1);
-
-            LayerList.SelectedIndex++;
-            CurrentLayer = LayerList.SelectedIndex;
-
-            ChangeStatusBar($"Current Index: {CurrentLayer}");
-        }
-
-        /// <summary>
-        /// Remove Layer Click Execution method
-        /// </summary>
-        /// <param name="_parameter"></param>
-        private void ExecuteRemoveLayerClick(object _parameter)
-        {
-            if (CurrentLevel == null
-                || LayerList.Items.Count <= 1) return;
-            ImageDrawingHelper.Get.RemoveLayer(LayerList.SelectedIndex);
-
-            int tempIndex = LayerList.SelectedIndex;
-            LayerList.Items.RemoveAt(LayerList.SelectedIndex);
-            LayerList.SelectedIndex = MathHelper.Between(tempIndex, 0, LayerList.Items.Count - 1);
-            CurrentLayer = LayerList.SelectedIndex;
-
-            ChangeStatusBar($"Current Index: {CurrentLayer}");
-        }
-        #endregion
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            GetMainViewModel.HeaderNewClickCommand = new RelayCommand((r) => ExecuteHeaderNewClick(HeaderNew));
-            GetMainViewModel.HeaderOpenClickCommand = new RelayCommand((r) => ExecuteOpenClick(HeaderOpen));
-            GetMainViewModel.HeaderSaveClickCommand = new RelayCommand((r) => ExecuteSaveClick(HeaderSave));
-            GetMainViewModel.HeaderSaveAsClickCommand = new RelayCommand((r) => ExecuteSaveAsClick(HeaderSaveAs));
-            GetMainViewModel.ButtonAddLayerClickCommand = new RelayCommand((r) => ExecuteAddLayerClick(ButtonAddLayer));
-            GetMainViewModel.ButtonRemoveLayerClickCommand = new RelayCommand((r) => ExecuteRemoveLayerClick(ButtonRemoveLayer));
         }
 
         /// <summary>
@@ -503,6 +675,8 @@ namespace _2Duzz
                 );
 
             ChangeStatusBar(newPosition);
+
+            DoSave = true;
         }
 
         private void GridContent_Images_OnClickImage(object sender, MouseEventArgs e, Point imagePosition)
@@ -528,6 +702,42 @@ namespace _2Duzz
         {
             CurrentLayer = LayerList.SelectedIndex;
             ChangeStatusBar($"Selected Index: {CurrentLayer}");
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (CurrentLevel == null
+                || !DoSave) return;
+
+            e.Cancel = !CheckCurrentLevel();
+        }
+
+        /// <summary>
+        /// Check for current level.
+        /// </summary>
+        /// <returns>True if current level was saved or it is okay for user to discard it; else false</returns>
+        public bool CheckCurrentLevel()
+        {
+            MessageBoxResult result = MessageBox.Show(this, "Do you want to save?", "Unsaved changed", MessageBoxButton.YesNoCancel, MessageBoxImage.Question, MessageBoxResult.Cancel);
+
+            switch (result)
+            {
+                // Abort by user
+                case MessageBoxResult.Cancel:
+                    return false;
+
+                // Try to save new level. If saving was successful, return true; else false
+                case MessageBoxResult.Yes:
+                    return !SaveFile();
+
+                // discard everything and return true
+                case MessageBoxResult.No:
+                    return true;
+                
+                // code should not go to here
+                default:
+                    return true;
+            }
         }
     }
 }
