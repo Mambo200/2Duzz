@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -51,6 +52,25 @@ namespace _2Duzz.Images
             GetMainViewModel.ConvertButtonPressedCommand = new RelayCommand((r) => ConvertCommand(Button_Convert));
         }
 
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            // Disposing streams from splitted images
+            if (m_splittedImages == null)
+                return;
+
+            int xCount = m_splittedImages.GetLength(0);
+            int yCount = m_splittedImages.GetLength(1);
+
+            for (int x = 0; x < xCount; x++)
+            {
+                for (int y = 0; y < yCount; y++)
+                {
+                    m_splittedImages[x, y].Dispose();
+                }
+            }
+
+        }
+
         private void ConvertCommand(object obj)
         {
             m_splitCountWidth = GetMainViewModel.CountW;
@@ -65,6 +85,7 @@ namespace _2Duzz.Images
             m_splitWorker.WorkerReportsProgress = true;
             m_splitWorker.DoWork += BackgroundWorker_SplitImage_DoWork;
             m_splitWorker.ProgressChanged += BackgroundWorker_SplitImage_ProgressChaned;
+            m_splitWorker.RunWorkerCompleted += BackgroundWorkerSplitImage_RunWorkerCompleted;
             SplitImageProgress.Value = SplitImageProgress.Minimum;
             m_splitWorker.RunWorkerAsync(
                 new object[]
@@ -120,7 +141,6 @@ namespace _2Duzz.Images
                 }
             }
         }
-
         private void BackgroundWorker_SplitImage_ProgressChaned(object sender, ProgressChangedEventArgs e)
         {
 
@@ -131,6 +151,23 @@ namespace _2Duzz.Images
             double percentage = ((double)currentImageCount / (double)maximumImageCount) * (SplitImageProgress.Maximum / 2);
 
             SplitImageProgress.Value = percentage;
+        }
+        private void BackgroundWorkerSplitImage_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show(
+                $"Image was splitted successfully into {(GetMainViewModel.CountH * GetMainViewModel.CountW).ToString()} smaller images. Copied to\n{folderPath}\n\nOpen Folder?",
+                "Convertion complete!",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Information);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                ProcessStartInfo StartInformation = new ProcessStartInfo();
+                StartInformation.FileName = folderPath;
+                Process process = Process.Start(StartInformation);
+            }
+
+            Close();
         }
         #endregion
     }
