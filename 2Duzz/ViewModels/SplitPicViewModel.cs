@@ -53,6 +53,7 @@ namespace _2Duzz.ViewModels
             {
                 SetProperty(ref m_splitPixelWidthText, value);
                 NotifyOfPropertyChange(nameof(CountW));
+                NotifyOfPropertyChange(nameof(CanPressConvertButton));
             }
         }
 
@@ -64,6 +65,7 @@ namespace _2Duzz.ViewModels
             {
                 SetProperty(ref m_splitPixelHeightText, value);
                 NotifyOfPropertyChange(nameof(CountH));
+                NotifyOfPropertyChange(nameof(CanPressConvertButton));
             }
         }
 
@@ -119,8 +121,8 @@ namespace _2Duzz.ViewModels
             {
                 return SplitPixelHeightText != "-1"
                     && SplitPixelWidthText != "-1"
-                    && CountW <= 0
-                    && CountH <= 0;
+                    && CountW > 0
+                    && CountH > 0;
             }
         }
         #endregion

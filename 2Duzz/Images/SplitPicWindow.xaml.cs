@@ -61,14 +61,6 @@ namespace _2Duzz.Images
             Button_Convert.IsEnabled = false;
             folderPath = filePath + " Split" + GetMainViewModel.SplitPixelWidthText + "-" + GetMainViewModel.SplitPixelHeightText;
 
-
-            //BackgroundWorker_SplitImage_DoWork(null, new DoWorkEventArgs(new object[]
-            //    {
-            //        GetMainViewModel.Split,
-            //        int.Parse(GetMainViewModel.SplitPixelWidthText),
-            //        int.Parse(GetMainViewModel.SplitPixelHeightText)
-            //    }));
-            //return;
             m_splitWorker = new BackgroundWorker();
             m_splitWorker.WorkerReportsProgress = true;
             m_splitWorker.DoWork += BackgroundWorker_SplitImage_DoWork;
