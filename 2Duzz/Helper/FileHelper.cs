@@ -27,7 +27,7 @@ namespace _2Duzz.Helper
         public static string LastValidFile { get; private set; }
 
         /// <summary>
-        /// Creates an <see cref="OpenFileDialog"/>.
+        /// Creates an <see cref="OpenFileDialog"/>. User can choose a file.
         /// </summary>
         /// <param name="_dialog">the <see cref="OpenFileDialog"/></param>
         /// <returns>true if user choses a file; else false or null</returns>
@@ -49,7 +49,7 @@ namespace _2Duzz.Helper
         }
 
         /// <summary>
-        /// Get a path the user choses
+        /// Get a path for file the user choses
         /// </summary>
         /// <returns>file chosen</returns>
         public static string GetOpenPath()
@@ -91,7 +91,7 @@ namespace _2Duzz.Helper
         }
 
         /// <summary>
-        /// Get a path the user choses
+        /// Get a file path the user choses
         /// </summary>
         /// <returns>file chosen</returns>
         public static string GetSavePath()
@@ -111,7 +111,7 @@ namespace _2Duzz.Helper
         }
 
         /// <summary>
-        /// Get folder a path the user choses
+        /// Get a folder path the user choses
         /// </summary>
         /// <param name="_subfolders">true if checkbox "Include subfolders" was checked; else false</param>
         /// <returns>selected folder if user choosed one. to check if valid use <see cref="string.IsNullOrEmpty(string)"/></returns>
@@ -132,7 +132,7 @@ namespace _2Duzz.Helper
         }
 
         /// <summary>
-        /// Get folder a path the user choses
+        /// Get a folder path the user choses
         /// </summary>
         /// <param name="_subfolders">true if checkbox "Include subfolders" was checked; else false</param>
         /// <param name="_main">Top-level WPF window that will own the modal dialog box.</param>
@@ -156,7 +156,7 @@ namespace _2Duzz.Helper
 
 
         /// <summary>
-        /// Get folder a path the user choses
+        /// Get a folder path the user choses
         /// </summary>
         /// <param name="_dialog">the <see cref="CommonOpenFileDialog"/></param>
         /// <param name="_subfolders">true if checkbox "Include subfolders" was checked; else false</param>
@@ -179,7 +179,7 @@ namespace _2Duzz.Helper
         }
 
         /// <summary>
-        /// Get folder a path the user choses
+        /// Get a folder path the user choses
         /// </summary>
         /// <param name="_dialog">the <see cref="CommonOpenFileDialog"/></param>
         /// <param name="_subfolders">true if checkbox "Include subfolders" was checked; else false</param>
@@ -201,7 +201,51 @@ namespace _2Duzz.Helper
             return CommonFileDialogResultConverter(result);
         }
 
+        /// <summary>
+        /// Get a file path the user choses
+        /// </summary>
+        /// <param name="_filter">Dialog filter</param>
+        /// <param name="_dialog">Dialog</param>
+        /// <returns></returns>
+        public static string OpenFilePath(string _filter, System.Windows.Window _main = null)
+        {
+            OpenFileDialog d = new OpenFileDialog()
+            {
+                Multiselect = false,
+                CheckFileExists = true,
+                Filter = _filter,
+                Title = "Choose File...",
+            };
 
+            bool? result;
+            if (_main != null)
+                result = d.ShowDialog(_main);
+            else
+                result = d.ShowDialog();
+            if (result == true)
+            {
+                return d.FileName;
+            }
+            else
+                return "";
+        }
+
+        public static bool? OpenFilePath(string _filter, out OpenFileDialog _dialog, System.Windows.Window _main = null)
+        {
+
+            _dialog = new OpenFileDialog()
+            {
+                Multiselect = false,
+                CheckFileExists = true,
+                Filter = _filter,
+                Title = "Choose File...",
+            };
+
+            if (_main != null)
+                return _dialog.ShowDialog(_main);
+            else
+                return _dialog.ShowDialog();
+        }
 
         /// <summary>
         /// Reset value of <see cref="LastValidFile"/>
@@ -252,10 +296,10 @@ namespace _2Duzz.Helper
         {
             string s = RemoveExtension(_levelFile);
 
-                if(Directory.Exists(s))
-                    return new DirectoryInfo(s);
-                else
-                    return Directory.CreateDirectory(s);
+            if (Directory.Exists(s))
+                return new DirectoryInfo(s);
+            else
+                return Directory.CreateDirectory(s);
         }
 
         private static bool? CommonFileDialogResultConverter(CommonFileDialogResult _result)

@@ -26,6 +26,7 @@
         <KeyBinding x:Name="KeyBinding_SaveAsClickCommand" Command="{Binding HeaderSaveAsClickCommand}" Key="S" Modifiers="Ctrl+Shift"></KeyBinding>
 
         <KeyBinding x:Name="KeyBinding_OpenImagesClickCommand" Command="{Binding HeaderAddImagesCommand}" Key="I" Modifiers="Alt"></KeyBinding>
+        <KeyBinding x:Name="KeyBinding_SplitImagesClickCommand" Command="{Binding HeaderSplitImagesCommand}" Key="S" Modifiers="Alt"></KeyBinding>
     </Window.InputBindings>
 
     <Grid>
@@ -47,6 +48,7 @@
             </MenuItem>
             <MenuItem Header="Image">
                 <MenuItem x:Name="HeaderAddImage" Header="Add Images..." Command="{Binding HeaderAddImagesCommand}" InputGestureText="{Binding ElementName=KeyBinding_OpenImagesClickCommand, Converter={StaticResource kgsCon}}"/>
+                <MenuItem x:Name="HeaderSplitImage" Header="Split Image..." Command="{Binding HeaderSplitImagesCommand}" InputGestureText="{Binding ElementName=KeyBinding_SplitImagesClickCommand, Converter={StaticResource kgsCon}}"/>
             </MenuItem>
         </Menu>
 
