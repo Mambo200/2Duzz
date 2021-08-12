@@ -79,14 +79,15 @@ namespace _2Duzz.Images
                         for (int imageY = streamY * _height; imageY < _height * (streamY + 1); imageY++)
                         {
                             toReturn[streamX, streamY].SetPixel(imageX % _width, imageY % _height, ImageData.GetPixel(imageX, imageY));
-                            if (_worker != null)
-                            {
-                                _worker.ReportProgress(++imgCount);
-
-                                // We need to sleep here for the main window to react.
-                                System.Threading.Thread.Sleep(1);
-                            }
                         }
+                    }
+
+                    if (_worker != null)
+                    {
+                        _worker.ReportProgress(++imgCount);
+
+                        // We need to sleep here for the main window to react.
+                        System.Threading.Thread.Sleep(1);
                     }
                 }
             }

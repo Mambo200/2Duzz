@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,7 +23,8 @@ namespace _2Duzz.Images
     public partial class SplitPicWindow : Window
     {
         public SplitPicViewModel GetMainViewModel { get => this.DataContext as SplitPicViewModel; }
-
+        public readonly string filePath;
+        public string folderPath;
         /// <summary>
         /// Initialized the <see cref="SplitPicWindow"/>.
         /// </summary>
@@ -31,6 +33,7 @@ namespace _2Duzz.Images
         {
             InitializeComponent();
             ApplyImage(_source);
+            filePath = GetMainViewModel.RemoveFileAtBeginning(_source.ToString());
         }
 
         /// <summary>
@@ -52,7 +55,20 @@ namespace _2Duzz.Images
         {
             m_splitCountWidth = GetMainViewModel.CountW;
             m_splitCountHeight = GetMainViewModel.CountH;
-            
+            var v = GetMainViewModel.SelectedImageSource;
+
+            // preventing user to click on Button multiple times
+            Button_Convert.IsEnabled = false;
+            folderPath = filePath + " Split" + GetMainViewModel.SplitPixelWidthText + "-" + GetMainViewModel.SplitPixelHeightText;
+
+
+            //BackgroundWorker_SplitImage_DoWork(null, new DoWorkEventArgs(new object[]
+            //    {
+            //        GetMainViewModel.Split,
+            //        int.Parse(GetMainViewModel.SplitPixelWidthText),
+            //        int.Parse(GetMainViewModel.SplitPixelHeightText)
+            //    }));
+            //return;
             m_splitWorker = new BackgroundWorker();
             m_splitWorker.WorkerReportsProgress = true;
             m_splitWorker.DoWork += BackgroundWorker_SplitImage_DoWork;
@@ -60,10 +76,10 @@ namespace _2Duzz.Images
             SplitImageProgress.Value = SplitImageProgress.Minimum;
             m_splitWorker.RunWorkerAsync(
                 new object[]
-                { 
-                    GetMainViewModel.Split, 
-                    int.Parse(GetMainViewModel.SplitPixelWidthText), 
-                    int.Parse(GetMainViewModel.SplitPixelHeightText) 
+                {
+                    GetMainViewModel.Split,
+                    int.Parse(GetMainViewModel.SplitPixelWidthText),
+                    int.Parse(GetMainViewModel.SplitPixelHeightText)
                 }
                 );
         }
@@ -79,21 +95,48 @@ namespace _2Duzz.Images
             SplitPic pic = args[0] as SplitPic;
             int w = (int)args[1];
             int h = (int)args[2];
+            BackgroundWorker bgw = sender as BackgroundWorker;
 
+            // Phase 1: splitting
             m_splittedImages = pic.SplitImage(
                 w,
                 h,
-                sender as BackgroundWorker
+                bgw
                 );
+
+            // Phase 2: saving
+            // create Folder
+            DirectoryInfo dInfo = Directory.CreateDirectory(folderPath);
+            //DirectoryInfo dInfo = new DirectoryInfo(filePath);
+
+            int count = m_splittedImages.GetLength(0) * m_splittedImages.GetLength(1);
+            for (int y = 0; y < m_splittedImages.GetLength(1); y++)
+            {
+                for (int x = 0; x < m_splittedImages.GetLength(0); x++)
+                {
+                    string savepath = System.IO.Path.Combine(dInfo.FullName, $"{y.ToString()}-{x.ToString()}.png");
+                    m_splittedImages[x, y].Save(
+                        savepath,
+                        System.Drawing.Imaging.ImageFormat.Png
+                        );
+
+                    if (bgw != null)
+                    {
+                        bgw.ReportProgress(++count);
+                        System.Threading.Thread.Sleep(1);
+                    }
+                }
+            }
         }
 
         private void BackgroundWorker_SplitImage_ProgressChaned(object sender, ProgressChangedEventArgs e)
         {
-            
+
             int currentImageCount = e.ProgressPercentage;
             int maximumImageCount = m_splitCountWidth * m_splitCountHeight;
 
-            double percentage = ((double)currentImageCount / (double)maximumImageCount) * SplitImageProgress.Maximum;
+            // We divide the maximum with 2 because splitting the images consists of two phases: splitting and saving.
+            double percentage = ((double)currentImageCount / (double)maximumImageCount) * (SplitImageProgress.Maximum / 2);
 
             SplitImageProgress.Value = percentage;
         }

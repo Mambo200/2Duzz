@@ -39,7 +39,7 @@ namespace _2Duzz.ViewModels
                 if (Split != null)
                     Split.Dispose();
 
-                Split = new Images.SplitPic(RemoveFileAtBeginning(this.SelectedImageSource.ToString()));
+                Split = new Images.SplitPic(RemoveFileAtBeginning(this.m_SelectedImageSource.ToString()));
                 NotifyOfPropertyChange(nameof(Split));
             }
         }
@@ -126,7 +126,7 @@ namespace _2Duzz.ViewModels
         #endregion
 
 
-        private string RemoveFileAtBeginning(string _text)
+        public string RemoveFileAtBeginning(string _text)
         {
             if (_text.ToLower().StartsWith("file:///"))
             {
