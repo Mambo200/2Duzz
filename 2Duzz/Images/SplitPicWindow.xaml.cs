@@ -54,6 +54,14 @@ namespace _2Duzz.Images
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
+
+            if (m_splitWorker != null
+                && m_splitWorker.IsBusy)
+            {
+                e.Cancel = true;
+                return;
+            }
+
             // Disposing streams from splitted images
             if (m_splittedImages == null)
                 return;
@@ -75,7 +83,8 @@ namespace _2Duzz.Images
         {
             m_splitCountWidth = GetMainViewModel.CountW;
             m_splitCountHeight = GetMainViewModel.CountH;
-            var v = GetMainViewModel.SelectedImageSource;
+            SplitWidth.IsEnabled = false;
+            SplitHeight.IsEnabled = false;
 
             // preventing user to click on Button multiple times
             Button_Convert.IsEnabled = false;
