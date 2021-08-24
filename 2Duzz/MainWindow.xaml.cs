@@ -88,6 +88,11 @@ namespace _2Duzz
             GetMainViewModel.StatusBarContent = $"{DateTime.Now.ToString().Split(' ')[1]}  -  {_content}";
         }
 
+        public void ChangeTitle(string _title)
+        {
+            this.Title = "2Duzz - " + _title;
+        }
+
         [Obsolete("We scroll without STRG now")]
         private void Zoom_MouseWheelWithCtrl(object sender, MouseWheelEventArgs e)
         {
