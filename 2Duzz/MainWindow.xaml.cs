@@ -233,6 +233,8 @@ namespace _2Duzz
 
             DoSave = false;
 
+            ChangeTitle(ImageLoader.GetFileNameWithoutExtension(path));
+
             return true;
         }
 
@@ -269,6 +271,8 @@ namespace _2Duzz
             ImageLoader.SaveLevelImagesFromFileToDirectory(CurrentLevel.LevelImagesData, path);
 
             DoSave = false;
+
+            ChangeTitle(ImageLoader.GetFileNameWithoutExtension(path));
 
             return true;
         }
