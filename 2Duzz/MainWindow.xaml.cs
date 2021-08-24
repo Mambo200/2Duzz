@@ -459,7 +459,7 @@ namespace _2Duzz
                 return;
 
             Images.SplitPicWindow splitWindow = new Images.SplitPicWindow(new Uri(path));
-            splitWindow.ShowDialog();
+            splitWindow.Show();
         }
         #endregion
 
