@@ -11,7 +11,9 @@
     <Window.DataContext>
         <mvvm:SplitPicViewModel/>
     </Window.DataContext>
-
+    <Window.TaskbarItemInfo>
+        <TaskbarItemInfo ProgressState="Normal"/>
+    </Window.TaskbarItemInfo>
 
 
     <Grid>

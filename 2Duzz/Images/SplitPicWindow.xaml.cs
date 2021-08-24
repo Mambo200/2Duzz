@@ -152,7 +152,6 @@ namespace _2Duzz.Images
         }
         private void BackgroundWorker_SplitImage_ProgressChaned(object sender, ProgressChangedEventArgs e)
         {
-
             int currentImageCount = e.ProgressPercentage;
             int maximumImageCount = m_splitCountWidth * m_splitCountHeight;
 
@@ -163,6 +162,8 @@ namespace _2Duzz.Images
 
             // set TextBlock text
             SetPercentageTextBlock(percentage);
+            this.TaskbarItemInfo.ProgressValue = percentage / 100;
+
         }
         private void BackgroundWorkerSplitImage_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
