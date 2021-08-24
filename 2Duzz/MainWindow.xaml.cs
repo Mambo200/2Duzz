@@ -88,6 +88,11 @@ namespace _2Duzz
             GetMainViewModel.StatusBarContent = $"{DateTime.Now.ToString().Split(' ')[1]}  -  {_content}";
         }
 
+        public void ChangeTitle(string _title)
+        {
+            this.Title = "2Duzz - " + _title;
+        }
+
         [Obsolete("We scroll without STRG now")]
         private void Zoom_MouseWheelWithCtrl(object sender, MouseWheelEventArgs e)
         {
@@ -187,6 +192,8 @@ namespace _2Duzz
             LayerList.SelectedIndex = 0;
 
             DoSave = true;
+
+            ChangeTitle("New Level");
         }
 
         #region Save
@@ -226,6 +233,8 @@ namespace _2Duzz
 
             DoSave = false;
 
+            ChangeTitle(ImageLoader.GetFileNameWithoutExtension(path));
+
             return true;
         }
 
@@ -263,6 +272,8 @@ namespace _2Duzz
 
             DoSave = false;
 
+            ChangeTitle(ImageLoader.GetFileNameWithoutExtension(path));
+
             return true;
         }
         #endregion
@@ -297,6 +308,7 @@ namespace _2Duzz
             string[] imagesPaths = ImageLoader.LoadImagesFromLevelFolderToTabItem(path, Img_MouseLeftButtonDown, Img_MouseRightButtonDown, out TabItem addedTo);
             OpenLevel(CurrentLevel, addedTo);
 
+            ChangeTitle(ImageLoader.GetFileNameWithoutExtension(path));
 
             FileHelper.FileDialogOpenStatusText(path, CurrentLevel != null, this);
 

@@ -108,13 +108,30 @@ namespace _2Duzz.Helper
         /// <param name="_info">FileInfo</param>
         /// <returns>Filename without extension</returns>
         /// <exception cref="ArgumentNullException"/>
-        private static string GetFileNameWithoutExtension(FileInfo _info)
+        public static string GetFileNameWithoutExtension(FileInfo _info)
         {
             if (_info == null)
                 throw new ArgumentNullException(nameof(_info));
 
             string tr = _info.Name;
             return tr.Replace(_info.Extension, "");
+        }
+
+        /// <summary>
+        /// Get Filename without extension
+        /// </summary>
+        /// <param name="_path">Path of file</param>
+        /// <returns>Filename without extension</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="FileNotFoundException"></exception>
+        public static string GetFileNameWithoutExtension(string _path)
+        {
+            if (_path == null)
+                throw new ArgumentNullException(nameof(_path));
+            else if (!File.Exists(_path))
+                throw new FileNotFoundException("File could not be found.", _path);
+
+            return GetFileNameWithoutExtension(new FileInfo(_path));
         }
     }
 }
