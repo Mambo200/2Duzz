@@ -192,6 +192,8 @@ namespace _2Duzz
             LayerList.SelectedIndex = 0;
 
             DoSave = true;
+
+            ChangeTitle("New Level");
         }
 
         #region Save
@@ -302,6 +304,7 @@ namespace _2Duzz
             string[] imagesPaths = ImageLoader.LoadImagesFromLevelFolderToTabItem(path, Img_MouseLeftButtonDown, Img_MouseRightButtonDown, out TabItem addedTo);
             OpenLevel(CurrentLevel, addedTo);
 
+            ChangeTitle(ImageLoader.GetFileNameWithoutExtension(path));
 
             FileHelper.FileDialogOpenStatusText(path, CurrentLevel != null, this);
 
