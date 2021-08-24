@@ -67,7 +67,22 @@ namespace _2Duzz.Helper
             if (!Directory.Exists(imageDirectoryPath))
                 return null;
 
-            string[] images = Directory.GetFiles(imageDirectoryPath, "*.png", SearchOption.TopDirectoryOnly);
+            //string[] images = Directory.GetFiles(imageDirectoryPath, "*.png", SearchOption.TopDirectoryOnly);
+            List<string> imagesL = Directory.GetFiles(imageDirectoryPath, "*.png", SearchOption.TopDirectoryOnly).ToList();
+            imagesL.Sort(delegate(string x, string y)
+            {
+                if (x == null && y == null) return 0;
+                else if (x == null) return -1;
+                else if (y == null) return 1;
+                else
+                {
+                    string clearFileNameX = GetFileNameWithoutExtension(new FileInfo(x));
+                    string clearFileNameY = GetFileNameWithoutExtension(new FileInfo(y));
+                    
+                    return int.Parse(clearFileNameX).CompareTo(int.Parse(clearFileNameY));
+                }
+            });
+            string[] images = imagesL.ToArray();
 
             TabItemManager.Get.DeleteFromFileTab();
             // We do not add the option to remove the "From File" tab because this is managed by code.
@@ -80,6 +95,21 @@ namespace _2Duzz.Helper
             }
 
             return images;
+        }
+
+        /// <summary>
+        /// Get Filename without extension
+        /// </summary>
+        /// <param name="_info">FileInfo</param>
+        /// <returns>Filename without extension</returns>
+        /// <exception cref="ArgumentNullException"/>
+        private static string GetFileNameWithoutExtension(FileInfo _info)
+        {
+            if (_info == null)
+                throw new ArgumentNullException(nameof(_info));
+
+            string tr = _info.Name;
+            return tr.Replace(_info.Extension, "");
         }
     }
 }
