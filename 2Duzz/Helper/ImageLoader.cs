@@ -24,6 +24,11 @@ namespace _2Duzz.Helper
             // create folder for images in file
             DirectoryInfo sub = Directory.CreateDirectory(Path.Combine(main.FullName, LEVELIMAGEDIRECTORY));
 
+            // we delete the old files because images will not be overwritten for some reason
+            string[] files = Directory.GetFiles(sub.FullName, "*.png");
+            foreach (string file in files)
+                File.Delete(file);
+
             // Save image data to folder
             for (int i = 0; i < _imageData.Length; i++)
             {
