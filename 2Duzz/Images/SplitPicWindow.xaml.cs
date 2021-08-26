@@ -167,17 +167,27 @@ namespace _2Duzz.Images
         }
         private void BackgroundWorkerSplitImage_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show(
-                $"Image was splitted successfully into {(GetMainViewModel.CountH * GetMainViewModel.CountW).ToString()} smaller images. Copied to\n{folderPath}\n\nOpen Folder?",
-                "Convertion complete!",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Information);
-
-            if (result == MessageBoxResult.Yes)
+            // Check folderpath for the case splitting went wrong
+            if (!Directory.Exists(folderPath))
             {
-                ProcessStartInfo StartInformation = new ProcessStartInfo();
-                StartInformation.FileName = folderPath;
-                Process process = Process.Start(StartInformation);
+                // Folder was not created --> something went wrong
+                MessageBox.Show("Something went wrong. Image was not splitted.", "Splitting error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else
+            {
+                // Folder was created --> everything fine
+                MessageBoxResult result = MessageBox.Show(
+                    $"Image was splitted successfully into {(GetMainViewModel.CountH * GetMainViewModel.CountW).ToString()} smaller images. Copied to\n{folderPath}\n\nOpen Folder?",
+                    "Convertion complete!",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Information);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    ProcessStartInfo StartInformation = new ProcessStartInfo();
+                    StartInformation.FileName = folderPath;
+                    Process process = Process.Start(StartInformation);
+                }
             }
 
             Close();
