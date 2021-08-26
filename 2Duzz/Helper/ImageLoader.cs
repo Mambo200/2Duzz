@@ -24,6 +24,11 @@ namespace _2Duzz.Helper
             // create folder for images in file
             DirectoryInfo sub = Directory.CreateDirectory(Path.Combine(main.FullName, LEVELIMAGEDIRECTORY));
 
+            // we delete the old files because images will not be overwritten for some reason
+            string[] files = Directory.GetFiles(sub.FullName, "*.png");
+            foreach (string file in files)
+                File.Delete(file);
+
             // Save image data to folder
             for (int i = 0; i < _imageData.Length; i++)
             {
@@ -67,7 +72,22 @@ namespace _2Duzz.Helper
             if (!Directory.Exists(imageDirectoryPath))
                 return null;
 
-            string[] images = Directory.GetFiles(imageDirectoryPath, "*.png", SearchOption.TopDirectoryOnly);
+            //string[] images = Directory.GetFiles(imageDirectoryPath, "*.png", SearchOption.TopDirectoryOnly);
+            List<string> imagesL = Directory.GetFiles(imageDirectoryPath, "*.png", SearchOption.TopDirectoryOnly).ToList();
+            imagesL.Sort(delegate(string x, string y)
+            {
+                if (x == null && y == null) return 0;
+                else if (x == null) return -1;
+                else if (y == null) return 1;
+                else
+                {
+                    string clearFileNameX = GetFileNameWithoutExtension(new FileInfo(x));
+                    string clearFileNameY = GetFileNameWithoutExtension(new FileInfo(y));
+                    
+                    return int.Parse(clearFileNameX).CompareTo(int.Parse(clearFileNameY));
+                }
+            });
+            string[] images = imagesL.ToArray();
 
             TabItemManager.Get.DeleteFromFileTab();
             // We do not add the option to remove the "From File" tab because this is managed by code.
@@ -80,6 +100,38 @@ namespace _2Duzz.Helper
             }
 
             return images;
+        }
+
+        /// <summary>
+        /// Get Filename without extension
+        /// </summary>
+        /// <param name="_info">FileInfo</param>
+        /// <returns>Filename without extension</returns>
+        /// <exception cref="ArgumentNullException"/>
+        public static string GetFileNameWithoutExtension(FileInfo _info)
+        {
+            if (_info == null)
+                throw new ArgumentNullException(nameof(_info));
+
+            string tr = _info.Name;
+            return tr.Replace(_info.Extension, "");
+        }
+
+        /// <summary>
+        /// Get Filename without extension
+        /// </summary>
+        /// <param name="_path">Path of file</param>
+        /// <returns>Filename without extension</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="FileNotFoundException"></exception>
+        public static string GetFileNameWithoutExtension(string _path)
+        {
+            if (_path == null)
+                throw new ArgumentNullException(nameof(_path));
+            else if (!File.Exists(_path))
+                throw new FileNotFoundException("File could not be found.", _path);
+
+            return GetFileNameWithoutExtension(new FileInfo(_path));
         }
     }
 }

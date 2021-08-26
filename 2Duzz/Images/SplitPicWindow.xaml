@@ -11,13 +11,15 @@
     <Window.DataContext>
         <mvvm:SplitPicViewModel/>
     </Window.DataContext>
-
+    <Window.TaskbarItemInfo>
+        <TaskbarItemInfo ProgressState="Normal"/>
+    </Window.TaskbarItemInfo>
 
 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="10"/>
+            <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
@@ -88,7 +90,25 @@
         </Grid>
 
         <!--#region ProgressBar -->
-        <ProgressBar x:Name="SplitImageProgress" Grid.Row="1" Value="0" Foreground="#FF0634B0" />
+        <ProgressBar Grid.Row="1" Value="100" Background="#FFE6E6E6" >
+            <ProgressBar.Foreground>
+                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                    <LinearGradientBrush.RelativeTransform>
+                        <TransformGroup>
+                            <ScaleTransform CenterY="0.5" CenterX="0.5"/>
+                            <SkewTransform CenterY="0.5" CenterX="0.5"/>
+                            <RotateTransform Angle="-90" CenterY="0.5" CenterX="0.5"/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </LinearGradientBrush.RelativeTransform>
+                    <GradientStop Color="Blue"/>
+                    <GradientStop Color="#FF00F600" Offset="0.5"/>
+                    <GradientStop Color="Blue" Offset="0.4999"/>
+                </LinearGradientBrush>
+            </ProgressBar.Foreground>
+        </ProgressBar>
         <!--#endregion-->
+        <ProgressBar x:Name="SplitImageProgress" Grid.Row="1" Value="100" Background="#00000000" Foreground="White" FlowDirection="RightToLeft"/>
+        <TextBlock x:Name="SplitImageTextBlock" Grid.Row="1" HorizontalAlignment="Center" Text="{Binding PercentageText, Mode=OneWay}" Foreground="Red"/>
     </Grid>
 </Window>

@@ -152,14 +152,18 @@ namespace _2Duzz.Images
         }
         private void BackgroundWorker_SplitImage_ProgressChaned(object sender, ProgressChangedEventArgs e)
         {
-
             int currentImageCount = e.ProgressPercentage;
             int maximumImageCount = m_splitCountWidth * m_splitCountHeight;
 
             // We divide the maximum with 2 because splitting the images consists of two phases: splitting and saving.
-            double percentage = ((double)currentImageCount / (double)maximumImageCount) * (SplitImageProgress.Maximum / 2);
+            double percentage = (((double)currentImageCount / (double)maximumImageCount) * (SplitImageProgress.Maximum / 2));
 
-            SplitImageProgress.Value = percentage;
+            SplitImageProgress.Value = SplitImageProgress.Maximum - percentage;
+
+            // set TextBlock text
+            SetPercentageTextBlock(percentage);
+            this.TaskbarItemInfo.ProgressValue = percentage / 100;
+
         }
         private void BackgroundWorkerSplitImage_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
@@ -177,6 +181,31 @@ namespace _2Duzz.Images
             }
 
             Close();
+        }
+        #endregion
+
+        #region Percentage TextBlock
+        private void SetPercentageTextBlock(double _percent)
+        {
+            if (_percent < SplitImageProgress.Maximum / 2)
+                // Phase 1
+                SetPercentageTextBlockPhaseOne(_percent);
+            else
+                // Phase 2
+                SetPercentageTextBlockPhaseTwo(_percent);
+        }
+
+        private void SetPercentageTextBlockPhaseOne(double _percent)
+        {
+            const string convertingType = "Split Image";
+            double rounded = Math.Round(_percent, 2);
+            SplitImageTextBlock.Text = $"{convertingType} - {rounded}%";
+        }
+        private void SetPercentageTextBlockPhaseTwo(double _percent)
+        {
+            const string convertingType = "Save Images";
+            double rounded = Math.Round(_percent, 2);
+            SplitImageTextBlock.Text = $"{convertingType} - {rounded}%";
         }
         #endregion
     }
