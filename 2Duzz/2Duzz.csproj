@@ -82,6 +82,7 @@
     <Compile Include="Helper\MyConverter.cs" />
     <Compile Include="Helper\PanelManager.cs" />
     <Compile Include="Helper\TabItemManager.cs" />
+    <Compile Include="Images\EzSplitBitmap.cs" />
     <Compile Include="Images\SplitPic.cs" />
     <Compile Include="Images\SplitPicWindow.xaml.cs">
       <DependentUpon>SplitPicWindow.xaml</DependentUpon>
