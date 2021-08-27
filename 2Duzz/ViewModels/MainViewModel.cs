@@ -191,35 +191,6 @@ namespace _2Duzz.ViewModels
         }
         #endregion
 
-        #region Button Add Layer Click
-        private ICommand m_ButtonAddLayerClickCommand;
-        /// <summary>
-        /// Button Add Layer Click command
-        /// </summary>
-        public ICommand ButtonAddLayerClickCommand
-        {
-            get => m_ButtonAddLayerClickCommand;
-            set
-            {
-                SetProperty(ref m_ButtonAddLayerClickCommand, value);
-            }
-        }
-        #endregion
-
-        #region Button Remove Layer Click
-        private ICommand m_ButtonRemoveLayerClickCommand;
-        /// <summary>
-        /// Button Add Layer Click command
-        /// </summary>
-        public ICommand ButtonRemoveLayerClickCommand
-        {
-            get => m_ButtonRemoveLayerClickCommand;
-            set
-            {
-                SetProperty(ref m_ButtonRemoveLayerClickCommand, value);
-            }
-        }
-        #endregion
         #endregion
 
         #region Header IMAGE
@@ -249,11 +220,56 @@ namespace _2Duzz.ViewModels
             }
         }
         #endregion
+
+        #region Header LEVEL
+        private ICommand m_HeaderChangeLevelNameCommand;
+        /// <summary>
+        /// Header Change level name Click command
+        /// </summary>
+        public ICommand HeaderChangeLevelNameCommand
+        {
+            get => m_HeaderChangeLevelNameCommand;
+            set
+            {
+                SetProperty(ref m_HeaderChangeLevelNameCommand, value);
+            }
+        }
+
+        #endregion
         #endregion
 
         #region MouseBinding
         #endregion
 
+        #region Button Add Layer Click
+        private ICommand m_ButtonAddLayerClickCommand;
+        /// <summary>
+        /// Button Add Layer Click command
+        /// </summary>
+        public ICommand ButtonAddLayerClickCommand
+        {
+            get => m_ButtonAddLayerClickCommand;
+            set
+            {
+                SetProperty(ref m_ButtonAddLayerClickCommand, value);
+            }
+        }
+        #endregion
+
+        #region Button Remove Layer Click
+        private ICommand m_ButtonRemoveLayerClickCommand;
+        /// <summary>
+        /// Button Add Layer Click command
+        /// </summary>
+        public ICommand ButtonRemoveLayerClickCommand
+        {
+            get => m_ButtonRemoveLayerClickCommand;
+            set
+            {
+                SetProperty(ref m_ButtonRemoveLayerClickCommand, value);
+            }
+        }
+        #endregion
 
         #region Canvas
         private double m_GridContentScale;

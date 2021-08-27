@@ -50,6 +50,9 @@
                 <MenuItem x:Name="HeaderAddImage" Header="Add Images..." Command="{Binding HeaderAddImagesCommand}" InputGestureText="{Binding ElementName=KeyBinding_OpenImagesClickCommand, Converter={StaticResource kgsCon}}"/>
                 <MenuItem x:Name="HeaderSplitImage" Header="Split Image..." Command="{Binding HeaderSplitImagesCommand}" InputGestureText="{Binding ElementName=KeyBinding_SplitImagesClickCommand, Converter={StaticResource kgsCon}}"/>
             </MenuItem>
+            <MenuItem Header="Level">
+                <MenuItem x:Name="HeaderChangeLevelName" Header="Level Name..." Command="{Binding HeaderChangeLevelNameCommand}"/>
+            </MenuItem>
         </Menu>
 
         <!--Content Middle-->

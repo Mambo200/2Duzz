@@ -229,7 +229,8 @@ namespace _2Duzz
 
             FileHelper.FileDialogSaveStatusText(path, CurrentLevel.SaveJson(path), this);
 
-            ImageLoader.SaveLevelImagesFromFileToDirectory(CurrentLevel.LevelImagesData, path);
+            // If we load images while file is currently open, it images can not be deleted. Why do we even save here?
+            //ImageLoader.SaveLevelImagesFromFileToDirectory(CurrentLevel.LevelImagesData, path);
 
             DoSave = false;
 
@@ -308,7 +309,7 @@ namespace _2Duzz
             string[] imagesPaths = ImageLoader.LoadImagesFromLevelFolderToTabItem(path, Img_MouseLeftButtonDown, Img_MouseRightButtonDown, out TabItem addedTo);
             OpenLevel(CurrentLevel, addedTo);
 
-            ChangeTitle(ImageLoader.GetFileNameWithoutExtension(path));
+            ChangeTitle(CurrentLevel.LevelName);
 
             FileHelper.FileDialogOpenStatusText(path, CurrentLevel != null, this);
 
@@ -463,6 +464,29 @@ namespace _2Duzz
         }
         #endregion
 
+
+        #region Level Header
+        private void ExecuteLevelNameClick(object _parameter)
+        {
+            if (CurrentLevel == null) return;
+            string oldName = CurrentLevel.LevelName;
+            WindowsXAML.ChangeLevelNameWindow w = new WindowsXAML.ChangeLevelNameWindow(CurrentLevel.LevelName);
+            bool? result = w.ShowDialog();
+
+            if(result != true)
+            {
+                // if level name was not change return
+                ChangeStatusBar("Level name was not changed. Aborted by user.");
+                return;
+            }
+
+            // level name was changed
+            CurrentLevel.LevelName = w.LevelName;
+            ChangeTitle(CurrentLevel.LevelName);
+
+            ChangeStatusBar($"Changed level name from \"{oldName}\" to \"{CurrentLevel.LevelName}\".");
+        }
+        #endregion
         #endregion
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -476,6 +500,9 @@ namespace _2Duzz
             // Header Image
             GetMainViewModel.HeaderAddImagesCommand = new RelayCommand((r) => ExecuteAddImagesClick(HeaderAddImage));
             GetMainViewModel.HeaderSplitImagesCommand = new RelayCommand((r) => ExecuteSplitImageClick(HeaderSplitImage));
+
+            // Header Level
+            GetMainViewModel.HeaderChangeLevelNameCommand = new RelayCommand((r) => ExecuteLevelNameClick(HeaderChangeLevelName));
 
             // Buttons
             GetMainViewModel.ButtonAddLayerClickCommand = new RelayCommand((r) => ExecuteAddLayerClick(ButtonAddLayer));
