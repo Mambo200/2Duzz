@@ -27,7 +27,14 @@ namespace _2Duzz.Helper
             // we delete the old files because images will not be overwritten for some reason
             string[] files = Directory.GetFiles(sub.FullName, "*.png");
             foreach (string file in files)
-                File.Delete(file);
+                try
+                {
+                    File.Delete(file);
+                }
+                catch (Exception _ex)
+                {
+
+                }
 
             // Save image data to folder
             for (int i = 0; i < _imageData.Length; i++)
