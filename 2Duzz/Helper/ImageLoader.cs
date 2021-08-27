@@ -97,7 +97,7 @@ namespace _2Duzz.Helper
             string[] images = imagesL.ToArray();
 
             TabItemManager.Get.DeleteFromFileTab();
-            // We do not add the option to remove the "From File" tab because this is managed by code.
+            // We do not add the option to remove the "From File" tab because this is managed by code and the only way to get this tab back is to load he file again.
             _tabItem = TabItemManager.Get.AddTabItem(LEVELIMAGEDIRECTORY, false);
             TabItemManager.Get.AddFromFileTab(_tabItem);
 
