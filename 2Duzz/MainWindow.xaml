@@ -96,7 +96,6 @@
                                 <ScaleTransform ScaleX="{Binding GridContentScale}" ScaleY="{Binding GridContentScale}"/>
                             </Grid.LayoutTransform>
 
-
                             <Image Stretch="None">
                                 <Image.Source>
                                     <DrawingImage>
@@ -153,6 +152,7 @@
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" Content="{Binding StatusBarContent}"/>
             <Label Grid.Column="1" Content="{Binding StatusBarScale, Converter={StaticResource dpsCon}}"/>
+            <Button Grid.Column="0" Click="Button_Click"/>
         </Grid>
     </Grid>
 </Window>

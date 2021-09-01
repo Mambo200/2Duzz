@@ -789,5 +789,17 @@ namespace _2Duzz
                     return true;
             }
         }
+
+        public void SaveLevelAsImage(string _absolutePath)
+        {
+            Images.LevelToImage.ConvertLevelToImage(
+                CurrentLevel.LevelSizeX * CurrentLevel.SpriteSizeX,
+                CurrentLevel.LevelSizeY * CurrentLevel.SpriteSizeY,
+                _absolutePath,
+                System.Drawing.Imaging.ImageFormat.Png,
+                10
+                );
+        }
+
     }
 }
