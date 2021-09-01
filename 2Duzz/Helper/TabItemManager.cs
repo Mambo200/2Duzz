@@ -10,6 +10,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Input;
 using System.Windows.Media;
 using _2Duzz.Tools;
+using _2Duzz.Config;
 
 namespace _2Duzz.Helper
 {
@@ -53,9 +54,10 @@ namespace _2Duzz.Helper
         /// </summary>
         /// <param name="_header">Header of TabItem</param>
         /// <returns></returns>
-        public TabItem AddTabItem(object _header, bool _addContextMenu = true)
+        public TabItem AddTabItem(object _header, bool _addContextMenu = true, FolderInformation? _tag = null)
         {
             TabItem t = PrepareTabItem(_header);
+            t.Tag = _tag;
             if (_addContextMenu)
                 PrepareContextMenu(t);
             AddToItemControl(t);
@@ -68,9 +70,10 @@ namespace _2Duzz.Helper
         /// </summary>
         /// <param name="_header">Header of TabItem</param>
         /// <returns></returns>
-        public TabItem AddTabItem(object _header, out int _addedIndex, bool _addContextMenu = true)
+        public TabItem AddTabItem(object _header, out int _addedIndex, bool _addContextMenu = true, FolderInformation? _tag = null)
         {
             TabItem t = PrepareTabItem(_header);
+            t.Tag = _tag;
             if (_addContextMenu)
                 PrepareContextMenu(t);
             AddToItemControl(t);
@@ -86,9 +89,10 @@ namespace _2Duzz.Helper
         /// <param name="_header">Header of <see cref="TabItem"/></param>
         /// <param name="_layer">Layer of new <see cref="TabItem"/></param>
         /// <returns></returns>
-        public TabItem AddTabItem(object _header, int _layer, bool _addContextMenu = true)
+        public TabItem AddTabItem(object _header, int _layer, bool _addContextMenu = true, FolderInformation? _tag = null)
         {
             TabItem t = PrepareTabItem(_header);
+            t.Tag = _tag;
             if (_addContextMenu)
                 PrepareContextMenu(t);
             AddToItemControl(t, _layer);

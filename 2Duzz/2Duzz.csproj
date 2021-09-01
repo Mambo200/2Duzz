@@ -67,6 +67,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Config\ConfigLoader.cs" />
+    <Compile Include="Config\FolderInformation.cs" />
     <Compile Include="Converters\PixelConverter\ImageSourceToPixelConverterHeight.cs" />
     <Compile Include="Converters\PixelConverter\ImageSourceToPixelConverter.cs" />
     <Compile Include="Converters\PixelConverter\ImageSourceToPixelConverterWidth.cs" />
