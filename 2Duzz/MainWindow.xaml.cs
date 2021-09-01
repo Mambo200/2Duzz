@@ -198,6 +198,42 @@ namespace _2Duzz
             ChangeTitle("New Level");
         }
 
+        /// <summary>
+        /// Header Save Click Execution method
+        /// </summary>
+        /// <param name="_parameter"></param>
+        private void ExecuteOpenClick(object _parameter)
+        {
+            // Check if old level exists and if it was saved
+            if (CurrentLevel != null
+                && DoSave)
+            {
+                if (!CheckCurrentLevel())
+                    return;
+            }
+
+
+            string path = Helper.FileHelper.GetOpenPath();
+
+            // Check if string is valid or not
+            if (string.IsNullOrEmpty(path))
+            {
+                ChangeStatusBar($"File save aborted by user");
+                return;
+            }
+
+            CurrentLevel = Level.ReadJSON(path);
+            ImageLoader.SaveLevelImagesFromFileToDirectory(CurrentLevel.LevelImagesData, path);
+            string[] imagesPaths = ImageLoader.LoadImagesFromLevelFolderToTabItem(path, Img_MouseLeftButtonDown, Img_MouseRightButtonDown, out TabItem addedTo);
+            OpenLevel(CurrentLevel, addedTo);
+
+            ChangeTitle(CurrentLevel.LevelName);
+
+            FileHelper.FileDialogOpenStatusText(path, CurrentLevel != null, this);
+
+            DoSave = false;
+        }
+
         #region Save
         /// <summary>
         /// Header Save Click Execution method
@@ -281,42 +317,38 @@ namespace _2Duzz
         }
         #endregion
 
-
-        /// <summary>
-        /// Header Save Click Execution method
-        /// </summary>
-        /// <param name="_parameter"></param>
-        private void ExecuteOpenClick(object _parameter)
+        private void ExecuteExportAsPngClick(object _parameter)
         {
-            // Check if old level exists and if it was saved
-            if (CurrentLevel != null
-                && DoSave)
+            UIElement element = _parameter as UIElement;
+            if (element == null)
             {
-                if (!CheckCurrentLevel())
-                    return;
+                if (CurrentLevel == null) return;
+            }
+            else
+            {
+                if (CurrentLevel == null
+                    || !element.IsEnabled) return;
             }
 
-
-            string path = Helper.FileHelper.GetOpenPath();
-
-            // Check if string is valid or not
-            if (string.IsNullOrEmpty(path))
+            Microsoft.Win32.SaveFileDialog dialog = new Microsoft.Win32.SaveFileDialog()
             {
-                ChangeStatusBar($"File save aborted by user");
-                return;
+                AddExtension = true,
+                CheckPathExists = false,
+                Filter = "Png |*.png"
+            };
+            bool? result = dialog.ShowDialog();
+
+            if (result == true)
+            {
+                SaveLevelAsImage(dialog.FileName);
+                ChangeStatusBar($"Level was saved to \"{dialog.FileName.ToString()}\"");
             }
-
-            CurrentLevel = Level.ReadJSON(path);
-            ImageLoader.SaveLevelImagesFromFileToDirectory(CurrentLevel.LevelImagesData, path);
-            string[] imagesPaths = ImageLoader.LoadImagesFromLevelFolderToTabItem(path, Img_MouseLeftButtonDown, Img_MouseRightButtonDown, out TabItem addedTo);
-            OpenLevel(CurrentLevel, addedTo);
-
-            ChangeTitle(CurrentLevel.LevelName);
-
-            FileHelper.FileDialogOpenStatusText(path, CurrentLevel != null, this);
-
-            DoSave = false;
+            else
+            {
+                ChangeStatusBar($"Level saving was interrupted by User");
+            }
         }
+
         #endregion
 
 
@@ -498,6 +530,7 @@ namespace _2Duzz
             GetMainViewModel.HeaderOpenClickCommand = new RelayCommand((r) => ExecuteOpenClick(HeaderOpen));
             GetMainViewModel.HeaderSaveClickCommand = new RelayCommand((r) => ExecuteSaveClick(HeaderSave));
             GetMainViewModel.HeaderSaveAsClickCommand = new RelayCommand((r) => ExecuteSaveAsClick(HeaderSaveAs));
+            GetMainViewModel.HeaderExportAsPngClickCommand = new RelayCommand((r) => ExecuteExportAsPngClick(HeaderExportPng));
 
             // Header Image
             GetMainViewModel.HeaderAddImagesCommand = new RelayCommand((r) => ExecuteAddImagesClick(HeaderAddImage));
@@ -797,7 +830,7 @@ namespace _2Duzz
                 CurrentLevel.LevelSizeY * CurrentLevel.SpriteSizeY,
                 _absolutePath,
                 System.Drawing.Imaging.ImageFormat.Png,
-                10
+                100
                 );
         }
 

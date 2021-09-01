@@ -24,6 +24,7 @@
         <KeyBinding x:Name="KeyBinding_OpenClickCommand" Command="{Binding HeaderOpenClickCommand}" Key="O" Modifiers="Ctrl"></KeyBinding>
         <KeyBinding x:Name="KeyBinding_SaveClickCommand" Command="{Binding HeaderSaveClickCommand}" Key="S" Modifiers="Ctrl"></KeyBinding>
         <KeyBinding x:Name="KeyBinding_SaveAsClickCommand" Command="{Binding HeaderSaveAsClickCommand}" Key="S" Modifiers="Ctrl+Shift"></KeyBinding>
+        <KeyBinding x:Name="KeyBinding_ExportAsPngClickCommand" Command="{Binding HeaderExportAsPngClickCommand}" Key="E" Modifiers="Ctrl+Shift"></KeyBinding>
 
         <KeyBinding x:Name="KeyBinding_OpenImagesClickCommand" Command="{Binding HeaderAddImagesCommand}" Key="I" Modifiers="Alt"></KeyBinding>
         <KeyBinding x:Name="KeyBinding_SplitImagesClickCommand" Command="{Binding HeaderSplitImagesCommand}" Key="S" Modifiers="Alt"></KeyBinding>
@@ -43,6 +44,8 @@
                 <Separator/>
                 <MenuItem x:Name="HeaderSave" Header="_Save" Command="{Binding HeaderSaveClickCommand}" InputGestureText="{Binding ElementName=KeyBinding_SaveClickCommand, Converter={StaticResource kgsCon}}"/>
                 <MenuItem x:Name="HeaderSaveAs" Header="Save _as..." Command="{Binding HeaderSaveAsClickCommand}" InputGestureText="{Binding ElementName=KeyBinding_SaveAsClickCommand, Converter={StaticResource kgsCon}}"/>
+                <Separator/>
+                <MenuItem x:Name="HeaderExportPng" Header="_Export as Png..." Command="{Binding HeaderExportAsPngClickCommand}" InputGestureText="{Binding ElementName=KeyBinding_ExportAsPngClickCommand, Converter={StaticResource kgsCon}}" IsEnabled="False"/>
                 <Separator/>
                 <MenuItem x:Name="HeaderClose" Header="Close" Command="{Binding HeaderCloseClickCommand}"/>
             </MenuItem>
@@ -152,7 +155,6 @@
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" Content="{Binding StatusBarContent}"/>
             <Label Grid.Column="1" Content="{Binding StatusBarScale, Converter={StaticResource dpsCon}}"/>
-            <Button Grid.Column="0" Click="Button_Click"/>
         </Grid>
     </Grid>
 </Window>
