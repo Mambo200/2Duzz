@@ -81,6 +81,8 @@ namespace _2Duzz
             TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
             TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Outline.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
             #endregion
+            Config.ConfigLoader.Get.LoadFile();
+            Config.ConfigLoader.Get.FillTabControl(Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
         }
 
         public void ChangeStatusBar(object _content)
@@ -402,7 +404,7 @@ namespace _2Duzz
                     );
 
             // Add Tab
-            TabItem item = TabItemManager.Get.AddTabItem(info.Name);
+            TabItem item = TabItemManager.Get.AddTabItem(info.Name, _tag: new Config.FolderInformation(folder, includeSubfolder));
 
             // Add Images to Tab
             Dictionary<string, string> failed = new Dictionary<string, string>();
@@ -473,7 +475,7 @@ namespace _2Duzz
             WindowsXAML.ChangeLevelNameWindow w = new WindowsXAML.ChangeLevelNameWindow(CurrentLevel.LevelName);
             bool? result = w.ShowDialog();
 
-            if(result != true)
+            if (result != true)
             {
                 // if level name was not change return
                 ChangeStatusBar("Level name was not changed. Aborted by user.");
@@ -733,6 +735,8 @@ namespace _2Duzz
                 CurrentLayer,
                 CurrentSelectedImage.Source.ToString()
                 );
+
+            DoSave = true;
         }
 
 
@@ -750,6 +754,13 @@ namespace _2Duzz
 
             e.Cancel = !CheckCurrentLevel();
         }
+
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            Config.ConfigLoader.Get.WriteToFile();
+        }
+
 
         /// <summary>
         /// Check for current level.
@@ -772,7 +783,7 @@ namespace _2Duzz
                 // discard everything and return true
                 case MessageBoxResult.No:
                     return true;
-                
+
                 // code should not go to here
                 default:
                     return true;
