@@ -331,31 +331,16 @@ namespace _2Duzz
             }
 
             Microsoft.WindowsAPICodePack.Dialogs.CommonSaveFileDialog dialog = null;
-            bool work = false;
-            bool convertionWork = false;
-            double newScale = 1;
 
-            do
-            {
-                dialog = FileHelper.SaveFile(
-                    this,
-                    out work,
-                    new Microsoft.WindowsAPICodePack.Dialogs.CommonFileDialogFilter[] { new Microsoft.WindowsAPICodePack.Dialogs.CommonFileDialogFilter("PNG", "png") },
-                    new Microsoft.WindowsAPICodePack.Dialogs.Controls.CommonFileDialogTextBox("Scale", "1")
-                    );
-                convertionWork = double.TryParse(((Microsoft.WindowsAPICodePack.Dialogs.Controls.CommonFileDialogTextBox)(dialog.Controls[0])).Text, out newScale);
-
-                if (work && !convertionWork)
-                {
-                    MessageBox.Show("The text in the textbox was in the wrong format. Correct formal: double.", "Text wrong format", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-            } while (work && !convertionWork);
-
-
+            dialog = FileHelper.SaveFile(
+                this,
+                out bool work,
+                new Microsoft.WindowsAPICodePack.Dialogs.CommonFileDialogFilter[] { new Microsoft.WindowsAPICodePack.Dialogs.CommonFileDialogFilter("PNG", "png") }
+                );
 
             if (work == true)
             {
-                SaveLevelAsImage(dialog.FileName, newScale);
+                SaveLevelAsImage(dialog.FileName);
                 ChangeStatusBar($"Level was saved to \"{dialog.FileName.ToString()}\"");
             }
             else
@@ -838,7 +823,7 @@ namespace _2Duzz
             }
         }
 
-        public void SaveLevelAsImage(string _absolutePath, double _scale)
+        public void SaveLevelAsImage(string _absolutePath, double _scale = 1)
         {
             Images.LevelToImage.ConvertLevelToImage(
                 CurrentLevel.LevelSizeX * CurrentLevel.SpriteSizeX,
