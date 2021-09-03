@@ -330,15 +330,15 @@ namespace _2Duzz
                     || !element.IsEnabled) return;
             }
 
-            Microsoft.Win32.SaveFileDialog dialog = new Microsoft.Win32.SaveFileDialog()
-            {
-                AddExtension = true,
-                CheckPathExists = false,
-                Filter = "Png |*.png"
-            };
-            bool? result = dialog.ShowDialog();
+            Microsoft.WindowsAPICodePack.Dialogs.CommonSaveFileDialog dialog = null;
 
-            if (result == true)
+            dialog = FileHelper.SaveFile(
+                this,
+                out bool work,
+                new Microsoft.WindowsAPICodePack.Dialogs.CommonFileDialogFilter[] { new Microsoft.WindowsAPICodePack.Dialogs.CommonFileDialogFilter("PNG", "png") }
+                );
+
+            if (work == true)
             {
                 SaveLevelAsImage(dialog.FileName);
                 ChangeStatusBar($"Level was saved to \"{dialog.FileName.ToString()}\"");
@@ -823,14 +823,14 @@ namespace _2Duzz
             }
         }
 
-        public void SaveLevelAsImage(string _absolutePath)
+        public void SaveLevelAsImage(string _absolutePath, double _scale = 1)
         {
             Images.LevelToImage.ConvertLevelToImage(
                 CurrentLevel.LevelSizeX * CurrentLevel.SpriteSizeX,
                 CurrentLevel.LevelSizeY * CurrentLevel.SpriteSizeY,
                 _absolutePath,
                 System.Drawing.Imaging.ImageFormat.Png,
-                100
+                _scale
                 );
         }
 

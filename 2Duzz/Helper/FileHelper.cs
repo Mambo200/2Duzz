@@ -342,5 +342,37 @@ namespace _2Duzz.Helper
 
             return tr;
         }
+
+        public static CommonSaveFileDialog SaveFile(System.Windows.Window _main, out bool _success, CommonFileDialogFilter[] _filter, params Microsoft.WindowsAPICodePack.Dialogs.Controls.CommonFileDialogControl[] _controls)
+        {
+            CommonSaveFileDialog dialog = new CommonSaveFileDialog()
+            {
+                EnsurePathExists = true,
+                Title = "Open file...",
+            };
+
+            if (_filter != null)
+            {
+                for (int i = 0; i < _filter.Length; i++)
+                {
+                    if (_filter[i] == null)
+                        throw new ArgumentNullException(nameof(_filter), $"Item at position {i} was null.");
+                    dialog.Filters.Add(_filter[i]);
+                }
+            }
+
+            for (int i = 0; i < _controls.Length; i++)
+            {
+                if (_controls[i] == null)
+                    throw new ArgumentNullException(nameof(_controls), $"Item at position {i} was null.");
+                dialog.Controls.Add(_controls[i]);
+            }
+
+            // if Dialog was cancelled by user, dialog.FileName throws an exception. this is why we need to save the result and check later
+            CommonFileDialogResult result = dialog.ShowDialog(_main);
+            _success = result == CommonFileDialogResult.Ok;
+
+            return dialog;
+        }
     }
 }

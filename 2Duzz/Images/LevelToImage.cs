@@ -19,25 +19,25 @@ namespace _2Duzz.Images
             PngBitmapEncoder[] encoders = new PngBitmapEncoder[count];
             MemoryStream[] memStreams = new MemoryStream[count];
             System.Drawing.Bitmap[] bitmaps = new System.Drawing.Bitmap[count];
-
+            
             for (int i = 0; i < encoders.Length; i++)
             {
                 encoders[i] = ConvertLevelToImage(i, _scale);
-
+            
                 memStreams[i] = new MemoryStream();
                 encoders[i].Save(memStreams[i]);
-
+            
                 bitmaps[i] = new System.Drawing.Bitmap(memStreams[i]);
             }
-
+            
             using (FileStream filestream = File.Create(_absolutePath))
             {
-                using (MemoryStream final = CombineImages(_width, _height, _imageFormat, bitmaps))
+                using (MemoryStream final = CombineImages((int)(_width * _scale), (int)(_height * _scale), _imageFormat, bitmaps))
                 {
                     final.WriteTo(filestream);
                 }
             }
-
+            
             foreach (System.Drawing.Bitmap bitmap in bitmaps)
             {
                 bitmap.Dispose();
@@ -62,7 +62,7 @@ namespace _2Duzz.Images
             var height = drawing.Bounds.Height * _scale;
             var bitmap = new RenderTargetBitmap((int)width, (int)height, 96, 96, PixelFormats.Pbgra32);
             bitmap.Render(drawingVisual);
-
+            
             encoder.Frames.Add(BitmapFrame.Create(bitmap));
 
             return encoder;
@@ -93,7 +93,8 @@ namespace _2Duzz.Images
 
             MemoryStream tr = new MemoryStream();
             target.Save(tr, _format);
-
+            target.Dispose();
+            graphics.Dispose();
             return tr;
         }
 
