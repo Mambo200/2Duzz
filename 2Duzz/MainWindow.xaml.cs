@@ -330,17 +330,32 @@ namespace _2Duzz
                     || !element.IsEnabled) return;
             }
 
-            Microsoft.Win32.SaveFileDialog dialog = new Microsoft.Win32.SaveFileDialog()
-            {
-                AddExtension = true,
-                CheckPathExists = false,
-                Filter = "Png |*.png"
-            };
-            bool? result = dialog.ShowDialog();
+            Microsoft.WindowsAPICodePack.Dialogs.CommonSaveFileDialog dialog = null;
+            bool work = false;
+            bool convertionWork = false;
+            double newScale = 1;
 
-            if (result == true)
+            do
             {
-                SaveLevelAsImage(dialog.FileName);
+                dialog = FileHelper.SaveFile(
+                    this,
+                    out work,
+                    new Microsoft.WindowsAPICodePack.Dialogs.CommonFileDialogFilter[] { new Microsoft.WindowsAPICodePack.Dialogs.CommonFileDialogFilter("PNG", "png") },
+                    new Microsoft.WindowsAPICodePack.Dialogs.Controls.CommonFileDialogTextBox("Scale", "1")
+                    );
+                convertionWork = double.TryParse(((Microsoft.WindowsAPICodePack.Dialogs.Controls.CommonFileDialogTextBox)(dialog.Controls[0])).Text, out newScale);
+
+                if (work && !convertionWork)
+                {
+                    MessageBox.Show("The text in the textbox was in the wrong format. Correct formal: double.", "Text wrong format", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            } while (work && !convertionWork);
+
+
+
+            if (work == true)
+            {
+                SaveLevelAsImage(dialog.FileName, newScale);
                 ChangeStatusBar($"Level was saved to \"{dialog.FileName.ToString()}\"");
             }
             else
@@ -823,14 +838,14 @@ namespace _2Duzz
             }
         }
 
-        public void SaveLevelAsImage(string _absolutePath)
+        public void SaveLevelAsImage(string _absolutePath, double _scale)
         {
             Images.LevelToImage.ConvertLevelToImage(
                 CurrentLevel.LevelSizeX * CurrentLevel.SpriteSizeX,
                 CurrentLevel.LevelSizeY * CurrentLevel.SpriteSizeY,
                 _absolutePath,
                 System.Drawing.Imaging.ImageFormat.Png,
-                100
+                _scale
                 );
         }
 
