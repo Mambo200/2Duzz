@@ -25,12 +25,19 @@ namespace _2Duzz.Helper
         {
         }
 
-        ListView m_CurrentList;
-        public ListView CurrentList { get => m_CurrentList; }
         public void Init(ListView _list)
         {
             m_CurrentList = _list;
         }
+        #endregion
+
+        #region List Variables
+        ListView m_CurrentList;
+        public ListView CurrentList { get => m_CurrentList; }
+
+        public int CurrentSelectedIndex { get => CurrentList.SelectedIndex; set => CurrentList.SelectedIndex = value; }
+        public int PreviousIndex { get => CurrentList.SelectedIndex - 1; }
+        public int NextIndex { get => CurrentList.SelectedIndex + 1; }
         #endregion
 
         #region Add Layer
@@ -38,35 +45,42 @@ namespace _2Duzz.Helper
         /// Add Layer
         /// </summary>
         /// <returns>The zero-based index at which the object is added or -1 if the item cannot be added.</returns>
-        public int AddLayer()
+        public int AddLayer(bool _select = true)
         {
             ListViewItem item = PrepareListViewItem();
-            return CurrentList.Items.Add(item);
+            int tr = CurrentList.Items.Add(item);
+
+            if (_select)
+                CurrentList.SelectedIndex = tr;
+
+            return tr;
         }
 
         /// <summary>
         /// Add Layer
         /// </summary>
         /// <param name="_index">Index of new layer</param>
-        public void AddLayer(int _index)
+        public void AddLayer(int _index, bool _select = true)
         {
             ListViewItem item = PrepareListViewItem();
             CurrentList.Items.Insert(_index, item);
+
+            if (_select)
+                CurrentList.SelectedIndex = _index;
         }
         #endregion
 
         #region Remove Layer
         /// <summary>
-        /// Remove Layer
+        /// Remove Layer at index
         /// </summary>
         /// <param name="_index">Index of layer to remove</param>
         public void RemoveLayer(int _index)
         {
             CurrentList.Items.RemoveAt(_index);
         }
-
         /// <summary>
-        /// Remove Layer
+        /// Remove Layer via item
         /// </summary>
         /// /// <param name="_item">object to remove</param>
         /// <returns>true if item was removed; else false</returns>
@@ -76,6 +90,17 @@ namespace _2Duzz.Helper
             CurrentList.Items.Remove(_item);
 
             return items != CurrentList.Items.Count;
+        }
+        /// <summary>
+        /// Remove current selected Layer
+        /// </summary>
+        /// <param name="_index">Index of layer to remove</param>
+        public bool RemoveLayer()
+        {
+            if (CurrentSelectedIndex < 0)
+                return false;
+            CurrentList.Items.RemoveAt(CurrentSelectedIndex);
+            return true;
         }
         #endregion
 
