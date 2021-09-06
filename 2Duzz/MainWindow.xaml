@@ -7,7 +7,7 @@
         xmlns:mvvm="clr-namespace:_2Duzz.ViewModels" xmlns:converters="clr-namespace:_2Duzz.Converters"
         xmlns:Tools="clr-namespace:_2Duzz.Tools"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" Background="#FFE7E6FF" Loaded="Window_Loaded" Closing="Window_Closing">
+        Title="2Duzz" Height="450" Width="800" Background="#FFE7E6FF" Loaded="Window_Loaded" Closing="Window_Closing" Closed="Window_Closed">
     <Window.DataContext>
         <mvvm:MainViewModel/>
     </Window.DataContext>
@@ -24,8 +24,10 @@
         <KeyBinding x:Name="KeyBinding_OpenClickCommand" Command="{Binding HeaderOpenClickCommand}" Key="O" Modifiers="Ctrl"></KeyBinding>
         <KeyBinding x:Name="KeyBinding_SaveClickCommand" Command="{Binding HeaderSaveClickCommand}" Key="S" Modifiers="Ctrl"></KeyBinding>
         <KeyBinding x:Name="KeyBinding_SaveAsClickCommand" Command="{Binding HeaderSaveAsClickCommand}" Key="S" Modifiers="Ctrl+Shift"></KeyBinding>
+        <KeyBinding x:Name="KeyBinding_ExportAsPngClickCommand" Command="{Binding HeaderExportAsPngClickCommand}" Key="E" Modifiers="Ctrl+Shift"></KeyBinding>
 
         <KeyBinding x:Name="KeyBinding_OpenImagesClickCommand" Command="{Binding HeaderAddImagesCommand}" Key="I" Modifiers="Alt"></KeyBinding>
+        <KeyBinding x:Name="KeyBinding_SplitImagesClickCommand" Command="{Binding HeaderSplitImagesCommand}" Key="S" Modifiers="Alt"></KeyBinding>
     </Window.InputBindings>
 
     <Grid>
@@ -43,10 +45,16 @@
                 <MenuItem x:Name="HeaderSave" Header="_Save" Command="{Binding HeaderSaveClickCommand}" InputGestureText="{Binding ElementName=KeyBinding_SaveClickCommand, Converter={StaticResource kgsCon}}"/>
                 <MenuItem x:Name="HeaderSaveAs" Header="Save _as..." Command="{Binding HeaderSaveAsClickCommand}" InputGestureText="{Binding ElementName=KeyBinding_SaveAsClickCommand, Converter={StaticResource kgsCon}}"/>
                 <Separator/>
+                <MenuItem x:Name="HeaderExportPng" Header="_Export as Png..." Command="{Binding HeaderExportAsPngClickCommand}" InputGestureText="{Binding ElementName=KeyBinding_ExportAsPngClickCommand, Converter={StaticResource kgsCon}}"/>
+                <Separator/>
                 <MenuItem x:Name="HeaderClose" Header="Close" Command="{Binding HeaderCloseClickCommand}"/>
             </MenuItem>
             <MenuItem Header="Image">
                 <MenuItem x:Name="HeaderAddImage" Header="Add Images..." Command="{Binding HeaderAddImagesCommand}" InputGestureText="{Binding ElementName=KeyBinding_OpenImagesClickCommand, Converter={StaticResource kgsCon}}"/>
+                <MenuItem x:Name="HeaderSplitImage" Header="Split Image..." Command="{Binding HeaderSplitImagesCommand}" InputGestureText="{Binding ElementName=KeyBinding_SplitImagesClickCommand, Converter={StaticResource kgsCon}}"/>
+            </MenuItem>
+            <MenuItem Header="Level">
+                <MenuItem x:Name="HeaderChangeLevelName" Header="Level Name..." Command="{Binding HeaderChangeLevelNameCommand}"/>
             </MenuItem>
         </Menu>
 
@@ -90,7 +98,6 @@
                             <Grid.LayoutTransform>
                                 <ScaleTransform ScaleX="{Binding GridContentScale}" ScaleY="{Binding GridContentScale}"/>
                             </Grid.LayoutTransform>
-
 
                             <Image Stretch="None">
                                 <Image.Source>
