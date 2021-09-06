@@ -26,6 +26,8 @@ namespace _2Duzz.WindowsXAML
             InitializeComponent();
             layername = _layerName;
 
+            TextBox_LayerName.Text = layername;
+            TextBox_LayerName.SelectAll();
             DialogResult = false;
         }
 
