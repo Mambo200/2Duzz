@@ -57,6 +57,8 @@ namespace _2Duzz.ViewModels
 
 
         #region KeyBinding
+
+        #region Header FILE
         #region Header New Click
         private ICommand m_HeaderNewClickCommand;
         /// <summary>
@@ -91,13 +93,17 @@ namespace _2Duzz.ViewModels
         #endregion
 
         #region Header Open Click
+        private ICommand m_HeaderOpenClickCommand;
         /// <summary>
         /// Header Open Click command
         /// </summary>
         public ICommand HeaderOpenClickCommand
         {
-            get;
-            set;
+            get => m_HeaderOpenClickCommand;
+            set
+            {
+                SetProperty(ref m_HeaderOpenClickCommand, value);
+            }
         }
 
         /// <summary>
@@ -111,13 +117,17 @@ namespace _2Duzz.ViewModels
         #endregion
 
         #region Header Save Click
+        private ICommand m_HeaderSaveClickCommand;
         /// <summary>
         /// Header Save Click command
         /// </summary>
         public ICommand HeaderSaveClickCommand
         {
-            get;
-            set;
+            get => m_HeaderSaveClickCommand;
+            set
+            {
+                SetProperty(ref m_HeaderSaveClickCommand, value);
+            }
         }
 
         /// <summary>
@@ -131,14 +141,20 @@ namespace _2Duzz.ViewModels
         #endregion
 
         #region Header SaveAs Click
+        private ICommand m_HeaderSaveAsClickCommand;
         /// <summary>
         /// Header SaveAs Click command
         /// </summary>
         public ICommand HeaderSaveAsClickCommand
         {
-            get;
-            set;
+            get => m_HeaderSaveAsClickCommand;
+            set
+            {
+                SetProperty(ref m_HeaderSaveAsClickCommand, value);
+            }
         }
+
+        
 
         /// <summary>
         /// Header SaveAs Click Execution method
@@ -150,14 +166,35 @@ namespace _2Duzz.ViewModels
         }
         #endregion
 
+        #region Header Export as Png Click
+        //HeaderExportAsPngClickCommand
+        private ICommand m_HeaderExportAsPngClickCommand;
+        /// <summary>
+        /// Header SaveAs Click command
+        /// </summary>
+        public ICommand HeaderExportAsPngClickCommand
+        {
+            get => m_HeaderExportAsPngClickCommand;
+            set
+            {
+                SetProperty(ref m_HeaderExportAsPngClickCommand, value);
+            }
+        }
+
+        #endregion
+
         #region Header Close Click
+        private ICommand m_HeaderCloseClickCommand;
         /// <summary>
         /// Header Close Click command
         /// </summary>
         public ICommand HeaderCloseClickCommand
         {
-            get;
-            set;
+            get => m_HeaderCloseClickCommand;
+            set
+            {
+                SetProperty(ref m_HeaderCloseClickCommand, value);
+            }
         }
 
         /// <summary>
@@ -166,8 +203,59 @@ namespace _2Duzz.ViewModels
         /// <param name="_parameter"></param>
         private void ExecuteHeaderCloseClick(object _parameter)
         {
-            MessageBox.Show(_parameter.ToString());
+            // We cannot call "Application.Current.Shutdown();" because this would kill the application even though we cancelled it
+            Application.Current.MainWindow.Close();
         }
+        #endregion
+
+        #endregion
+
+        #region Header IMAGE
+        private ICommand m_HeaderAddImagesCommand;
+        /// <summary>
+        /// Header New Click command
+        /// </summary>
+        public ICommand HeaderAddImagesCommand
+        {
+            get => m_HeaderAddImagesCommand;
+            set
+            {
+                SetProperty(ref m_HeaderAddImagesCommand, value);
+            }
+        }
+
+        private ICommand m_HeaderSplitImagesCommand;
+        /// <summary>
+        /// Header New Click command
+        /// </summary>
+        public ICommand HeaderSplitImagesCommand
+        {
+            get => m_HeaderSplitImagesCommand;
+            set
+            {
+                SetProperty(ref m_HeaderSplitImagesCommand, value);
+            }
+        }
+        #endregion
+
+        #region Header LEVEL
+        private ICommand m_HeaderChangeLevelNameCommand;
+        /// <summary>
+        /// Header Change level name Click command
+        /// </summary>
+        public ICommand HeaderChangeLevelNameCommand
+        {
+            get => m_HeaderChangeLevelNameCommand;
+            set
+            {
+                SetProperty(ref m_HeaderChangeLevelNameCommand, value);
+            }
+        }
+
+        #endregion
+        #endregion
+
+        #region MouseBinding
         #endregion
 
         #region Button Add Layer Click
@@ -199,12 +287,6 @@ namespace _2Duzz.ViewModels
             }
         }
         #endregion
-
-        #endregion
-
-        #region MouseBinding
-        #endregion
-
 
         #region Canvas
         private double m_GridContentScale;
