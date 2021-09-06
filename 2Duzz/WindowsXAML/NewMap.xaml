@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:_2Duzz.WindowsXAML"
         xmlns:mvvm="clr-namespace:_2Duzz.ViewModels"
         mc:Ignorable="d"
-        Title="NewMap" Height="300" Width="400" ResizeMode="NoResize" ShowInTaskbar="True">
+        FocusManager.FocusedElement="{Binding ElementName=LevelNameTextbox}"
+        Title="NewMap" Height="300" Width="400" ResizeMode="NoResize" ShowInTaskbar="True" KeyDown="Window_KeyDown">
     <Window.DataContext>
         <mvvm:NewMapViewModel/>
     </Window.DataContext>
@@ -24,7 +25,7 @@
 
             <Grid Grid.Row="0">
                 <GroupBox Header="Level Name">
-                    <TextBox Grid.Column="1" Text="{Binding LevelNameText, UpdateSourceTrigger=PropertyChanged}" Margin="5" FontSize="{Binding NewFontSize}" FocusManager.GotFocus="TextBox_GotFocus"/>
+                    <TextBox x:Name="LevelNameTextbox" Grid.Column="1" Text="{Binding LevelNameText, UpdateSourceTrigger=PropertyChanged}" Margin="5" FontSize="{Binding NewFontSize}" FocusManager.GotFocus="TextBox_GotFocus"/>
                 </GroupBox>
             </Grid>
 

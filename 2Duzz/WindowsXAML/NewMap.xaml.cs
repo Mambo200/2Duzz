@@ -57,5 +57,17 @@ namespace _2Duzz.WindowsXAML
         {
             ((System.Windows.Controls.Primitives.TextBoxBase)sender).SelectAll();
         }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            // Create level if user pressed ENTER
+            if (e.Key == Key.Enter
+                && GetViewModel.CanClickButton)
+                GetViewModel.ClickCreateLevel.Execute(this);
+
+            // Close window if user pressed ESCAPE
+            else if (e.Key == Key.Escape)
+                GetViewModel.ClickCancel.Execute(this);
+        }
     }
 }

@@ -408,7 +408,7 @@ namespace _2Duzz.Helper
         }
 
         /// <summary>
-        /// Get Border. This only works if the first Item in <see cref="CurrentPanel"/> is an instance of <see cref="Border"/>.
+        /// Get first items Border. This only works if the first Item in <see cref="CurrentPanel"/> is an instance of <see cref="Border"/>.
         /// </summary>
         /// <returns>An instance of <see cref="Border"/>. If there is no <see cref="Border"/> return <see cref="null"/></returns>
         public Border GetBorder() { return CurrentPanel.Children[0] as Border; }

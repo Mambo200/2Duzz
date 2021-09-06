@@ -68,19 +68,62 @@ namespace _2Duzz.Images
             int imgCount = 0;
             Bitmap[,] toReturn = new Bitmap[xPictureCount, yPictureCount];
 
+            #region Old method with Bitmap.GetPixel(int, int, Color) (Commented)
+            //for (int streamX = 0; streamX < xPictureCount; streamX++)
+            //{
+            //    for (int streamY = 0; streamY < yPictureCount; streamY++)
+            //    {
+            //        toReturn[streamX, streamY] = new Bitmap(_width, _height);
+            //
+            //        for (int imageX = streamX * _width; imageX < _width * (streamX + 1); imageX++)
+            //        {
+            //            for (int imageY = streamY * _height; imageY < _height * (streamY + 1); imageY++)
+            //            {
+            //                toReturn[streamX, streamY].SetPixel(imageX % _width, imageY % _height, ImageData.GetPixel(imageX, imageY));
+            //            }
+            //        }
+            //
+            //        if (_worker != null)
+            //        {
+            //            _worker.ReportProgress(++imgCount);
+            //
+            //            // We need to sleep here for the main window to react.
+            //            System.Threading.Thread.Sleep(1);
+            //        }
+            //    }
+            //}
+            #endregion
+
+            #region New Method
+            // original Image
+            EzSplitBitmap roImg = new EzSplitBitmap(ImageData);
+
+            // for each image count in X
             for (int streamX = 0; streamX < xPictureCount; streamX++)
             {
+                // for each image count in Y
                 for (int streamY = 0; streamY < yPictureCount; streamY++)
                 {
-                    toReturn[streamX, streamY] = new Bitmap(_width, _height);
+                    // create new splitted image with no content
+                    EzSplitBitmap temp = new EzSplitBitmap(new Bitmap(_width, _height));
 
-                    for (int imageX = streamX * _width; imageX < _width * (streamX + 1); imageX++)
+                    // for each Pixel in splitted image in X
+                    for (int PixelX = 0; PixelX < _width; PixelX++)
                     {
-                        for (int imageY = streamY * _height; imageY < _height * (streamY + 1); imageY++)
+                        // for each Pixel in splitted image in Y
+                        for (int PixelY = 0; PixelY < _height; PixelY++)
                         {
-                            toReturn[streamX, streamY].SetPixel(imageX % _width, imageY % _height, ImageData.GetPixel(imageX, imageY));
+                            temp.SetPixel(
+                                PixelX, // Because this is a new image, it always goes from 0 to _width
+                                PixelY, // Because this is a new image, it always goes from 0 to _width
+                                roImg.GetPixel(
+                                    PixelX + _width*streamX, 
+                                    PixelY + _height * streamY
+                                    )
+                                );
                         }
                     }
+                    toReturn[streamX, streamY] = temp.Image;
 
                     if (_worker != null)
                     {
@@ -91,6 +134,10 @@ namespace _2Duzz.Images
                     }
                 }
             }
+
+            // We do not dispose here because if we dispose here, the image would be disposed, too and we still need the image
+            //roImg.Image.Dispose();
+            #endregion
 
             return toReturn;
         }
