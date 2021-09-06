@@ -104,6 +104,9 @@
       <DependentUpon>NewMap.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\NewMapViewModel.cs" />
+    <Compile Include="WindowsXAML\RenameLayerWindow.xaml.cs">
+      <DependentUpon>RenameLayerWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="Images\SplitPicWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -127,6 +130,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="WindowsXAML\NewMap.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowsXAML\RenameLayerWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
