@@ -40,7 +40,9 @@ namespace _2Duzz
             PanelManager.Get.Init(this, GridContent_Images);
             TabItemManager.Get.Init(this, TabControl_Sprites);
             ImageDrawingHelper.Get.Init(this, GridContent_Images);
+            LayerManager.Get.Init(LayerList);
             ScollViewer_Images.MainW = this;
+
 
             #region Testing Only
             // TESTING PURPOSES!
@@ -186,12 +188,12 @@ namespace _2Duzz
             ChangeStatusBar("Level Created!");
 
             // Add Layer to List
-            LayerList.Items.Clear();
+            LayerManager.Get.ClearList();
+            LayerManager.Get.AddLayer(0);
 
-            LayerList.Items.Add(0);
 
             CurrentLayer = 0;
-            LayerList.SelectedIndex = 0;
+            LayerManager.Get.CurrentSelectedIndex = 0;
 
             DoSave = true;
 
@@ -360,13 +362,11 @@ namespace _2Duzz
         private void ExecuteAddLayerClick(object _parameter)
         {
             if (CurrentLevel == null) return;
-            ImageDrawingHelper.Get.CreateLayer(CurrentLevel.LevelSizeX, CurrentLevel.LevelSizeY, CurrentLevel.SpriteSizeX, CurrentLevel.SpriteSizeY, LayerList.SelectedIndex + 1);
+            ImageDrawingHelper.Get.CreateLayer(CurrentLevel.LevelSizeX, CurrentLevel.LevelSizeY, CurrentLevel.SpriteSizeX, CurrentLevel.SpriteSizeY, LayerManager.Get.NextIndex);
 
+            LayerManager.Get.AddLayer(LayerManager.Get.NextIndex);
 
-            LayerList.Items.Insert(LayerList.SelectedIndex + 1, LayerList.SelectedIndex + 1);
-
-            LayerList.SelectedIndex++;
-            CurrentLayer = LayerList.SelectedIndex;
+            CurrentLayer = LayerManager.Get.CurrentSelectedIndex;
 
             ChangeStatusBar($"Current Index: {CurrentLayer}");
 
@@ -380,13 +380,19 @@ namespace _2Duzz
         private void ExecuteRemoveLayerClick(object _parameter)
         {
             if (CurrentLevel == null
-                || LayerList.Items.Count <= 1) return;
-            ImageDrawingHelper.Get.RemoveLayer(LayerList.SelectedIndex);
+                || LayerManager.Get.CurrentList.Items.Count <= 1) return;
+            
+            // Remove layer from imagedrawing
+            ImageDrawingHelper.Get.RemoveLayer(LayerManager.Get.CurrentSelectedIndex);
 
-            int tempIndex = LayerList.SelectedIndex;
-            LayerList.Items.RemoveAt(LayerList.SelectedIndex);
-            LayerList.SelectedIndex = MathHelper.Between(tempIndex, 0, LayerList.Items.Count - 1);
-            CurrentLayer = LayerList.SelectedIndex;
+            // remove layer from layerlist
+            // save the current selected index, because if be delete the item, Index will be -1
+            int tempIndex = LayerManager.Get.CurrentSelectedIndex;
+            // remove layer
+            LayerManager.Get.RemoveLayer(tempIndex);
+            // set new index. To be save, we make a clamp between zero and max index of list
+            LayerManager.Get.CurrentSelectedIndex = MathHelper.Between(tempIndex, 0, LayerManager.Get.CurrentList.Items.Count - 1);
+            CurrentLayer = LayerManager.Get.CurrentList.SelectedIndex;
 
             ChangeStatusBar($"Current Index: {CurrentLayer}");
 
@@ -550,8 +556,8 @@ namespace _2Duzz
             ImageDrawingHelper.Get.ClearLayer();
             int layerCount = _l.LevelImages.GetLength(0);
             ImageDrawingHelper.Get.CreateLayer(_l.LevelSizeX, _l.LevelSizeY, _l.SpriteSizeX, _l.SpriteSizeY);
-            LayerList.Items.Clear();
-            LayerList.Items.Add(0);
+            LayerManager.Get.ClearList();
+            LayerManager.Get.AddLayer(0);
             CurrentLayer = 0;
 
             // create layer
@@ -587,7 +593,7 @@ namespace _2Duzz
             }
 
             CurrentLayer = 0;
-            LayerList.SelectedIndex = 0;
+            LayerManager.Get.CurrentSelectedIndex = 0;
             ChangeStatusBar("Level Created!");
         }
 
@@ -776,7 +782,7 @@ namespace _2Duzz
 
         private void LayerList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            CurrentLayer = LayerList.SelectedIndex;
+            CurrentLayer =  LayerManager.Get.CurrentSelectedIndex;
             ChangeStatusBar($"Selected Index: {CurrentLayer}");
         }
 
