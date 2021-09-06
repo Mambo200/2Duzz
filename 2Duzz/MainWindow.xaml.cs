@@ -266,7 +266,7 @@ namespace _2Duzz
 
 
             SetLevelImagesStringArray();
-
+            CurrentLevel.LayerNames = GetCurrentLayerNames();
             FileHelper.FileDialogSaveStatusText(path, CurrentLevel.SaveJson(path), this);
 
             // If we load images while file is currently open, it images can not be deleted. Why do we even save here?
@@ -306,6 +306,7 @@ namespace _2Duzz
             }
 
             SetLevelImagesStringArray();
+            CurrentLevel.LayerNames = GetCurrentLayerNames();
 
             FileHelper.FileDialogSaveStatusText(path, CurrentLevel.SaveJson(path), this);
 
@@ -316,6 +317,30 @@ namespace _2Duzz
             ChangeTitle(ImageLoader.GetFileNameWithoutExtension(path));
 
             return true;
+        }
+
+        /// <summary>
+        /// Get layer names from <see cref="LayerManager.CurrentList"/>
+        /// </summary>
+        /// <returns>string array of layer names</returns>
+        private string[] GetCurrentLayerNames()
+        {
+            string[] tr = new string[LayerManager.Get.CurrentList.Items.Count];
+            for (int i = 0; i < tr.Length; i++)
+            {
+                ContentControl temp = LayerManager.Get.CurrentList.Items[i] as ContentControl;
+                if (temp == null
+                    || temp.Content as string == null)
+                {
+                    tr[i] = "No Data";
+                }
+                else
+                {
+                    tr[i] = temp.Content as string;
+                }
+            }
+
+            return tr;
         }
         #endregion
 
