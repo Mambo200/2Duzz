@@ -38,6 +38,10 @@ namespace _2Duzz.Helper
         public int CurrentSelectedIndex { get => CurrentList.SelectedIndex; set => CurrentList.SelectedIndex = value; }
         public int PreviousIndex { get => CurrentList.SelectedIndex - 1; }
         public int NextIndex { get => CurrentList.SelectedIndex + 1; }
+
+        public ListViewItem CurrentSelectedItem { get => CurrentList.Items[CurrentSelectedIndex] as ListViewItem; }
+        public ListViewItem PreviousItem { get => CurrentList.Items[PreviousIndex] as ListViewItem; }
+        public ListViewItem NextItem { get => CurrentList.Items[NextIndex] as ListViewItem; }
         #endregion
 
         #region Add Layer
@@ -139,7 +143,13 @@ namespace _2Duzz.Helper
 
         private void Rename_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            System.Windows.Forms.MessageBox.Show("Rename", "Rename");
+            WindowsXAML.RenameLayerWindow w = new WindowsXAML.RenameLayerWindow(CurrentSelectedItem.Content as string);
+            bool? result = w.ShowDialog();
+
+            if(result == true)
+            {
+                CurrentSelectedItem.Content = w.NewLayerName;
+            }
         }
     }
 }

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:_2Duzz.WindowsXAML"
         mc:Ignorable="d"
         FocusManager.FocusedElement="{Binding ElementName=TextBox_LayerName}"
-        Title="New Layer Name" Height="120" Width="500" KeyDown="Window_KeyDown">
+        Title="New Layer Name" Height="120" Width="500" KeyDown="Window_KeyDown" ResizeMode="NoResize">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>

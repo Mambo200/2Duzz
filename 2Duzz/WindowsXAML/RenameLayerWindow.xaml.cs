@@ -28,7 +28,6 @@ namespace _2Duzz.WindowsXAML
 
             TextBox_LayerName.Text = layername;
             TextBox_LayerName.SelectAll();
-            DialogResult = false;
         }
 
         private void Button_Click_OK(object sender, RoutedEventArgs e)
