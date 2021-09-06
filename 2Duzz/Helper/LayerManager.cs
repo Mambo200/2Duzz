@@ -92,7 +92,7 @@ namespace _2Duzz.Helper
             return items != CurrentList.Items.Count;
         }
         /// <summary>
-        /// Remove current selected Layer
+        /// Remove current selected Layer. See <see cref="CurrentSelectedIndex"/>.
         /// </summary>
         /// <param name="_index">Index of layer to remove</param>
         public bool RemoveLayer()
@@ -101,6 +101,11 @@ namespace _2Duzz.Helper
                 return false;
             CurrentList.Items.RemoveAt(CurrentSelectedIndex);
             return true;
+        }
+
+        public void ClearList()
+        {
+            CurrentList.Items.Clear();
         }
         #endregion
 
