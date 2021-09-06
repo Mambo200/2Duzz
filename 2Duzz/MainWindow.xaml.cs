@@ -41,6 +41,7 @@ namespace _2Duzz
             TabItemManager.Get.Init(this, TabControl_Sprites);
             ImageDrawingHelper.Get.Init(this, GridContent_Images);
             LayerManager.Get.Init(LayerList);
+            LayerManager.Get.RenameLayer += RenameLayer;
             ScollViewer_Images.MainW = this;
 
 
@@ -128,6 +129,12 @@ namespace _2Duzz
             // We Use Math.Max because if scale is negative, the level does flip.
             GetMainViewModel.GridContentScale = (double)Math.Max(new decimal(0.1), newScaleValue);
         }
+
+        private void RenameLayer(ItemsControl _control, int _index, string _oldName, string _newName)
+        {
+            ChangeStatusBar($"Changed name of layer at index \"{_index}\" from \"{_oldName}\" to \"{_newName}\".");
+        }
+
 
         #region Execute Header and Buttons
 
@@ -386,16 +393,33 @@ namespace _2Duzz
         /// <param name="_parameter"></param>
         private void ExecuteAddLayerClick(object _parameter)
         {
-            if (CurrentLevel == null) return;
-            ImageDrawingHelper.Get.CreateLayer(CurrentLevel.LevelSizeX, CurrentLevel.LevelSizeY, CurrentLevel.SpriteSizeX, CurrentLevel.SpriteSizeY, LayerManager.Get.NextIndex);
-
-            LayerManager.Get.AddLayer(LayerManager.Get.NextIndex);
-
-            CurrentLayer = LayerManager.Get.CurrentSelectedIndex;
+            CreateLayer();
 
             ChangeStatusBar($"Current Index: {CurrentLayer}");
 
             DoSave = true;
+        }
+
+        /// <summary>
+        /// Create Image layer and list layer. Only for loading level
+        /// </summary>
+        private void CreateLayer()
+        {
+            if (CurrentLevel == null) return;
+            ImageDrawingHelper.Get.CreateLayer(CurrentLevel.LevelSizeX, CurrentLevel.LevelSizeY, CurrentLevel.SpriteSizeX, CurrentLevel.SpriteSizeY, LayerManager.Get.NextIndex);
+            LayerManager.Get.AddLayer(LayerManager.Get.NextIndex);
+            CurrentLayer = LayerManager.Get.CurrentSelectedIndex;
+        }
+        /// <summary>
+        /// Create Image layer and list layer. Only for loading level
+        /// <paramref name="_layerName">Name of layer</paramref>
+        /// </summary>
+        private void CreateLayer(string _layerName)
+        {
+            if (CurrentLevel == null) return;
+            ImageDrawingHelper.Get.CreateLayer(CurrentLevel.LevelSizeX, CurrentLevel.LevelSizeY, CurrentLevel.SpriteSizeX, CurrentLevel.SpriteSizeY, LayerManager.Get.NextIndex);
+            LayerManager.Get.AddLayer(LayerManager.Get.NextIndex, _layerName);
+            CurrentLayer = LayerManager.Get.CurrentSelectedIndex;
         }
 
         /// <summary>
@@ -582,13 +606,16 @@ namespace _2Duzz
             int layerCount = _l.LevelImages.GetLength(0);
             ImageDrawingHelper.Get.CreateLayer(_l.LevelSizeX, _l.LevelSizeY, _l.SpriteSizeX, _l.SpriteSizeY);
             LayerManager.Get.ClearList();
-            LayerManager.Get.AddLayer(0);
             CurrentLayer = 0;
 
             // create layer
-            for (int i = 1; i < layerCount; i++)
+            for (int i = 0; i < layerCount; i++)
             {
-                ExecuteAddLayerClick(this);
+                if (_l.LayerNames != null
+                    && i < _l.LayerNames.Length)
+                    CreateLayer(_l.LayerNames[i]);
+                else
+                    CreateLayer();
             }
 
             // Set grid size

@@ -173,8 +173,7 @@ namespace LevelData
         {
             if (_lvl == null
                 || _lvl.LevelImagesData == null
-                || _lvl.LevelImages == null
-                || _lvl.LayerNames == null)
+                || _lvl.LevelImages == null)
                 return false;
 
             if (_lvl.LevelSizeX < 1
@@ -192,6 +191,10 @@ namespace LevelData
             }
 
             if (_lvl.LevelImages.GetLength(1) != _lvl.LevelSizeX * _lvl.LevelSizeY)
+                return false;
+
+            if (_lvl.LayerNames != null
+                && _lvl.LayerNames.Length != _lvl.LevelImages.GetLength(0))
                 return false;
 
             return true;

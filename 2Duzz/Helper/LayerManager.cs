@@ -59,6 +59,22 @@ namespace _2Duzz.Helper
 
             return tr;
         }
+        /// <summary>
+        /// Add Layer
+        /// </summary>
+        /// <param name="_layerName">Name of layer</param>
+        /// <returns>The zero-based index at which the object is added or -1 if the item cannot be added.</returns>
+        public int AddLayer(string _layerName, bool _select = true)
+        {
+            ListViewItem item = PrepareListViewItem(_layerName);
+            int tr = CurrentList.Items.Add(item);
+
+            if (_select)
+                CurrentList.SelectedIndex = tr;
+
+            return tr;
+        }
+
 
         /// <summary>
         /// Add Layer
@@ -67,6 +83,19 @@ namespace _2Duzz.Helper
         public void AddLayer(int _index, bool _select = true)
         {
             ListViewItem item = PrepareListViewItem();
+            CurrentList.Items.Insert(_index, item);
+
+            if (_select)
+                CurrentList.SelectedIndex = _index;
+        }
+        /// <summary>
+        /// Add Layer
+        /// </summary>
+        /// <param name="_index">Index of new layer</param>
+        /// <param name="_layerName">Name of layer</param>
+        public void AddLayer(int _index, string _layerName, bool _select = true)
+        {
+            ListViewItem item = PrepareListViewItem(_layerName);
             CurrentList.Items.Insert(_index, item);
 
             if (_select)
@@ -141,6 +170,7 @@ namespace _2Duzz.Helper
             return menu;
         }
 
+        public event Delegates.OnRenamingLayerEventHandler RenameLayer;
         private void Rename_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             WindowsXAML.RenameLayerWindow w = new WindowsXAML.RenameLayerWindow(CurrentSelectedItem.Content as string);
@@ -148,7 +178,10 @@ namespace _2Duzz.Helper
 
             if(result == true)
             {
+                string oldName = CurrentSelectedItem.Content as string;
                 CurrentSelectedItem.Content = w.NewLayerName;
+                if (RenameLayer != null)
+                    RenameLayer(CurrentList, CurrentSelectedIndex, oldName, w.NewLayerName);
             }
         }
     }
