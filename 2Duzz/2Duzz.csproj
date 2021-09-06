@@ -91,6 +91,7 @@
       <DependentUpon>SplitPicWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="IStatusBar.cs" />
+    <Compile Include="Helper\LayerManager.cs" />
     <Compile Include="Tools\HoverOverDifferentImageGrid.cs" />
     <Compile Include="Tools\WheelControlScollViewer.cs" />
     <Compile Include="ViewModels\ChangeLevelNameViewModel.cs" />
