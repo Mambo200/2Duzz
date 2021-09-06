@@ -362,7 +362,7 @@ namespace _2Duzz
         private void ExecuteAddLayerClick(object _parameter)
         {
             if (CurrentLevel == null) return;
-            ImageDrawingHelper.Get.CreateLayer(CurrentLevel.LevelSizeX, CurrentLevel.LevelSizeY, CurrentLevel.SpriteSizeX, CurrentLevel.SpriteSizeY, LayerManager.Get.PreviousIndex);
+            ImageDrawingHelper.Get.CreateLayer(CurrentLevel.LevelSizeX, CurrentLevel.LevelSizeY, CurrentLevel.SpriteSizeX, CurrentLevel.SpriteSizeY, LayerManager.Get.NextIndex);
 
             LayerManager.Get.AddLayer(LayerManager.Get.NextIndex);
 
