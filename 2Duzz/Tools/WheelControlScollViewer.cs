@@ -61,13 +61,11 @@ namespace _2Duzz.Tools
         }
 
         public void CallOnMouseMove(MouseEventArgs e) => OnMouseMove(e);
-        private int count;
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
 
             if (!MiddleButtonPressed) return;
-            MainW.ChangeStatusBar(++count);
 
             // Check Position
             Point currentPosition = e.GetPosition(this);
