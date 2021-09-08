@@ -11,7 +11,7 @@ namespace _2Duzz.Helper
 {
     public class ImageDrawingHelper
     {
-        public const string PLACEHOLDERPATH = "pack://application:,,,/2Duzz;component/Ressources/TestImages/AlphaDot.png";
+        public const string PLACEHOLDERPATH = "pack://application:,,,/2Duzz;component/Ressources/A.png";
 
         #region Constructor
         private static ImageDrawingHelper m_Instance;

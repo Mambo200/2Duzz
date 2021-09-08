@@ -1,4 +1,4 @@
-﻿using _2Duzz.Helper;
+using _2Duzz.Helper;
 using _2Duzz.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -818,7 +818,7 @@ namespace _2Duzz
                     CurrentLevel.LevelSizeX,
                     CurrentLevel.LevelSizeY,
                     CurrentLayer,
-                    "pack://application:,,,/2Duzz;component/Ressources/TestImages/AlphaDot.png"
+                    ImageDrawingHelper.PLACEHOLDERPATH
                     );
             }
             else
@@ -856,7 +856,7 @@ namespace _2Duzz
                     CurrentLevel.LevelSizeX,
                     CurrentLevel.LevelSizeY,
                     CurrentLayer,
-                    "pack://application:,,,/2Duzz;component/Ressources/TestImages/AlphaDot.png"
+                    ImageDrawingHelper.PLACEHOLDERPATH
                     );
             }
             else
