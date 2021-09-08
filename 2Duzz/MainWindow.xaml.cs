@@ -84,6 +84,7 @@ namespace _2Duzz
             TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
             TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Outline.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
             #endregion
+
             Config.ConfigLoader.Get.LoadFile();
             Config.ConfigLoader.Get.FillTabControl(Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
         }
@@ -430,7 +431,7 @@ namespace _2Duzz
         {
             if (CurrentLevel == null
                 || LayerManager.Get.CurrentList.Items.Count <= 1) return;
-            
+
             // Remove layer from imagedrawing
             ImageDrawingHelper.Get.RemoveLayer(LayerManager.Get.CurrentSelectedIndex);
 
@@ -791,20 +792,37 @@ namespace _2Duzz
 
         private void GridContent_Images_SwitchImage(object sender, MouseEventArgs e, Point oldPosition, Point newPosition)
         {
-            if (CurrentSelectedImage == null
-                || e.LeftButton != MouseButtonState.Pressed)
+            if (CurrentSelectedImage == null)
                 return;
 
-            ImageDrawingHelper.Get.ReplaceImage(
-                (int)newPosition.X,
-                (int)newPosition.Y,
-                CurrentLevel.SpriteSizeX,
-                CurrentLevel.SpriteSizeY,
-                CurrentLevel.LevelSizeX,
-                CurrentLevel.LevelSizeY,
-                CurrentLayer,
-                CurrentSelectedImage.Source.ToString()
-                );
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                ImageDrawingHelper.Get.ReplaceImage(
+                    (int)newPosition.X,
+                    (int)newPosition.Y,
+                    CurrentLevel.SpriteSizeX,
+                    CurrentLevel.SpriteSizeY,
+                    CurrentLevel.LevelSizeX,
+                    CurrentLevel.LevelSizeY,
+                    CurrentLayer,
+                    CurrentSelectedImage.Source.ToString()
+                    );
+            }
+            else if (e.RightButton == MouseButtonState.Pressed)
+            {
+                ImageDrawingHelper.Get.ReplaceImage(
+                    (int)newPosition.X,
+                    (int)newPosition.Y,
+                    CurrentLevel.SpriteSizeX,
+                    CurrentLevel.SpriteSizeY,
+                    CurrentLevel.LevelSizeX,
+                    CurrentLevel.LevelSizeY,
+                    CurrentLayer,
+                    "pack://application:,,,/2Duzz;component/Ressources/TestImages/AlphaDot.png"
+                    );
+            }
+            else
+                return;
 
             ChangeStatusBar(newPosition);
 
@@ -815,8 +833,9 @@ namespace _2Duzz
         {
             if (CurrentSelectedImage == null)
                 return;
-
-            ImageDrawingHelper.Get.ReplaceImage(
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                ImageDrawingHelper.Get.ReplaceImage(
                 (int)imagePosition.X,
                 (int)imagePosition.Y,
                 CurrentLevel.SpriteSizeX,
@@ -826,6 +845,22 @@ namespace _2Duzz
                 CurrentLayer,
                 CurrentSelectedImage.Source.ToString()
                 );
+            }
+            else if (e.RightButton == MouseButtonState.Pressed)
+            {
+                ImageDrawingHelper.Get.ReplaceImage(
+                    (int)imagePosition.X,
+                    (int)imagePosition.Y,
+                    CurrentLevel.SpriteSizeX,
+                    CurrentLevel.SpriteSizeY,
+                    CurrentLevel.LevelSizeX,
+                    CurrentLevel.LevelSizeY,
+                    CurrentLayer,
+                    "pack://application:,,,/2Duzz;component/Ressources/TestImages/AlphaDot.png"
+                    );
+            }
+            else
+                return;
 
             DoSave = true;
         }
@@ -834,7 +869,7 @@ namespace _2Duzz
 
         private void LayerList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            CurrentLayer =  LayerManager.Get.CurrentSelectedIndex;
+            CurrentLayer = LayerManager.Get.CurrentSelectedIndex;
             ChangeStatusBar($"Selected Index: {CurrentLayer}");
         }
 
