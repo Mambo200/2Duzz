@@ -44,47 +44,6 @@ namespace _2Duzz
             LayerManager.Get.RenameLayer += RenameLayer;
             ScollViewer_Images.MainW = this;
 
-
-            #region Testing Only
-            // TESTING PURPOSES!
-            TabItemManager.Get.AddTabItem("Papagei");
-            TabItemManager.Get.AddTabItem("Affe");
-            TabItemManager.Get.AddTabItem("Urangutan");
-            TabItemManager.Get.AddImageToTabItem(0, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/emo0004.jpg"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(0, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/emo0004.jpg"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(0, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/emo0004.jpg"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(0, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/emo0004.jpg"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(0, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/emo0004.jpg"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(0, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/XTiny.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(0, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/XTiny.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(0, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/XTiny.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(0, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/AlphaDot.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(0, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/XTiny.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-
-            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X2.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X2.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X2.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X2.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X2.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-
-            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Outline.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            #endregion
-
             Config.ConfigLoader.Get.LoadFile();
             Config.ConfigLoader.Get.FillTabControl(Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
         }
@@ -818,7 +777,7 @@ namespace _2Duzz
                     CurrentLevel.LevelSizeX,
                     CurrentLevel.LevelSizeY,
                     CurrentLayer,
-                    "pack://application:,,,/2Duzz;component/Ressources/TestImages/AlphaDot.png"
+                    ImageDrawingHelper.PLACEHOLDERPATH
                     );
             }
             else
@@ -856,7 +815,7 @@ namespace _2Duzz
                     CurrentLevel.LevelSizeX,
                     CurrentLevel.LevelSizeY,
                     CurrentLayer,
-                    "pack://application:,,,/2Duzz;component/Ressources/TestImages/AlphaDot.png"
+                    ImageDrawingHelper.PLACEHOLDERPATH
                     );
             }
             else
