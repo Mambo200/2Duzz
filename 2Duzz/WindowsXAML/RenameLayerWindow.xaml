@@ -1,0 +1,34 @@
+﻿<Window x:Class="_2Duzz.WindowsXAML.RenameLayerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:_2Duzz.WindowsXAML"
+        mc:Ignorable="d"
+        FocusManager.FocusedElement="{Binding ElementName=TextBox_LayerName}"
+        Title="New Layer Name" Height="120" Width="500" KeyDown="Window_KeyDown" ResizeMode="NoResize">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            
+            <TextBox x:Name="TextBox_LayerName" Grid.Row="0" Text="fd" FontSize="20" VerticalAlignment="Center" Margin="5,0,5,0"/>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" Content="Rename" FontSize="20" Margin="5" Click="Button_Click_OK"/>
+            <Button Grid.Column="1" Content="Cancel" FontSize="20" Margin="5" Click="Button_Click_Cancel"/>
+        </Grid>
+    </Grid>
+</Window>
