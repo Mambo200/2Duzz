@@ -161,11 +161,17 @@ namespace _2Duzz.Helper
         {
             ContextMenu menu = new ContextMenu();
 
+            // Rename
             MenuItem child = new MenuItem();
             child.Header = "Rename";
             child.Click += Rename_Click;
-
             menu.Items.Add(child);
+
+            // Toggle Visibility
+            MenuItem childVisibility = new MenuItem();
+            childVisibility.Header = "Toggle Visibility";
+            childVisibility.Click += ToggleVisibility_Click;
+            menu.Items.Add(childVisibility);
 
             return menu;
         }
@@ -183,6 +189,27 @@ namespace _2Duzz.Helper
                 if (RenameLayer != null)
                     RenameLayer(CurrentList, CurrentSelectedIndex, oldName, w.NewLayerName);
             }
+        }
+
+        private void ToggleVisibility_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            Image currentImage = ImageDrawingHelper.Get.ImageLayer[CurrentSelectedIndex];
+            var visibilityStatus = currentImage.Visibility;
+            switch (visibilityStatus)
+            {
+                case System.Windows.Visibility.Collapsed:
+                    currentImage.Visibility = System.Windows.Visibility.Hidden;
+                    break;
+
+                case System.Windows.Visibility.Hidden:
+                    currentImage.Visibility = System.Windows.Visibility.Visible;
+                    break;
+
+                case System.Windows.Visibility.Visible:
+                    currentImage.Visibility = System.Windows.Visibility.Hidden;
+                    break;
+            }
+
         }
     }
 }
