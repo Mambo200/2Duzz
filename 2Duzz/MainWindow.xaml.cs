@@ -564,6 +564,8 @@ namespace _2Duzz
             // Reset Image Panel
             ImageDrawingHelper.Get.ClearLayer();
             int layerCount = _l.LevelImages.GetLength(0);
+
+            // Create a Layer so software do not crash. remove it later
             ImageDrawingHelper.Get.CreateLayer(_l.LevelSizeX, _l.LevelSizeY, _l.SpriteSizeX, _l.SpriteSizeY);
             LayerManager.Get.ClearList();
             CurrentLayer = 0;
@@ -577,6 +579,9 @@ namespace _2Duzz
                 else
                     CreateLayer();
             }
+
+            // removing first temporary layer
+            ImageDrawingHelper.Get.RemoveLayer(0);
 
             // Set grid size
             GetMainViewModel.GridContentWidth = CurrentLevel.LevelSizeX * CurrentLevel.SpriteSizeX;

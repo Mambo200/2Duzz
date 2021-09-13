@@ -161,7 +161,7 @@ namespace LevelData
             if (CheckLevel(tr))
                 return tr;
             else
-                return null;
+                return tr;
         }
 
         /// <summary>
