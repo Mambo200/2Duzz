@@ -339,6 +339,40 @@ namespace _2Duzz.Helper
         }
 
         /// <summary>
+        /// Hide Layer
+        /// </summary>
+        /// <param name="_layer">Index of layer</param>
+        public void DisableLayer(int _layer)
+        {
+            ImageLayer[_layer].Visibility = System.Windows.Visibility.Hidden;
+        }
+        /// <summary>
+        /// Hide Layer
+        /// </summary>
+        /// <param name="_image">Image in layer</param>
+        public void DisableLayer(Image _image)
+        {
+            _image.Visibility = System.Windows.Visibility.Hidden;
+        }
+
+        /// <summary>
+        /// Show Layer
+        /// </summary>
+        /// <param name="_layer">Index of layer</param>
+        public void EnableLayer(int _layer)
+        {
+            ImageLayer[_layer].Visibility = System.Windows.Visibility.Visible;
+        }
+        /// <summary>
+        /// Show Layer
+        /// </summary>
+        /// <param name="_image">Image in layer</param>
+        public void EnableLayer(Image _image)
+        {
+            _image.Visibility = System.Windows.Visibility.Visible;
+        }
+
+        /// <summary>
         /// Remove Layer
         /// </summary>
         /// <param name="_image">Image layer</param>
