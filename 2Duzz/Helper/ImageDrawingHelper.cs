@@ -11,7 +11,7 @@ namespace _2Duzz.Helper
 {
     public class ImageDrawingHelper
     {
-        public const string PLACEHOLDERPATH = "pack://application:,,,/2Duzz;component/Ressources/TestImages/AlphaDot.png";
+        public const string PLACEHOLDERPATH = "pack://application:,,,/2Duzz;component/Ressources/A.png";
 
         #region Constructor
         private static ImageDrawingHelper m_Instance;
@@ -336,6 +336,40 @@ namespace _2Duzz.Helper
 
             // Remove from Dictionary
             ImagesAtLayer.RemoveAt(_layer);
+        }
+
+        /// <summary>
+        /// Hide Layer
+        /// </summary>
+        /// <param name="_layer">Index of layer</param>
+        public void DisableLayer(int _layer)
+        {
+            ImageLayer[_layer].Visibility = System.Windows.Visibility.Hidden;
+        }
+        /// <summary>
+        /// Hide Layer
+        /// </summary>
+        /// <param name="_image">Image in layer</param>
+        public void DisableLayer(Image _image)
+        {
+            _image.Visibility = System.Windows.Visibility.Hidden;
+        }
+
+        /// <summary>
+        /// Show Layer
+        /// </summary>
+        /// <param name="_layer">Index of layer</param>
+        public void EnableLayer(int _layer)
+        {
+            ImageLayer[_layer].Visibility = System.Windows.Visibility.Visible;
+        }
+        /// <summary>
+        /// Show Layer
+        /// </summary>
+        /// <param name="_image">Image in layer</param>
+        public void EnableLayer(Image _image)
+        {
+            _image.Visibility = System.Windows.Visibility.Visible;
         }
 
         /// <summary>

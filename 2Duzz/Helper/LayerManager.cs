@@ -59,6 +59,22 @@ namespace _2Duzz.Helper
 
             return tr;
         }
+        /// <summary>
+        /// Add Layer
+        /// </summary>
+        /// <param name="_layerName">Name of layer</param>
+        /// <returns>The zero-based index at which the object is added or -1 if the item cannot be added.</returns>
+        public int AddLayer(string _layerName, bool _select = true)
+        {
+            ListViewItem item = PrepareListViewItem(_layerName);
+            int tr = CurrentList.Items.Add(item);
+
+            if (_select)
+                CurrentList.SelectedIndex = tr;
+
+            return tr;
+        }
+
 
         /// <summary>
         /// Add Layer
@@ -67,6 +83,19 @@ namespace _2Duzz.Helper
         public void AddLayer(int _index, bool _select = true)
         {
             ListViewItem item = PrepareListViewItem();
+            CurrentList.Items.Insert(_index, item);
+
+            if (_select)
+                CurrentList.SelectedIndex = _index;
+        }
+        /// <summary>
+        /// Add Layer
+        /// </summary>
+        /// <param name="_index">Index of new layer</param>
+        /// <param name="_layerName">Name of layer</param>
+        public void AddLayer(int _index, string _layerName, bool _select = true)
+        {
+            ListViewItem item = PrepareListViewItem(_layerName);
             CurrentList.Items.Insert(_index, item);
 
             if (_select)
@@ -132,15 +161,22 @@ namespace _2Duzz.Helper
         {
             ContextMenu menu = new ContextMenu();
 
+            // Rename
             MenuItem child = new MenuItem();
             child.Header = "Rename";
             child.Click += Rename_Click;
-
             menu.Items.Add(child);
+
+            // Toggle Visibility
+            MenuItem childVisibility = new MenuItem();
+            childVisibility.Header = "Toggle Visibility";
+            childVisibility.Click += ToggleVisibility_Click;
+            menu.Items.Add(childVisibility);
 
             return menu;
         }
 
+        public event Delegates.OnRenamingLayerEventHandler RenameLayer;
         private void Rename_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             WindowsXAML.RenameLayerWindow w = new WindowsXAML.RenameLayerWindow(CurrentSelectedItem.Content as string);
@@ -148,8 +184,32 @@ namespace _2Duzz.Helper
 
             if(result == true)
             {
+                string oldName = CurrentSelectedItem.Content as string;
                 CurrentSelectedItem.Content = w.NewLayerName;
+                if (RenameLayer != null)
+                    RenameLayer(CurrentList, CurrentSelectedIndex, oldName, w.NewLayerName);
             }
+        }
+
+        private void ToggleVisibility_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            Image currentImage = ImageDrawingHelper.Get.ImageLayer[CurrentSelectedIndex];
+            var visibilityStatus = currentImage.Visibility;
+            switch (visibilityStatus)
+            {
+                case System.Windows.Visibility.Collapsed:
+                    currentImage.Visibility = System.Windows.Visibility.Hidden;
+                    break;
+
+                case System.Windows.Visibility.Hidden:
+                    currentImage.Visibility = System.Windows.Visibility.Visible;
+                    break;
+
+                case System.Windows.Visibility.Visible:
+                    currentImage.Visibility = System.Windows.Visibility.Hidden;
+                    break;
+            }
+
         }
     }
 }

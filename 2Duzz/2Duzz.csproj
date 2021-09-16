@@ -73,6 +73,7 @@
     <Compile Include="Converters\PixelConverter\ImageSourceToPixelConverter.cs" />
     <Compile Include="Converters\PixelConverter\ImageSourceToPixelConverterWidth.cs" />
     <Compile Include="Delegates\OnClickImageEventHandler.cs" />
+    <Compile Include="Delegates\OnRenamingLayerEventHandler.cs" />
     <Compile Include="Delegates\SwitchImagesEventHandler.cs" />
     <Compile Include="Helper\BindingHelper.cs" />
     <Compile Include="Converters\DoubleToPercentageStringConverter.cs" />
@@ -169,34 +170,10 @@
     <Resource Include="Ressources\A.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Ressources\TestImages\Debuf Mode.PNG" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Ressources\TestImages\Outline.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Ressources\TestImages\X.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Ressources\TestImages\X2.png" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\LevelData\LevelData.csproj">
       <Project>{652c1f05-85f2-4c6a-a875-458665d76477}</Project>
       <Name>LevelData</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Ressources\TestImages\XTiny.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Ressources\TestImages\WhiteDot.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Ressources\TestImages\AlphaDot.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Ressources\TestImages\emo0004.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
