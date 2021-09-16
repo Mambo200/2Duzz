@@ -42,10 +42,16 @@ namespace _2Duzz
             ImageDrawingHelper.Get.Init(this, GridContent_Images);
             LayerManager.Get.Init(LayerList);
             LayerManager.Get.RenameLayer += RenameLayer;
+            LayerManager.Get.ChangeVisibility += ChangeLayerVisibility;
             ScollViewer_Images.MainW = this;
 
             Config.ConfigLoader.Get.LoadFile();
             Config.ConfigLoader.Get.FillTabControl(Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+        }
+
+        private void ChangeLayerVisibility(ItemsControl _control, int _index, Visibility _oldVisibility, Visibility _newVisibility)
+        {
+            
         }
 
         public void ChangeStatusBar(object _content)
