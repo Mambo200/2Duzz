@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
-
+using System.Windows.Media;
 namespace _2Duzz.Helper
 {
     public class LayerManager
@@ -42,6 +42,37 @@ namespace _2Duzz.Helper
         public ListViewItem CurrentSelectedItem { get => CurrentList.Items[CurrentSelectedIndex] as ListViewItem; }
         public ListViewItem PreviousItem { get => CurrentList.Items[PreviousIndex] as ListViewItem; }
         public ListViewItem NextItem { get => CurrentList.Items[NextIndex] as ListViewItem; }
+        #endregion
+
+        #region Brushes
+        private Brush m_VisibleLayerBrush;
+        public Brush VisibleLayerBrush
+        {
+            get
+            {
+                if (m_VisibleLayerBrush == null)
+                {
+                    BrushConverter converter = new System.Windows.Media.BrushConverter();
+                    m_VisibleLayerBrush = (Brush)converter.ConvertFrom("#00FFFFFF");
+                }
+
+                return m_VisibleLayerBrush;
+            }
+        }
+        private Brush m_HiddenLayerBrush;
+        public Brush HiddenLayerBrush
+        {
+            get
+            {
+                if (m_HiddenLayerBrush == null)
+                {
+                    BrushConverter converter = new System.Windows.Media.BrushConverter();
+                    m_HiddenLayerBrush = (Brush)converter.ConvertFrom("#780052FF");
+                }
+
+                return m_HiddenLayerBrush;
+            }
+        }
         #endregion
 
         #region Add Layer
@@ -146,6 +177,7 @@ namespace _2Duzz.Helper
         {
             ListViewItem tr = new ListViewItem();
             tr.Content = _content == null ? "New Layer" : _content;
+            tr.Background = VisibleLayerBrush;
             tr.ContextMenu = PrepareContextMenu();
             return tr;
         }
@@ -153,6 +185,7 @@ namespace _2Duzz.Helper
         {
             ListViewItem tr = new ListViewItem();
             tr.Content = "New Layer";
+            tr.Background = VisibleLayerBrush;
             tr.ContextMenu = PrepareContextMenu();
             return tr;
         }
@@ -182,7 +215,7 @@ namespace _2Duzz.Helper
             WindowsXAML.RenameLayerWindow w = new WindowsXAML.RenameLayerWindow(CurrentSelectedItem.Content as string);
             bool? result = w.ShowDialog();
 
-            if(result == true)
+            if (result == true)
             {
                 string oldName = CurrentSelectedItem.Content as string;
                 CurrentSelectedItem.Content = w.NewLayerName;
@@ -191,10 +224,11 @@ namespace _2Duzz.Helper
             }
         }
 
+        public event Delegates.OnSwitchVisibilityEventHandler ChangeVisibility;
         private void ToggleVisibility_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             Image currentImage = ImageDrawingHelper.Get.ImageLayer[CurrentSelectedIndex];
-            var visibilityStatus = currentImage.Visibility;
+            System.Windows.Visibility visibilityStatus = currentImage.Visibility;
             switch (visibilityStatus)
             {
                 case System.Windows.Visibility.Collapsed:
@@ -210,6 +244,14 @@ namespace _2Duzz.Helper
                     break;
             }
 
+            // Coloring Brush
+            if(currentImage.Visibility == System.Windows.Visibility.Visible)
+                CurrentSelectedItem.Background = VisibleLayerBrush;
+            else
+                CurrentSelectedItem.Background = HiddenLayerBrush;
+
+            if (ChangeVisibility != null)
+                ChangeVisibility(CurrentList, CurrentSelectedIndex, visibilityStatus, currentImage.Visibility);
         }
     }
 }
