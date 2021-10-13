@@ -168,6 +168,8 @@ namespace _2Duzz
             CurrentLayer = 0;
             LayerManager.Get.CurrentSelectedIndex = 0;
 
+            FileHelper.ResetLastValidFile();
+
             DoSave = true;
 
             ChangeTitle("New Level");
@@ -874,7 +876,7 @@ namespace _2Duzz
 
                 // Try to save new level. If saving was successful, return true; else false
                 case MessageBoxResult.Yes:
-                    return !SaveFile();
+                    return SaveFile();
 
                 // discard everything and return true
                 case MessageBoxResult.No:
