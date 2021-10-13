@@ -11,7 +11,7 @@ namespace _2Duzz.Helper
 {
     public class ImageDrawingHelper
     {
-        public const string PLACEHOLDERPATH = "pack://application:,,,/2Duzz;component/Ressources/TestImages/AlphaDot.png";
+        public const string PLACEHOLDERPATH = "pack://application:,,,/2Duzz;component/Ressources/A.png";
 
         #region Constructor
         private static ImageDrawingHelper m_Instance;
@@ -339,6 +339,40 @@ namespace _2Duzz.Helper
         }
 
         /// <summary>
+        /// Hide Layer
+        /// </summary>
+        /// <param name="_layer">Index of layer</param>
+        public void DisableLayer(int _layer)
+        {
+            ImageLayer[_layer].Visibility = System.Windows.Visibility.Hidden;
+        }
+        /// <summary>
+        /// Hide Layer
+        /// </summary>
+        /// <param name="_image">Image in layer</param>
+        public void DisableLayer(Image _image)
+        {
+            _image.Visibility = System.Windows.Visibility.Hidden;
+        }
+
+        /// <summary>
+        /// Show Layer
+        /// </summary>
+        /// <param name="_layer">Index of layer</param>
+        public void EnableLayer(int _layer)
+        {
+            ImageLayer[_layer].Visibility = System.Windows.Visibility.Visible;
+        }
+        /// <summary>
+        /// Show Layer
+        /// </summary>
+        /// <param name="_image">Image in layer</param>
+        public void EnableLayer(Image _image)
+        {
+            _image.Visibility = System.Windows.Visibility.Visible;
+        }
+
+        /// <summary>
         /// Remove Layer
         /// </summary>
         /// <param name="_image">Image layer</param>
@@ -408,7 +442,7 @@ namespace _2Duzz.Helper
         }
 
         /// <summary>
-        /// Get Border. This only works if the first Item in <see cref="CurrentPanel"/> is an instance of <see cref="Border"/>.
+        /// Get first items Border. This only works if the first Item in <see cref="CurrentPanel"/> is an instance of <see cref="Border"/>.
         /// </summary>
         /// <returns>An instance of <see cref="Border"/>. If there is no <see cref="Border"/> return <see cref="null"/></returns>
         public Border GetBorder() { return CurrentPanel.Children[0] as Border; }

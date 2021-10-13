@@ -55,9 +55,9 @@ namespace _2Duzz.Tools
             LatestImagePosition = temp;
         }
 
-        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
+        protected override void OnMouseDown(MouseButtonEventArgs e)
         {
-            base.OnMouseLeftButtonDown(e);
+            base.OnMouseDown(e);
 
             // Get Position of Mouse
             PointHitTestResult result = ItemAtCursor(e, out Point hit);

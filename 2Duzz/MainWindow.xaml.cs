@@ -40,49 +40,18 @@ namespace _2Duzz
             PanelManager.Get.Init(this, GridContent_Images);
             TabItemManager.Get.Init(this, TabControl_Sprites);
             ImageDrawingHelper.Get.Init(this, GridContent_Images);
+            LayerManager.Get.Init(LayerList);
+            LayerManager.Get.RenameLayer += RenameLayer;
+            LayerManager.Get.ChangeVisibility += ChangeLayerVisibility;
             ScollViewer_Images.MainW = this;
 
-            #region Testing Only
-            // TESTING PURPOSES!
-            TabItemManager.Get.AddTabItem("Papagei");
-            TabItemManager.Get.AddTabItem("Affe");
-            TabItemManager.Get.AddTabItem("Urangutan");
-            TabItemManager.Get.AddImageToTabItem(0, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/emo0004.jpg"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(0, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/emo0004.jpg"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(0, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/emo0004.jpg"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(0, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/emo0004.jpg"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(0, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/emo0004.jpg"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(0, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/XTiny.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(0, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/XTiny.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(0, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/XTiny.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(0, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/AlphaDot.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(0, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/XTiny.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-
-            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X2.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X2.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X2.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X2.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(1, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/X2.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-
-            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Debuf Mode.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            TabItemManager.Get.AddImageToTabItem(2, new Uri("pack://application:,,,/2Duzz;component/Ressources/TestImages/Outline.png"), Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
-            #endregion
             Config.ConfigLoader.Get.LoadFile();
             Config.ConfigLoader.Get.FillTabControl(Img_MouseLeftButtonDown, Img_MouseRightButtonDown);
+        }
+
+        private void ChangeLayerVisibility(ItemsControl _control, int _index, Visibility _oldVisibility, Visibility _newVisibility)
+        {
+            
         }
 
         public void ChangeStatusBar(object _content)
@@ -126,6 +95,12 @@ namespace _2Duzz
             // We Use Math.Max because if scale is negative, the level does flip.
             GetMainViewModel.GridContentScale = (double)Math.Max(new decimal(0.1), newScaleValue);
         }
+
+        private void RenameLayer(ItemsControl _control, int _index, string _oldName, string _newName)
+        {
+            ChangeStatusBar($"Changed name of layer at index \"{_index}\" from \"{_oldName}\" to \"{_newName}\".");
+        }
+
 
         #region Execute Header and Buttons
 
@@ -186,16 +161,54 @@ namespace _2Duzz
             ChangeStatusBar("Level Created!");
 
             // Add Layer to List
-            LayerList.Items.Clear();
+            LayerManager.Get.ClearList();
+            LayerManager.Get.AddLayer(0);
 
-            LayerList.Items.Add(0);
 
             CurrentLayer = 0;
-            LayerList.SelectedIndex = 0;
+            LayerManager.Get.CurrentSelectedIndex = 0;
+
+            FileHelper.ResetLastValidFile();
 
             DoSave = true;
 
             ChangeTitle("New Level");
+        }
+
+        /// <summary>
+        /// Header Save Click Execution method
+        /// </summary>
+        /// <param name="_parameter"></param>
+        private void ExecuteOpenClick(object _parameter)
+        {
+            // Check if old level exists and if it was saved
+            if (CurrentLevel != null
+                && DoSave)
+            {
+                if (!CheckCurrentLevel())
+                    return;
+            }
+
+
+            string path = Helper.FileHelper.GetOpenPath();
+
+            // Check if string is valid or not
+            if (string.IsNullOrEmpty(path))
+            {
+                ChangeStatusBar($"File save aborted by user");
+                return;
+            }
+
+            CurrentLevel = Level.ReadJSON(path);
+            ImageLoader.SaveLevelImagesFromFileToDirectory(CurrentLevel.LevelImagesData, path);
+            string[] imagesPaths = ImageLoader.LoadImagesFromLevelFolderToTabItem(path, Img_MouseLeftButtonDown, Img_MouseRightButtonDown, out TabItem addedTo);
+            OpenLevel(CurrentLevel, addedTo);
+
+            ChangeTitle(CurrentLevel.LevelName);
+
+            FileHelper.FileDialogOpenStatusText(path, CurrentLevel != null, this);
+
+            DoSave = false;
         }
 
         #region Save
@@ -228,7 +241,7 @@ namespace _2Duzz
 
 
             SetLevelImagesStringArray();
-
+            CurrentLevel.LayerNames = GetCurrentLayerNames();
             FileHelper.FileDialogSaveStatusText(path, CurrentLevel.SaveJson(path), this);
 
             // If we load images while file is currently open, it images can not be deleted. Why do we even save here?
@@ -268,6 +281,7 @@ namespace _2Duzz
             }
 
             SetLevelImagesStringArray();
+            CurrentLevel.LayerNames = GetCurrentLayerNames();
 
             FileHelper.FileDialogSaveStatusText(path, CurrentLevel.SaveJson(path), this);
 
@@ -279,44 +293,64 @@ namespace _2Duzz
 
             return true;
         }
-        #endregion
-
 
         /// <summary>
-        /// Header Save Click Execution method
+        /// Get layer names from <see cref="LayerManager.CurrentList"/>
         /// </summary>
-        /// <param name="_parameter"></param>
-        private void ExecuteOpenClick(object _parameter)
+        /// <returns>string array of layer names</returns>
+        private string[] GetCurrentLayerNames()
         {
-            // Check if old level exists and if it was saved
-            if (CurrentLevel != null
-                && DoSave)
+            string[] tr = new string[LayerManager.Get.CurrentList.Items.Count];
+            for (int i = 0; i < tr.Length; i++)
             {
-                if (!CheckCurrentLevel())
-                    return;
+                ContentControl temp = LayerManager.Get.CurrentList.Items[i] as ContentControl;
+                if (temp == null
+                    || temp.Content as string == null)
+                {
+                    tr[i] = "No Data";
+                }
+                else
+                {
+                    tr[i] = temp.Content as string;
+                }
             }
 
-
-            string path = Helper.FileHelper.GetOpenPath();
-
-            // Check if string is valid or not
-            if (string.IsNullOrEmpty(path))
-            {
-                ChangeStatusBar($"File save aborted by user");
-                return;
-            }
-
-            CurrentLevel = Level.ReadJSON(path);
-            ImageLoader.SaveLevelImagesFromFileToDirectory(CurrentLevel.LevelImagesData, path);
-            string[] imagesPaths = ImageLoader.LoadImagesFromLevelFolderToTabItem(path, Img_MouseLeftButtonDown, Img_MouseRightButtonDown, out TabItem addedTo);
-            OpenLevel(CurrentLevel, addedTo);
-
-            ChangeTitle(CurrentLevel.LevelName);
-
-            FileHelper.FileDialogOpenStatusText(path, CurrentLevel != null, this);
-
-            DoSave = false;
+            return tr;
         }
+        #endregion
+
+        private void ExecuteExportAsPngClick(object _parameter)
+        {
+            UIElement element = _parameter as UIElement;
+            if (element == null)
+            {
+                if (CurrentLevel == null) return;
+            }
+            else
+            {
+                if (CurrentLevel == null
+                    || !element.IsEnabled) return;
+            }
+
+            Microsoft.WindowsAPICodePack.Dialogs.CommonSaveFileDialog dialog = null;
+
+            dialog = FileHelper.SaveFile(
+                this,
+                out bool work,
+                new Microsoft.WindowsAPICodePack.Dialogs.CommonFileDialogFilter[] { new Microsoft.WindowsAPICodePack.Dialogs.CommonFileDialogFilter("PNG", "png") }
+                );
+
+            if (work == true)
+            {
+                SaveLevelAsImage(dialog.FileName);
+                ChangeStatusBar($"Level was saved to \"{dialog.FileName.ToString()}\"");
+            }
+            else
+            {
+                ChangeStatusBar($"Level saving was interrupted by User");
+            }
+        }
+
         #endregion
 
 
@@ -327,18 +361,33 @@ namespace _2Duzz
         /// <param name="_parameter"></param>
         private void ExecuteAddLayerClick(object _parameter)
         {
-            if (CurrentLevel == null) return;
-            ImageDrawingHelper.Get.CreateLayer(CurrentLevel.LevelSizeX, CurrentLevel.LevelSizeY, CurrentLevel.SpriteSizeX, CurrentLevel.SpriteSizeY, LayerList.SelectedIndex + 1);
-
-
-            LayerList.Items.Insert(LayerList.SelectedIndex + 1, LayerList.SelectedIndex + 1);
-
-            LayerList.SelectedIndex++;
-            CurrentLayer = LayerList.SelectedIndex;
+            CreateLayer();
 
             ChangeStatusBar($"Current Index: {CurrentLayer}");
 
             DoSave = true;
+        }
+
+        /// <summary>
+        /// Create Image layer and list layer. Only for loading level
+        /// </summary>
+        private void CreateLayer()
+        {
+            if (CurrentLevel == null) return;
+            ImageDrawingHelper.Get.CreateLayer(CurrentLevel.LevelSizeX, CurrentLevel.LevelSizeY, CurrentLevel.SpriteSizeX, CurrentLevel.SpriteSizeY, LayerManager.Get.NextIndex);
+            LayerManager.Get.AddLayer(LayerManager.Get.NextIndex);
+            CurrentLayer = LayerManager.Get.CurrentSelectedIndex;
+        }
+        /// <summary>
+        /// Create Image layer and list layer. Only for loading level
+        /// <paramref name="_layerName">Name of layer</paramref>
+        /// </summary>
+        private void CreateLayer(string _layerName)
+        {
+            if (CurrentLevel == null) return;
+            ImageDrawingHelper.Get.CreateLayer(CurrentLevel.LevelSizeX, CurrentLevel.LevelSizeY, CurrentLevel.SpriteSizeX, CurrentLevel.SpriteSizeY, LayerManager.Get.NextIndex);
+            LayerManager.Get.AddLayer(LayerManager.Get.NextIndex, _layerName);
+            CurrentLayer = LayerManager.Get.CurrentSelectedIndex;
         }
 
         /// <summary>
@@ -348,13 +397,19 @@ namespace _2Duzz
         private void ExecuteRemoveLayerClick(object _parameter)
         {
             if (CurrentLevel == null
-                || LayerList.Items.Count <= 1) return;
-            ImageDrawingHelper.Get.RemoveLayer(LayerList.SelectedIndex);
+                || LayerManager.Get.CurrentList.Items.Count <= 1) return;
 
-            int tempIndex = LayerList.SelectedIndex;
-            LayerList.Items.RemoveAt(LayerList.SelectedIndex);
-            LayerList.SelectedIndex = MathHelper.Between(tempIndex, 0, LayerList.Items.Count - 1);
-            CurrentLayer = LayerList.SelectedIndex;
+            // Remove layer from imagedrawing
+            ImageDrawingHelper.Get.RemoveLayer(LayerManager.Get.CurrentSelectedIndex);
+
+            // remove layer from layerlist
+            // save the current selected index, because if be delete the item, Index will be -1
+            int tempIndex = LayerManager.Get.CurrentSelectedIndex;
+            // remove layer
+            LayerManager.Get.RemoveLayer(tempIndex);
+            // set new index. To be save, we make a clamp between zero and max index of list
+            LayerManager.Get.CurrentSelectedIndex = MathHelper.Between(tempIndex, 0, LayerManager.Get.CurrentList.Items.Count - 1);
+            CurrentLayer = LayerManager.Get.CurrentList.SelectedIndex;
 
             ChangeStatusBar($"Current Index: {CurrentLayer}");
 
@@ -498,6 +553,7 @@ namespace _2Duzz
             GetMainViewModel.HeaderOpenClickCommand = new RelayCommand((r) => ExecuteOpenClick(HeaderOpen));
             GetMainViewModel.HeaderSaveClickCommand = new RelayCommand((r) => ExecuteSaveClick(HeaderSave));
             GetMainViewModel.HeaderSaveAsClickCommand = new RelayCommand((r) => ExecuteSaveAsClick(HeaderSaveAs));
+            GetMainViewModel.HeaderExportAsPngClickCommand = new RelayCommand((r) => ExecuteExportAsPngClick(HeaderExportPng));
 
             // Header Image
             GetMainViewModel.HeaderAddImagesCommand = new RelayCommand((r) => ExecuteAddImagesClick(HeaderAddImage));
@@ -516,16 +572,24 @@ namespace _2Duzz
             // Reset Image Panel
             ImageDrawingHelper.Get.ClearLayer();
             int layerCount = _l.LevelImages.GetLength(0);
+
+            // Create a Layer so software do not crash. remove it later
             ImageDrawingHelper.Get.CreateLayer(_l.LevelSizeX, _l.LevelSizeY, _l.SpriteSizeX, _l.SpriteSizeY);
-            LayerList.Items.Clear();
-            LayerList.Items.Add(0);
+            LayerManager.Get.ClearList();
             CurrentLayer = 0;
 
             // create layer
-            for (int i = 1; i < layerCount; i++)
+            for (int i = 0; i < layerCount; i++)
             {
-                ExecuteAddLayerClick(this);
+                if (_l.LayerNames != null
+                    && i < _l.LayerNames.Length)
+                    CreateLayer(_l.LayerNames[i]);
+                else
+                    CreateLayer();
             }
+
+            // removing first temporary layer
+            ImageDrawingHelper.Get.RemoveLayer(0);
 
             // Set grid size
             GetMainViewModel.GridContentWidth = CurrentLevel.LevelSizeX * CurrentLevel.SpriteSizeX;
@@ -554,7 +618,7 @@ namespace _2Duzz
             }
 
             CurrentLayer = 0;
-            LayerList.SelectedIndex = 0;
+            LayerManager.Get.CurrentSelectedIndex = 0;
             ChangeStatusBar("Level Created!");
         }
 
@@ -700,20 +764,37 @@ namespace _2Duzz
 
         private void GridContent_Images_SwitchImage(object sender, MouseEventArgs e, Point oldPosition, Point newPosition)
         {
-            if (CurrentSelectedImage == null
-                || e.LeftButton != MouseButtonState.Pressed)
+            if (CurrentSelectedImage == null)
                 return;
 
-            ImageDrawingHelper.Get.ReplaceImage(
-                (int)newPosition.X,
-                (int)newPosition.Y,
-                CurrentLevel.SpriteSizeX,
-                CurrentLevel.SpriteSizeY,
-                CurrentLevel.LevelSizeX,
-                CurrentLevel.LevelSizeY,
-                CurrentLayer,
-                CurrentSelectedImage.Source.ToString()
-                );
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                ImageDrawingHelper.Get.ReplaceImage(
+                    (int)newPosition.X,
+                    (int)newPosition.Y,
+                    CurrentLevel.SpriteSizeX,
+                    CurrentLevel.SpriteSizeY,
+                    CurrentLevel.LevelSizeX,
+                    CurrentLevel.LevelSizeY,
+                    CurrentLayer,
+                    CurrentSelectedImage.Source.ToString()
+                    );
+            }
+            else if (e.RightButton == MouseButtonState.Pressed)
+            {
+                ImageDrawingHelper.Get.ReplaceImage(
+                    (int)newPosition.X,
+                    (int)newPosition.Y,
+                    CurrentLevel.SpriteSizeX,
+                    CurrentLevel.SpriteSizeY,
+                    CurrentLevel.LevelSizeX,
+                    CurrentLevel.LevelSizeY,
+                    CurrentLayer,
+                    ImageDrawingHelper.PLACEHOLDERPATH
+                    );
+            }
+            else
+                return;
 
             ChangeStatusBar(newPosition);
 
@@ -724,8 +805,9 @@ namespace _2Duzz
         {
             if (CurrentSelectedImage == null)
                 return;
-
-            ImageDrawingHelper.Get.ReplaceImage(
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                ImageDrawingHelper.Get.ReplaceImage(
                 (int)imagePosition.X,
                 (int)imagePosition.Y,
                 CurrentLevel.SpriteSizeX,
@@ -735,6 +817,22 @@ namespace _2Duzz
                 CurrentLayer,
                 CurrentSelectedImage.Source.ToString()
                 );
+            }
+            else if (e.RightButton == MouseButtonState.Pressed)
+            {
+                ImageDrawingHelper.Get.ReplaceImage(
+                    (int)imagePosition.X,
+                    (int)imagePosition.Y,
+                    CurrentLevel.SpriteSizeX,
+                    CurrentLevel.SpriteSizeY,
+                    CurrentLevel.LevelSizeX,
+                    CurrentLevel.LevelSizeY,
+                    CurrentLayer,
+                    ImageDrawingHelper.PLACEHOLDERPATH
+                    );
+            }
+            else
+                return;
 
             DoSave = true;
         }
@@ -743,7 +841,7 @@ namespace _2Duzz
 
         private void LayerList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            CurrentLayer = LayerList.SelectedIndex;
+            CurrentLayer = LayerManager.Get.CurrentSelectedIndex;
             ChangeStatusBar($"Selected Index: {CurrentLayer}");
         }
 
@@ -778,7 +876,7 @@ namespace _2Duzz
 
                 // Try to save new level. If saving was successful, return true; else false
                 case MessageBoxResult.Yes:
-                    return !SaveFile();
+                    return SaveFile();
 
                 // discard everything and return true
                 case MessageBoxResult.No:
@@ -789,5 +887,17 @@ namespace _2Duzz
                     return true;
             }
         }
+
+        public void SaveLevelAsImage(string _absolutePath, double _scale = 1)
+        {
+            Images.LevelToImage.ConvertLevelToImage(
+                CurrentLevel.LevelSizeX * CurrentLevel.SpriteSizeX,
+                CurrentLevel.LevelSizeY * CurrentLevel.SpriteSizeY,
+                _absolutePath,
+                System.Drawing.Imaging.ImageFormat.Png,
+                _scale
+                );
+        }
+
     }
 }

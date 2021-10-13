@@ -166,6 +166,23 @@ namespace _2Duzz.ViewModels
         }
         #endregion
 
+        #region Header Export as Png Click
+        //HeaderExportAsPngClickCommand
+        private ICommand m_HeaderExportAsPngClickCommand;
+        /// <summary>
+        /// Header SaveAs Click command
+        /// </summary>
+        public ICommand HeaderExportAsPngClickCommand
+        {
+            get => m_HeaderExportAsPngClickCommand;
+            set
+            {
+                SetProperty(ref m_HeaderExportAsPngClickCommand, value);
+            }
+        }
+
+        #endregion
+
         #region Header Close Click
         private ICommand m_HeaderCloseClickCommand;
         /// <summary>
