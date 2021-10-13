@@ -874,7 +874,7 @@ namespace _2Duzz
 
                 // Try to save new level. If saving was successful, return true; else false
                 case MessageBoxResult.Yes:
-                    return !SaveFile();
+                    return SaveFile();
 
                 // discard everything and return true
                 case MessageBoxResult.No:
