@@ -168,6 +168,8 @@ namespace _2Duzz
             CurrentLayer = 0;
             LayerManager.Get.CurrentSelectedIndex = 0;
 
+            FileHelper.ResetLastValidFile();
+
             DoSave = true;
 
             ChangeTitle("New Level");
