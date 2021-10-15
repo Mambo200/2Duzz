@@ -61,7 +61,7 @@ namespace _2Duzz
 
         public void ChangeTitle(string _title)
         {
-            this.Title = "2Duzz - " + _title;
+            this.Title = _title + " - 2Duzz";
         }
 
         [Obsolete("We scroll without STRG now")]
