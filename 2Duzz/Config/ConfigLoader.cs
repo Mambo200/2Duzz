@@ -62,8 +62,10 @@ namespace _2Duzz.Config
             List<string> content = new List<string>();
             using (StreamReader reader = OpenConfigFile())
             {
-                if (!reader.EndOfStream)
-                    content.Add(reader.ReadToEnd());
+                while(!reader.EndOfStream)
+                {
+                    content.Add(reader.ReadLine());
+                }
             }
             FileContent = content.ToArray();
 
