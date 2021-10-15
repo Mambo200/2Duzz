@@ -67,10 +67,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Config\ConfigLoader.cs" />
+    <Compile Include="Config\FolderInformation.cs" />
     <Compile Include="Converters\PixelConverter\ImageSourceToPixelConverterHeight.cs" />
     <Compile Include="Converters\PixelConverter\ImageSourceToPixelConverter.cs" />
     <Compile Include="Converters\PixelConverter\ImageSourceToPixelConverterWidth.cs" />
     <Compile Include="Delegates\OnClickImageEventHandler.cs" />
+    <Compile Include="Delegates\OnRenamingLayerEventHandler.cs" />
+    <Compile Include="Delegates\OnSwitchVisibilityEventHandler.cs" />
     <Compile Include="Delegates\SwitchImagesEventHandler.cs" />
     <Compile Include="Helper\BindingHelper.cs" />
     <Compile Include="Converters\DoubleToPercentageStringConverter.cs" />
@@ -82,19 +86,29 @@
     <Compile Include="Helper\MyConverter.cs" />
     <Compile Include="Helper\PanelManager.cs" />
     <Compile Include="Helper\TabItemManager.cs" />
+    <Compile Include="Images\EzSplitBitmap.cs" />
+    <Compile Include="Images\LevelToImage.cs" />
     <Compile Include="Images\SplitPic.cs" />
     <Compile Include="Images\SplitPicWindow.xaml.cs">
       <DependentUpon>SplitPicWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="IStatusBar.cs" />
+    <Compile Include="Helper\LayerManager.cs" />
     <Compile Include="Tools\HoverOverDifferentImageGrid.cs" />
     <Compile Include="Tools\WheelControlScollViewer.cs" />
+    <Compile Include="ViewModels\ChangeLevelNameViewModel.cs" />
     <Compile Include="ViewModels\RelayCommand.cs" />
     <Compile Include="ViewModels\SplitPicViewModel.cs" />
+    <Compile Include="WindowsXAML\ChangeLevelNameWindow.xaml.cs">
+      <DependentUpon>ChangeLevelNameWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WindowsXAML\NewMap.xaml.cs">
       <DependentUpon>NewMap.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\NewMapViewModel.cs" />
+    <Compile Include="WindowsXAML\RenameLayerWindow.xaml.cs">
+      <DependentUpon>RenameLayerWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="Images\SplitPicWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -113,7 +127,15 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="WindowsXAML\ChangeLevelNameWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="WindowsXAML\NewMap.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowsXAML\RenameLayerWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -149,34 +171,10 @@
     <Resource Include="Ressources\A.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Ressources\TestImages\Debuf Mode.PNG" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Ressources\TestImages\Outline.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Ressources\TestImages\X.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Ressources\TestImages\X2.png" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\LevelData\LevelData.csproj">
       <Project>{652c1f05-85f2-4c6a-a875-458665d76477}</Project>
       <Name>LevelData</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Ressources\TestImages\XTiny.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Ressources\TestImages\WhiteDot.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Ressources\TestImages\AlphaDot.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Ressources\TestImages\emo0004.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

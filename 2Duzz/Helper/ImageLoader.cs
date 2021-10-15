@@ -27,7 +27,14 @@ namespace _2Duzz.Helper
             // we delete the old files because images will not be overwritten for some reason
             string[] files = Directory.GetFiles(sub.FullName, "*.png");
             foreach (string file in files)
-                File.Delete(file);
+                try
+                {
+                    File.Delete(file);
+                }
+                catch (Exception _ex)
+                {
+
+                }
 
             // Save image data to folder
             for (int i = 0; i < _imageData.Length; i++)
@@ -90,7 +97,7 @@ namespace _2Duzz.Helper
             string[] images = imagesL.ToArray();
 
             TabItemManager.Get.DeleteFromFileTab();
-            // We do not add the option to remove the "From File" tab because this is managed by code.
+            // We do not add the option to remove the "From File" tab because this is managed by code and the only way to get this tab back is to load he file again.
             _tabItem = TabItemManager.Get.AddTabItem(LEVELIMAGEDIRECTORY, false);
             TabItemManager.Get.AddFromFileTab(_tabItem);
 

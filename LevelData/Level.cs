@@ -76,6 +76,9 @@ namespace LevelData
         /// <summary>Images saved as Base64</summary>
         public string[] LevelImagesData { get; set; }
 
+        /// <summary>Name of Layer. Size of <see cref="LayerNames"/> has to be equal with count of <see cref="LevelImages"/> first dimension</summary>
+        public string[] LayerNames { get; set; }
+
         /// <summary>
         /// Image index of images in level.
         /// First dimension: amount of layer; Second dimension: amount of images. Value is index in <see cref="LevelImagesData"/>.
@@ -158,7 +161,7 @@ namespace LevelData
             if (CheckLevel(tr))
                 return tr;
             else
-                return null;
+                return tr;
         }
 
         /// <summary>
@@ -188,6 +191,10 @@ namespace LevelData
             }
 
             if (_lvl.LevelImages.GetLength(1) != _lvl.LevelSizeX * _lvl.LevelSizeY)
+                return false;
+
+            if (_lvl.LayerNames != null
+                && _lvl.LayerNames.Length != _lvl.LevelImages.GetLength(0))
                 return false;
 
             return true;
