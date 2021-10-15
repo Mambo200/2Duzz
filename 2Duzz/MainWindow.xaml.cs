@@ -172,7 +172,7 @@ namespace _2Duzz
 
             DoSave = true;
 
-            ChangeTitle("New Level");
+            ChangeTitle(CurrentLevel.LevelName);
         }
 
         /// <summary>
