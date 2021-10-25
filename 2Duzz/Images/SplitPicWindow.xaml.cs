@@ -35,6 +35,9 @@ namespace _2Duzz.Images
             InitializeComponent();
             ApplyImage(_source);
             filePath = GetMainViewModel.RemoveFileAtBeginning(_source.ToString());
+
+            GridLines.Width = GetMainViewModel.SelectedImageSource.Width;
+            GridLines.Height = GetMainViewModel.SelectedImageSource.Height;
         }
 
         /// <summary>
@@ -218,5 +221,27 @@ namespace _2Duzz.Images
             SplitImageTextBlock.Text = $"{convertingType} - {rounded}%";
         }
         #endregion
+
+        private void SplitW_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            GridLines.ColumnDefinitions.Clear();
+            int w = GetMainViewModel.CountW;
+            if (w < 0)
+                return;
+
+            for (int i = 0; i < w; i++)
+                GridLines.ColumnDefinitions.Add(new ColumnDefinition());
+        }
+        private void SplitH_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            GridLines.RowDefinitions.Clear();
+            int h = GetMainViewModel.CountH;
+            if (h < 0)
+                return;
+
+            for (int i = 0; i < h; i++)
+                GridLines.RowDefinitions.Add(new RowDefinition());
+        }
+
     }
 }
