@@ -12,6 +12,7 @@ namespace _2Duzz.Helper
     public class ImageDrawingHelper
     {
         public const string PLACEHOLDERPATH = "pack://application:,,,/2Duzz;component/Ressources/A.png";
+        private const int STARTINDEX = 2;
 
         #region Constructor
         private static ImageDrawingHelper m_Instance;
@@ -275,7 +276,7 @@ namespace _2Duzz.Helper
         #endregion
 
         /// <summary>
-        /// Create Layer on Field
+        /// Create Layer on Field. This methods creates an <see cref="Border"/> and a <see cref="Grid"/>, it is ment to be used when a new level is created or loaded.
         /// </summary>
         /// <param name="_x">Amount of Images in width</param>
         /// <param name="_y">Amount of Images in height</param>
@@ -285,6 +286,8 @@ namespace _2Duzz.Helper
         public Image CreateLayer(int _x, int _y, int _imageSizeX, int _imageSizeY)
         {
             CurrentPanel.Children.Add(new Border() { Width = _x * _imageSizeX, Height = _y * _imageSizeY, BorderThickness = new System.Windows.Thickness(5), BorderBrush = Brushes.Black });
+            CurrentPanel.Children.Add(CreateNewGrid(_x, _y));
+            
             ImagesAtLayer.Add(new Dictionary<int, ImageDrawing>());
 
             Image img = CreateNewImageLayer(out DrawingImage _, out DrawingGroup _dGroup);
@@ -307,7 +310,7 @@ namespace _2Duzz.Helper
         /// <param name="_imageSizeY">Y size of Image in Pixels</param>
         /// <param name="_layerIndex">Index of Layer to insert</param>
         /// <returns>Layer as Image</returns>
-        public Image CreateLayer(int _x, int _y, int _imageSizeX, int _imageSizeY, int _layerIndex)
+        public Image InsertLayer(int _x, int _y, int _imageSizeX, int _imageSizeY, int _layerIndex)
         {
             ImagesAtLayer.Insert(_layerIndex, new Dictionary<int, ImageDrawing>());
 
@@ -316,7 +319,7 @@ namespace _2Duzz.Helper
             ImageLayer.Insert(_layerIndex, img);
 
             //CurrentPanel.Children.Insert(_layerIndex, img);
-            CurrentPanel.Children.Insert(_layerIndex + 1, img);
+            CurrentPanel.Children.Insert(_layerIndex + STARTINDEX, img);
 
             SetRect(_x, _y, _imageSizeX, _imageSizeY, _dGroup);
 
@@ -332,7 +335,7 @@ namespace _2Duzz.Helper
             // Remove from Image
             ImageLayer.RemoveAt(_layer);
             //CurrentPanel.Children.RemoveAt(_layer);
-            CurrentPanel.Children.RemoveAt(_layer + 1);
+            CurrentPanel.Children.RemoveAt(_layer + STARTINDEX);
 
             // Remove from Dictionary
             ImagesAtLayer.RemoveAt(_layer);
@@ -448,12 +451,18 @@ namespace _2Duzz.Helper
         public Border GetBorder() { return CurrentPanel.Children[0] as Border; }
 
         /// <summary>
+        /// Get Grid. This only works if the first Item in <see cref="CurrentPanel"/> is an instance of <see cref="Grid"/>.
+        /// </summary>
+        /// <returns>An instance of <see cref="Grid"/>. If there is no <see cref="Grid"/> return <see cref="null"/></returns>
+        public Grid GetGrid() { return CurrentPanel.Children[1] as Grid; }
+
+        /// <summary>
         /// Get Drawing Image
         /// </summary>
         /// <param name="_layer">Index of Layer</param>
         /// <returns>Drawing Image</returns>
         //public DrawingImage GetDrawingImage(int _layer) { return ((Image)CurrentPanel.Children[_layer]).Source as DrawingImage; }
-        public DrawingImage GetDrawingImage(int _layer) { return ((Image)CurrentPanel.Children[_layer + 1]).Source as DrawingImage; }
+        public DrawingImage GetDrawingImage(int _layer) { return ((Image)CurrentPanel.Children[_layer + STARTINDEX]).Source as DrawingImage; }
 
         /// <summary>
         /// Get Drawing Image
@@ -468,7 +477,7 @@ namespace _2Duzz.Helper
         /// <param name="_layer">Index of Layer</param>
         /// <returns>Drawing Group</returns>
         //public DrawingGroup GetDrawingGroup(int _layer) { return ((DrawingImage)((Image)CurrentPanel.Children[_layer]).Source).Drawing as DrawingGroup; }
-        public DrawingGroup GetDrawingGroup(int _layer) { return ((DrawingImage)((Image)CurrentPanel.Children[_layer + 1]).Source).Drawing as DrawingGroup; }
+        public DrawingGroup GetDrawingGroup(int _layer) { return ((DrawingImage)((Image)CurrentPanel.Children[_layer + STARTINDEX]).Source).Drawing as DrawingGroup; }
 
 
         /// <summary>
@@ -517,6 +526,25 @@ namespace _2Duzz.Helper
             _dImage.Drawing = _dGroup;
             tr.Source = _dImage;
 
+            return tr;
+        }
+
+        /// <summary>
+        /// Creates a Grid with <see cref="Grid.ColumnDefinitions"/> and <see cref="Grid.RowDefinitions"/>.
+        /// </summary>
+        /// <param name="_width">Amount of columns</param>
+        /// <param name="_height">Amount of rows</param>
+        /// <returns><see cref="Grid"/> with grid definitions</returns>
+        private Grid CreateNewGrid(int _width, int _height)
+        {
+            Grid tr = new Grid();
+
+            for (int i = 0; i < _height; i++)
+                tr.RowDefinitions.Add(new RowDefinition());
+            for (int i = 0; i < _width; i++)
+                tr.ColumnDefinitions.Add(new ColumnDefinition());
+
+            tr.ShowGridLines = true;
             return tr;
         }
 
