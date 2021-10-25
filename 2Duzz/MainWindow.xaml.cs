@@ -374,7 +374,7 @@ namespace _2Duzz
         private void CreateLayer()
         {
             if (CurrentLevel == null) return;
-            ImageDrawingHelper.Get.CreateLayer(CurrentLevel.LevelSizeX, CurrentLevel.LevelSizeY, CurrentLevel.SpriteSizeX, CurrentLevel.SpriteSizeY, LayerManager.Get.NextIndex);
+            ImageDrawingHelper.Get.InsertLayer(CurrentLevel.LevelSizeX, CurrentLevel.LevelSizeY, CurrentLevel.SpriteSizeX, CurrentLevel.SpriteSizeY, LayerManager.Get.NextIndex);
             LayerManager.Get.AddLayer(LayerManager.Get.NextIndex);
             CurrentLayer = LayerManager.Get.CurrentSelectedIndex;
         }
@@ -385,7 +385,7 @@ namespace _2Duzz
         private void CreateLayer(string _layerName)
         {
             if (CurrentLevel == null) return;
-            ImageDrawingHelper.Get.CreateLayer(CurrentLevel.LevelSizeX, CurrentLevel.LevelSizeY, CurrentLevel.SpriteSizeX, CurrentLevel.SpriteSizeY, LayerManager.Get.NextIndex);
+            ImageDrawingHelper.Get.InsertLayer(CurrentLevel.LevelSizeX, CurrentLevel.LevelSizeY, CurrentLevel.SpriteSizeX, CurrentLevel.SpriteSizeY, LayerManager.Get.NextIndex);
             LayerManager.Get.AddLayer(LayerManager.Get.NextIndex, _layerName);
             CurrentLayer = LayerManager.Get.CurrentSelectedIndex;
         }
