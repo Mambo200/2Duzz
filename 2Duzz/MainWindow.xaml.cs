@@ -764,7 +764,8 @@ namespace _2Duzz
 
         private void GridContent_Images_SwitchImage(object sender, MouseEventArgs e, Point oldPosition, Point newPosition)
         {
-            if (CurrentSelectedImage == null)
+            if (CurrentSelectedImage == null
+                || !ImageDrawingHelper.Get.IsLayerEnabled(CurrentLayer))
                 return;
 
             if (e.LeftButton == MouseButtonState.Pressed)
@@ -803,7 +804,8 @@ namespace _2Duzz
 
         private void GridContent_Images_OnClickImage(object sender, MouseEventArgs e, Point imagePosition)
         {
-            if (CurrentSelectedImage == null)
+            if (CurrentSelectedImage == null
+                || !ImageDrawingHelper.Get.IsLayerEnabled(CurrentLayer))
                 return;
             if (e.LeftButton == MouseButtonState.Pressed)
             {
