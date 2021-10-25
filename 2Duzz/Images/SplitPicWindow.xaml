@@ -33,10 +33,7 @@
             <Tools:WheelControlScollViewer DeadZone="30" MoveMultiplicator="0.01" HorizontalScrollBarVisibility="Visible">
                 <Grid Grid.Column="0">
                     <Image x:Name="ImageShow" Source="{Binding SelectedImageSource}" Stretch="None" />
-                    <Grid x:Name="GridLines" ShowGridLines="True">
-                        <Grid.RowDefinitions/>
-                        <Grid.ColumnDefinitions/>
-                    </Grid>
+                    <Grid x:Name="GridLines" ShowGridLines="True"/>
                 </Grid>
             </Tools:WheelControlScollViewer>
             <!--#endregion Image Field-->
@@ -68,16 +65,16 @@
                 <GroupBox Grid.Row="1" Header="Split Information">
                     <WrapPanel>
                         <TextBlock Text="Width" Width="50" Margin="0,5,0,0"/>
-                        <TextBox x:Name="SplitWidth" Text="{Binding SplitPixelWidthText, UpdateSourceTrigger=PropertyChanged}" Width="130" Margin="0,5,0,0" />
+                        <TextBox x:Name="SplitWidth" Text="{Binding SplitPixelWidthText, UpdateSourceTrigger=PropertyChanged}" Width="130" Margin="0,5,0,0"/>
                         <TextBlock Text="Height" Width="50" Margin="0,5,0,0"/>
                         <TextBox x:Name="SplitHeight" Text="{Binding SplitPixelHeightText, UpdateSourceTrigger=PropertyChanged}" Width="130" Margin="0,5,0,0"/>
 
                         <Separator Width="180" Margin="0,5,0,0"/>
 
                         <TextBlock Text="Count W" Width="50" Margin="0,5,0,0"/>
-                        <TextBox x:Name="SplitCountWidth" Text="{Binding CountW, Mode=OneWay}" Width="130" Margin="0,5,0,0" IsEnabled="False"/>
+                        <TextBox x:Name="SplitCountWidth" Text="{Binding CountW, Mode=OneWay}" Width="130" Margin="0,5,0,0" IsEnabled="False" TextChanged="SplitW_TextChanged"/>
                         <TextBlock Text="Count H" Width="50" Margin="0,5,0,0"/>
-                        <TextBox x:Name="SplitCountHeight" Text="{Binding CountH, Mode=OneWay}" Width="130" Margin="0,5,0,0" IsEnabled="False"/>
+                        <TextBox x:Name="SplitCountHeight" Text="{Binding CountH, Mode=OneWay}" Width="130" Margin="0,5,0,0" IsEnabled="False" TextChanged="SplitH_TextChanged"/>
                     </WrapPanel>
                 </GroupBox>
                 <!--#endregion-->
