@@ -341,6 +341,7 @@ namespace _2Duzz.Helper
             ImagesAtLayer.RemoveAt(_layer);
         }
 
+        #region Layer
         /// <summary>
         /// Hide Layer
         /// </summary>
@@ -374,6 +375,26 @@ namespace _2Duzz.Helper
         {
             _image.Visibility = System.Windows.Visibility.Visible;
         }
+
+        /// <summary>
+        /// Check if layer is visible.
+        /// </summary>
+        /// <param name="_layer">Index of layer</param>
+        /// <returns>true if visibility status is equal to <see cref="System.Windows.Visibility.Visible"/> | else false</returns>
+        public bool IsLayerEnabled(int _layer)
+        {
+            return ImageLayer[_layer].Visibility == System.Windows.Visibility.Visible;
+        }
+        /// <summary>
+        /// Check if layer is visible.
+        /// </summary>
+        /// <param name="_image">Image in layer</param>
+        /// <returns>true if visibility status is equal to <see cref="System.Windows.Visibility.Visible"/> | else false</returns>
+        public bool IsLayerEnabled(Image _image)
+        {
+            return _image.Visibility == System.Windows.Visibility.Visible;
+        }
+        #endregion
 
         /// <summary>
         /// Remove Layer

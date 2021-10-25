@@ -888,14 +888,13 @@ namespace _2Duzz
             }
         }
 
-        public void SaveLevelAsImage(string _absolutePath, double _scale = 1)
+        public void SaveLevelAsImage(string _absolutePath)
         {
             Images.LevelToImage.ConvertLevelToImage(
                 CurrentLevel.LevelSizeX * CurrentLevel.SpriteSizeX,
                 CurrentLevel.LevelSizeY * CurrentLevel.SpriteSizeY,
                 _absolutePath,
-                System.Drawing.Imaging.ImageFormat.Png,
-                _scale
+                System.Drawing.Imaging.ImageFormat.Png
                 );
         }
 
