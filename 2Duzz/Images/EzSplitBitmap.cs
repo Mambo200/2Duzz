@@ -1,4 +1,10 @@
-﻿using System;
+﻿////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                          Code von Robertico                                                    //    
+//  https://mycsharp.de/forum/threads/29667/getpixel-und-setpixel-um-laengen-geschlagen-800-mal-schneller?page=1  //
+//                                    Abgerufen am 26.08.2021 um 16:55 Uhr                                        //
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;

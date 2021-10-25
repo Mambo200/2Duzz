@@ -1,0 +1,3 @@
+Newtonsoft.Json (Author James Newton-King)
+Microsoft-WindowsAPICodePack-Core (Authors rpastric, contre, dahall)
+Microsoft-WindowsAPICodePack-Shell (Authors rpastric, contre, dahall)

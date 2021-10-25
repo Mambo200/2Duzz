@@ -13,31 +13,41 @@ namespace _2Duzz.Images
 {
     public static class LevelToImage
     {
-        public static void ConvertLevelToImage(int _width, int _height, string _absolutePath, ImageFormat _imageFormat, double _scale = 1)
+        /// <summary>
+        /// Export current Level as image
+        /// </summary>
+        /// <param name="_width">Width of image</param>
+        /// <param name="_height">Height of image</param>
+        /// <param name="_absolutePath">Absolute save path of image</param>
+        /// <param name="_imageFormat">Format of image in which it will be saved</param>
+        public static void ConvertLevelToImage(int _width, int _height, string _absolutePath, ImageFormat _imageFormat)
         {
-            int count = ImageDrawingHelper.Get.ImageLayer.Count;
+            int[] visibleIndexes = GetAllVisibleIndex();
+            int count = visibleIndexes.Length;
             PngBitmapEncoder[] encoders = new PngBitmapEncoder[count];
             MemoryStream[] memStreams = new MemoryStream[count];
             System.Drawing.Bitmap[] bitmaps = new System.Drawing.Bitmap[count];
-            
-            for (int i = 0; i < encoders.Length; i++)
+
+            int tempCount = 0;
+            foreach (int i in visibleIndexes)
             {
-                encoders[i] = ConvertLevelToImage(i, _scale);
-            
-                memStreams[i] = new MemoryStream();
-                encoders[i].Save(memStreams[i]);
-            
-                bitmaps[i] = new System.Drawing.Bitmap(memStreams[i]);
+                encoders[tempCount] = ConvertLevelToImage(i);
+
+                memStreams[tempCount] = new MemoryStream();
+                encoders[tempCount].Save(memStreams[tempCount]);
+
+                bitmaps[tempCount] = new System.Drawing.Bitmap(memStreams[tempCount]);
+                tempCount++;
             }
-            
+
             using (FileStream filestream = File.Create(_absolutePath))
             {
-                using (MemoryStream final = CombineImages((int)(_width * _scale), (int)(_height * _scale), _imageFormat, bitmaps))
+                using (MemoryStream final = CombineImages((int)(_width), (int)(_height), _imageFormat, bitmaps))
                 {
                     final.WriteTo(filestream);
                 }
             }
-            
+
             foreach (System.Drawing.Bitmap bitmap in bitmaps)
             {
                 bitmap.Dispose();
@@ -45,7 +55,28 @@ namespace _2Duzz.Images
 
         }
 
-        private static PngBitmapEncoder ConvertLevelToImage(int _layer, double _scale = 1)
+        /// <summary>
+        /// Get all layer which are Visible
+        /// </summary>
+        /// <returns>All visible Layer</returns>
+        private static int[] GetAllVisibleIndex()
+        {
+            List<int> tr = new List<int>();
+            for (int i = 0; i < ImageDrawingHelper.Get.ImageLayer.Count; i++)
+            {
+                if (ImageDrawingHelper.Get.IsLayerEnabled(i))
+                    tr.Add(i);
+            }
+
+            return tr.ToArray();
+        }
+
+        /// <summary>
+        /// Convert Layer to image
+        /// </summary>
+        /// <param name="_layer">index of layer</param>
+        /// <returns></returns>
+        private static PngBitmapEncoder ConvertLevelToImage(int _layer)
         {
             var encoder = new PngBitmapEncoder();
             Drawing drawing = ImageDrawingHelper.Get.GetDrawingImage(_layer).Drawing;
@@ -58,11 +89,11 @@ namespace _2Duzz.Images
                 drawingContext.DrawDrawing(drawing);
             }
 
-            var width = drawing.Bounds.Width * _scale;
-            var height = drawing.Bounds.Height * _scale;
+            var width = drawing.Bounds.Width;
+            var height = drawing.Bounds.Height;
             var bitmap = new RenderTargetBitmap((int)width, (int)height, 96, 96, PixelFormats.Pbgra32);
             bitmap.Render(drawingVisual);
-            
+
             encoder.Frames.Add(BitmapFrame.Create(bitmap));
 
             return encoder;

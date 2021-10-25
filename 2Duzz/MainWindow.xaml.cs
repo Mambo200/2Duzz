@@ -61,7 +61,7 @@ namespace _2Duzz
 
         public void ChangeTitle(string _title)
         {
-            this.Title = "2Duzz - " + _title;
+            this.Title = _title + " - 2Duzz";
         }
 
         [Obsolete("We scroll without STRG now")]
@@ -168,9 +168,11 @@ namespace _2Duzz
             CurrentLayer = 0;
             LayerManager.Get.CurrentSelectedIndex = 0;
 
+            FileHelper.ResetLastValidFile();
+
             DoSave = true;
 
-            ChangeTitle("New Level");
+            ChangeTitle(CurrentLevel.LevelName);
         }
 
         /// <summary>
@@ -372,7 +374,7 @@ namespace _2Duzz
         private void CreateLayer()
         {
             if (CurrentLevel == null) return;
-            ImageDrawingHelper.Get.CreateLayer(CurrentLevel.LevelSizeX, CurrentLevel.LevelSizeY, CurrentLevel.SpriteSizeX, CurrentLevel.SpriteSizeY, LayerManager.Get.NextIndex);
+            ImageDrawingHelper.Get.InsertLayer(CurrentLevel.LevelSizeX, CurrentLevel.LevelSizeY, CurrentLevel.SpriteSizeX, CurrentLevel.SpriteSizeY, LayerManager.Get.NextIndex);
             LayerManager.Get.AddLayer(LayerManager.Get.NextIndex);
             CurrentLayer = LayerManager.Get.CurrentSelectedIndex;
         }
@@ -383,7 +385,7 @@ namespace _2Duzz
         private void CreateLayer(string _layerName)
         {
             if (CurrentLevel == null) return;
-            ImageDrawingHelper.Get.CreateLayer(CurrentLevel.LevelSizeX, CurrentLevel.LevelSizeY, CurrentLevel.SpriteSizeX, CurrentLevel.SpriteSizeY, LayerManager.Get.NextIndex);
+            ImageDrawingHelper.Get.InsertLayer(CurrentLevel.LevelSizeX, CurrentLevel.LevelSizeY, CurrentLevel.SpriteSizeX, CurrentLevel.SpriteSizeY, LayerManager.Get.NextIndex);
             LayerManager.Get.AddLayer(LayerManager.Get.NextIndex, _layerName);
             CurrentLayer = LayerManager.Get.CurrentSelectedIndex;
         }
@@ -874,7 +876,7 @@ namespace _2Duzz
 
                 // Try to save new level. If saving was successful, return true; else false
                 case MessageBoxResult.Yes:
-                    return !SaveFile();
+                    return SaveFile();
 
                 // discard everything and return true
                 case MessageBoxResult.No:
@@ -886,14 +888,13 @@ namespace _2Duzz
             }
         }
 
-        public void SaveLevelAsImage(string _absolutePath, double _scale = 1)
+        public void SaveLevelAsImage(string _absolutePath)
         {
             Images.LevelToImage.ConvertLevelToImage(
                 CurrentLevel.LevelSizeX * CurrentLevel.SpriteSizeX,
                 CurrentLevel.LevelSizeY * CurrentLevel.SpriteSizeY,
                 _absolutePath,
-                System.Drawing.Imaging.ImageFormat.Png,
-                _scale
+                System.Drawing.Imaging.ImageFormat.Png
                 );
         }
 
