@@ -374,7 +374,7 @@ namespace _2Duzz
         private void CreateLayer()
         {
             if (CurrentLevel == null) return;
-            ImageDrawingHelper.Get.CreateLayer(CurrentLevel.LevelSizeX, CurrentLevel.LevelSizeY, CurrentLevel.SpriteSizeX, CurrentLevel.SpriteSizeY, LayerManager.Get.NextIndex);
+            ImageDrawingHelper.Get.InsertLayer(CurrentLevel.LevelSizeX, CurrentLevel.LevelSizeY, CurrentLevel.SpriteSizeX, CurrentLevel.SpriteSizeY, LayerManager.Get.NextIndex);
             LayerManager.Get.AddLayer(LayerManager.Get.NextIndex);
             CurrentLayer = LayerManager.Get.CurrentSelectedIndex;
         }
@@ -385,7 +385,7 @@ namespace _2Duzz
         private void CreateLayer(string _layerName)
         {
             if (CurrentLevel == null) return;
-            ImageDrawingHelper.Get.CreateLayer(CurrentLevel.LevelSizeX, CurrentLevel.LevelSizeY, CurrentLevel.SpriteSizeX, CurrentLevel.SpriteSizeY, LayerManager.Get.NextIndex);
+            ImageDrawingHelper.Get.InsertLayer(CurrentLevel.LevelSizeX, CurrentLevel.LevelSizeY, CurrentLevel.SpriteSizeX, CurrentLevel.SpriteSizeY, LayerManager.Get.NextIndex);
             LayerManager.Get.AddLayer(LayerManager.Get.NextIndex, _layerName);
             CurrentLayer = LayerManager.Get.CurrentSelectedIndex;
         }
@@ -764,7 +764,8 @@ namespace _2Duzz
 
         private void GridContent_Images_SwitchImage(object sender, MouseEventArgs e, Point oldPosition, Point newPosition)
         {
-            if (CurrentSelectedImage == null)
+            if (CurrentSelectedImage == null
+                || !ImageDrawingHelper.Get.IsLayerEnabled(CurrentLayer))
                 return;
 
             if (e.LeftButton == MouseButtonState.Pressed)
@@ -803,7 +804,8 @@ namespace _2Duzz
 
         private void GridContent_Images_OnClickImage(object sender, MouseEventArgs e, Point imagePosition)
         {
-            if (CurrentSelectedImage == null)
+            if (CurrentSelectedImage == null
+                || !ImageDrawingHelper.Get.IsLayerEnabled(CurrentLayer))
                 return;
             if (e.LeftButton == MouseButtonState.Pressed)
             {
@@ -888,14 +890,13 @@ namespace _2Duzz
             }
         }
 
-        public void SaveLevelAsImage(string _absolutePath, double _scale = 1)
+        public void SaveLevelAsImage(string _absolutePath)
         {
             Images.LevelToImage.ConvertLevelToImage(
                 CurrentLevel.LevelSizeX * CurrentLevel.SpriteSizeX,
                 CurrentLevel.LevelSizeY * CurrentLevel.SpriteSizeY,
                 _absolutePath,
-                System.Drawing.Imaging.ImageFormat.Png,
-                _scale
+                System.Drawing.Imaging.ImageFormat.Png
                 );
         }
 
