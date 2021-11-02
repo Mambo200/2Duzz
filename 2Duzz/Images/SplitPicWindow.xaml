@@ -65,16 +65,16 @@
                 <GroupBox Grid.Row="1" Header="Split Information">
                     <WrapPanel>
                         <TextBlock Text="Width" Width="50" Margin="0,5,0,0"/>
-                        <TextBox x:Name="SplitWidth" Text="{Binding SplitPixelWidthText, UpdateSourceTrigger=PropertyChanged}" Width="130" Margin="0,5,0,0"/>
+                        <TextBox x:Name="SplitWidth" Text="{Binding SplitPixelWidthText, UpdateSourceTrigger=PropertyChanged}" Width="130" Margin="0,5,0,0" LostFocus="SplitWidth_LostFocus"/>
                         <TextBlock Text="Height" Width="50" Margin="0,5,0,0"/>
-                        <TextBox x:Name="SplitHeight" Text="{Binding SplitPixelHeightText, UpdateSourceTrigger=PropertyChanged}" Width="130" Margin="0,5,0,0"/>
+                        <TextBox x:Name="SplitHeight" Text="{Binding SplitPixelHeightText, UpdateSourceTrigger=PropertyChanged}" Width="130" Margin="0,5,0,0" LostFocus="SplitHeight_LostFocus"/>
 
                         <Separator Width="180" Margin="0,5,0,0"/>
 
                         <TextBlock Text="Count W" Width="50" Margin="0,5,0,0"/>
-                        <TextBox x:Name="SplitCountWidth" Text="{Binding CountW, Mode=OneWay}" Width="130" Margin="0,5,0,0" IsEnabled="False" TextChanged="SplitW_TextChanged"/>
+                        <TextBox x:Name="SplitCountWidth" Text="{Binding CountW, Mode=OneWay}" Width="130" Margin="0,5,0,0" IsEnabled="False"/>
                         <TextBlock Text="Count H" Width="50" Margin="0,5,0,0"/>
-                        <TextBox x:Name="SplitCountHeight" Text="{Binding CountH, Mode=OneWay}" Width="130" Margin="0,5,0,0" IsEnabled="False" TextChanged="SplitH_TextChanged"/>
+                        <TextBox x:Name="SplitCountHeight" Text="{Binding CountH, Mode=OneWay}" Width="130" Margin="0,5,0,0" IsEnabled="False"/>
                     </WrapPanel>
                 </GroupBox>
                 <!--#endregion-->
