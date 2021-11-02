@@ -222,7 +222,7 @@ namespace _2Duzz.Images
         }
         #endregion
 
-        private void SplitW_TextChanged(object sender, TextChangedEventArgs e)
+        private void SplitWidth_LostFocus(object sender, RoutedEventArgs e)
         {
             GridLines.ColumnDefinitions.Clear();
             int w = GetMainViewModel.CountW;
@@ -232,7 +232,8 @@ namespace _2Duzz.Images
             for (int i = 0; i < w; i++)
                 GridLines.ColumnDefinitions.Add(new ColumnDefinition());
         }
-        private void SplitH_TextChanged(object sender, TextChangedEventArgs e)
+
+        private void SplitHeight_LostFocus(object sender, RoutedEventArgs e)
         {
             GridLines.RowDefinitions.Clear();
             int h = GetMainViewModel.CountH;
@@ -242,6 +243,5 @@ namespace _2Duzz.Images
             for (int i = 0; i < h; i++)
                 GridLines.RowDefinitions.Add(new RowDefinition());
         }
-
     }
 }
