@@ -1,4 +1,4 @@
-﻿<Window x:Name="window" x:Class="_2Duzz.MainWindow"
+<Window x:Name="window" x:Class="_2Duzz.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -39,7 +39,7 @@
 
         <Menu Grid.Row="0">
             <MenuItem Header="_File">
-                <MenuItem x:Name="HeaderNew" Header="_New" Command="{Binding HeaderNewClickCommand}" InputGestureText="{Binding ElementName=KeyBinding_NewClickCommand, Converter={StaticResource kgsCon}}"/>
+                <MenuItem x:Name="HeaderNew" Header="_New..." Command="{Binding HeaderNewClickCommand}" InputGestureText="{Binding ElementName=KeyBinding_NewClickCommand, Converter={StaticResource kgsCon}}"/>
                 <MenuItem x:Name="HeaderOpen" Header="_Open..." Command="{Binding HeaderOpenClickCommand}" InputGestureText="{Binding ElementName=KeyBinding_OpenClickCommand, Converter={StaticResource kgsCon}}"/>
                 <Separator/>
                 <MenuItem x:Name="HeaderSave" Header="_Save" Command="{Binding HeaderSaveClickCommand}" InputGestureText="{Binding ElementName=KeyBinding_SaveClickCommand, Converter={StaticResource kgsCon}}"/>
